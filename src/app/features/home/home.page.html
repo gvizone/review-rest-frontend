@@ -1,0 +1,18 @@
+<div class="page">
+  <div class="topbar">
+    <div class="title">Home</div>
+    <button class="btn btn-ghost" type="button" (click)="logout()">Logout</button>
+  </div>
+
+  <div class="card">
+    <h2>You're signed in</h2>
+    <div class="row">
+      <div class="label">Name</div>
+      <div class="value">{{ userName() }}</div>
+    </div>
+    <div class="row">
+      <div class="label">Email</div>
+      <div class="value">{{ userEmail() }}</div>
+    </div>
+  </div>
+</div>
