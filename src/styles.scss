@@ -1,12 +1,57 @@
-:root {
+:root,
+[data-theme='brand'] {
+
+  --palette-1: #dd6e42;
+  --palette-2: #4f6d7a;
+  --palette-3: #c0d6df;
+  --palette-4: #c0d6df;
+  --palette-5: #e8dab2;
+
+  /**
+   * Theme tokens (used by components)
+   * Map palette -> semantic roles here.
+   */
   color-scheme: dark;
-  --bg: #0f1115;
-  --surface: #161a22;
-  --border: rgba(255, 255, 255, 0.08);
+
+  --primary: var(--palette-1);
+  --secondary: var(--palette-2);
+
+  /* Status/accents (optional but handy) */
+  --warning: var(--palette-3);
+  --danger: var(--palette-4);
+
+  /* Surfaces derived from palette-5 (lighter, warm dark) */
+  --bg: color-mix(in oklab, var(--palette-5) 42%, var(--primary));
+  --surface: color-mix(in oklab, var(--palette-5) 52%, var(--primary));
+  --border: color-mix(in oklab, var(--primary) 18%, var(--surface));
+
   --text: rgba(255, 255, 255, 0.92);
   --muted: rgba(255, 255, 255, 0.65);
-  --primary: #2f6bff;
-  --primary-contrast: #0b1020;
+
+  /* Text color when placed on --primary */
+  --primary-contrast: rgba(255, 255, 255, 0.96);
+}
+
+/* Alternate theme (your previous one) */
+[data-theme='classic-dark'] {
+  --palette-1: #924032;
+  --palette-2: #FFE8D4;
+  --palette-3: #F28A03;
+  --palette-4: #F27405;
+  --palette-5: #591902;
+
+  color-scheme: dark;
+  --primary: var(--palette-1);
+  --secondary: var(--palette-2);
+  --warning: var(--palette-3);
+  --danger: var(--palette-4);
+
+  --bg: color-mix(in oklab, var(--palette-5) 42%, rgb(0, 0, 0));
+  --surface: color-mix(in oklab, var(--palette-5) 52%, rgb(0, 0, 0));
+  --border: color-mix(in oklab, white 18%, var(--surface));
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.65);
+  --primary-contrast: rgba(255, 255, 255, 0.96);
 }
 
 html,
@@ -17,7 +62,9 @@ body {
 body {
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: radial-gradient(1200px 600px at 20% 10%, rgba(47, 107, 255, 0.18), transparent 60%),
+  background: radial-gradient(1200px 600px at 20% 10%,
+      color-mix(in oklab, var(--primary) 18%, transparent),
+      transparent 60%),
     var(--bg);
   color: var(--text);
 }
@@ -45,7 +92,7 @@ body {
 .btn-primary {
   background: var(--primary);
   border-color: rgba(255, 255, 255, 0.06);
-  color: white;
+  color: var(--primary-contrast);
 }
 
 .btn-primary:hover {
