@@ -1,0 +1,90 @@
+<div class="panel">
+  <section class="card block">
+    <h3>Reads</h3>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="getAll()">
+        GET all
+      </button>
+      <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="getCategories()">
+        GET categories
+      </button>
+    </div>
+    <div class="field-row">
+      <label class="field">
+        <span class="field-label">Restaurant id</span>
+        <input name="qId" [(ngModel)]="queryId" class="input" placeholder="uuid" />
+      </label>
+      <button type="button" class="btn" [disabled]="loading()" (click)="getById()">GET by id</button>
+    </div>
+    <div class="field-row">
+      <label class="field">
+        <span class="field-label">Category name</span>
+        <input
+          name="qCat"
+          [(ngModel)]="queryCategory"
+          class="input"
+          placeholder="e.g. Italian"
+        />
+      </label>
+      <button type="button" class="btn" [disabled]="loading()" (click)="getByCategory()">
+        GET by category
+      </button>
+    </div>
+  </section>
+
+  <section class="card block">
+    <h3>Create</h3>
+    <div class="form-grid">
+      <label class="field">
+        <span class="field-label">Name</span>
+        <input name="cName" [(ngModel)]="createName" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">Categories (comma-separated)</span>
+        <input name="cCats" [(ngModel)]="createCategories" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">Street</span>
+        <input name="cStreet" [(ngModel)]="createStreet" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">City</span>
+        <input name="cCity" [(ngModel)]="createCity" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">State</span>
+        <input name="cState" [(ngModel)]="createState" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">Country</span>
+        <input name="cCountry" [(ngModel)]="createCountry" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">ZIP</span>
+        <input name="cZip" [(ngModel)]="createZip" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">Instagram URL</span>
+        <input name="cIg" [(ngModel)]="createInstagram" class="input" />
+      </label>
+      <label class="field full">
+        <span class="field-label">Image URLs (comma-separated)</span>
+        <input name="cImg" [(ngModel)]="createImages" class="input" />
+      </label>
+    </div>
+    <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="create()">
+      POST create
+    </button>
+  </section>
+
+  <section class="card block response-card">
+    <h3>Response</h3>
+    @if (loading()) {
+      <p class="muted">Loading…</p>
+    } @else if (responseText()) {
+      <pre class="response">{{ responseText() }}</pre>
+    } @else {
+      <p class="muted">Run a request to see JSON here.</p>
+    }
+  </section>
+</div>

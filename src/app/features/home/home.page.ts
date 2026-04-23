@@ -1,19 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, computed, inject, isDevMode } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   standalone: true,
   selector: 'app-home-page',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss'
 })
 export class HomePage {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+
+  readonly showDevApiLink = isDevMode();
 
   private readonly user = toSignal(this.auth.user$, { initialValue: null });
   readonly userEmail = computed(() => this.user()?.email ?? '—');

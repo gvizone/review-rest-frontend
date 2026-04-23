@@ -1,0 +1,148 @@
+<div class="panel">
+  <section class="card block">
+    <h3>Reads</h3>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="getAll()">
+        GET all
+      </button>
+    </div>
+    <div class="field-row">
+      <label class="field">
+        <span class="field-label">Review id</span>
+        <input name="revId" [(ngModel)]="queryId" class="input" placeholder="uuid" />
+      </label>
+      <button type="button" class="btn" [disabled]="loading()" (click)="getById()">GET by id</button>
+    </div>
+  </section>
+
+  <section class="card block">
+    <h3>Create review</h3>
+
+    <div class="subsection">
+      <h4>User</h4>
+      <div class="form-grid">
+        <label class="field">
+          <span class="field-label">Name</span>
+          <input name="uName" [(ngModel)]="uName" class="input" />
+        </label>
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input name="uEmail" [(ngModel)]="uEmail" class="input" type="email" />
+        </label>
+        <label class="field">
+          <span class="field-label">Street</span>
+          <input name="uStreet" [(ngModel)]="uStreet" class="input" />
+        </label>
+        <label class="field">
+          <span class="field-label">City</span>
+          <input name="uCity" [(ngModel)]="uCity" class="input" />
+        </label>
+        <label class="field">
+          <span class="field-label">State</span>
+          <input name="uState" [(ngModel)]="uState" class="input" />
+        </label>
+        <label class="field">
+          <span class="field-label">Country</span>
+          <input name="uCountry" [(ngModel)]="uCountry" class="input" />
+        </label>
+        <label class="field full">
+          <span class="field-label">ZIP</span>
+          <input name="uZip" [(ngModel)]="uZip" class="input" />
+        </label>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h4>Restaurant</h4>
+      <div class="form-grid">
+        <label class="field">
+          <span class="field-label">Name</span>
+          <input name="rName" [(ngModel)]="rName" class="input" />
+        </label>
+        <label class="field">
+          <span class="field-label">Categories (comma-separated)</span>
+          <input name="rCats" [(ngModel)]="rCategories" class="input" />
+        </label>
+        <label class="field">
+          <span class="field-label">Street</span>
+          <input name="rStreet" [(ngModel)]="rStreet" class="input" />
+        </label>
+        <label class="field">
+          <span class="field-label">City</span>
+          <input name="rCity" [(ngModel)]="rCity" class="input" />
+        </label>
+        <label class="field">
+          <span class="field-label">State</span>
+          <input name="rState" [(ngModel)]="rState" class="input" />
+        </label>
+        <label class="field">
+          <span class="field-label">Country</span>
+          <input name="rCountry" [(ngModel)]="rCountry" class="input" />
+        </label>
+        <label class="field">
+          <span class="field-label">ZIP</span>
+          <input name="rZip" [(ngModel)]="rZip" class="input" />
+        </label>
+        <label class="field">
+          <span class="field-label">Instagram URL</span>
+          <input name="rIg" [(ngModel)]="rInstagram" class="input" />
+        </label>
+        <label class="field full">
+          <span class="field-label">Restaurant image URLs (comma-separated)</span>
+          <input name="rImg" [(ngModel)]="rImages" class="input" />
+        </label>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h4>Scores (0–5)</h4>
+      <div class="form-grid notes-grid">
+        <label class="field">
+          <span class="field-label">Service</span>
+          <input name="nS" [(ngModel)]="nService" class="input" type="number" min="0" max="5" step="1" />
+        </label>
+        <label class="field">
+          <span class="field-label">Food</span>
+          <input name="nF" [(ngModel)]="nFood" class="input" type="number" min="0" max="5" step="1" />
+        </label>
+        <label class="field">
+          <span class="field-label">Value</span>
+          <input name="nV" [(ngModel)]="nValue" class="input" type="number" min="0" max="5" step="1" />
+        </label>
+        <label class="field">
+          <span class="field-label">Atmosphere</span>
+          <input name="nA" [(ngModel)]="nAtmosphere" class="input" type="number" min="0" max="5" step="1" />
+        </label>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h4>Review</h4>
+      <div class="form-grid">
+        <label class="field full">
+          <span class="field-label">Commentary</span>
+          <input name="comm" [(ngModel)]="commentary" class="input" />
+        </label>
+        <label class="field full">
+          <span class="field-label">Review image URLs (comma-separated)</span>
+          <input name="imgs" [(ngModel)]="images" class="input" />
+        </label>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="create()">
+      POST create
+    </button>
+  </section>
+
+  <section class="card block response-card">
+    <h3>Response</h3>
+    @if (loading()) {
+      <p class="muted">Loading…</p>
+    } @else if (responseText()) {
+      <pre class="response">{{ responseText() }}</pre>
+    } @else {
+      <p class="muted">Run a request to see JSON here.</p>
+    }
+  </section>
+</div>

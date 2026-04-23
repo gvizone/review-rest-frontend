@@ -1,0 +1,65 @@
+<div class="panel">
+  <section class="card block">
+    <h3>Reads</h3>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="getAll()">
+        GET all
+      </button>
+    </div>
+    <div class="field-row">
+      <label class="field">
+        <span class="field-label">User id</span>
+        <input name="uId" [(ngModel)]="queryId" class="input" placeholder="uuid" />
+      </label>
+      <button type="button" class="btn" [disabled]="loading()" (click)="getById()">GET by id</button>
+    </div>
+  </section>
+
+  <section class="card block">
+    <h3>Create</h3>
+    <div class="form-grid">
+      <label class="field">
+        <span class="field-label">Name</span>
+        <input name="uName" [(ngModel)]="createName" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">Email</span>
+        <input name="uEmail" [(ngModel)]="createEmail" class="input" type="email" />
+      </label>
+      <label class="field">
+        <span class="field-label">Street</span>
+        <input name="uStreet" [(ngModel)]="createStreet" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">City</span>
+        <input name="uCity" [(ngModel)]="createCity" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">State</span>
+        <input name="uState" [(ngModel)]="createState" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">Country</span>
+        <input name="uCountry" [(ngModel)]="createCountry" class="input" />
+      </label>
+      <label class="field full">
+        <span class="field-label">ZIP</span>
+        <input name="uZip" [(ngModel)]="createZip" class="input" />
+      </label>
+    </div>
+    <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="create()">
+      POST create
+    </button>
+  </section>
+
+  <section class="card block response-card">
+    <h3>Response</h3>
+    @if (loading()) {
+      <p class="muted">Loading…</p>
+    } @else if (responseText()) {
+      <pre class="response">{{ responseText() }}</pre>
+    } @else {
+      <p class="muted">Run a request to see JSON here.</p>
+    }
+  </section>
+</div>

@@ -1,7 +1,12 @@
 <div class="page">
   <div class="topbar">
     <div class="title">Home</div>
-    <button class="btn btn-ghost" type="button" (click)="logout()">Logout</button>
+    <div class="topbar-actions">
+      @if (showDevApiLink) {
+        <a routerLink="/dev/api-tests" class="btn btn-ghost link-pill">API tests</a>
+      }
+      <button class="btn btn-ghost" type="button" (click)="logout()">Logout</button>
+    </div>
   </div>
 
   <div class="card">

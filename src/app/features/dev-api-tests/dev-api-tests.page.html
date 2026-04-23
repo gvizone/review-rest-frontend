@@ -1,0 +1,46 @@
+<div class="page">
+  <div class="topbar">
+    <a routerLink="/home" class="btn btn-ghost back-link">← Home</a>
+    <div class="title-block">
+      <div class="title">API tests</div>
+      <div class="badge">Development only</div>
+    </div>
+  </div>
+
+  <p class="lede">
+    Exercise the backend from the UI. Add new service panels under
+    <code>features/dev-api-tests/panels</code> and register a tab in
+    <code>dev-api-tests.page.ts</code>.
+  </p>
+
+  <div class="tabs-wrap">
+    <div class="tabs" role="tablist" aria-label="API services">
+      @for (tab of tabs; track tab.id) {
+        <button
+          type="button"
+          class="tab"
+          role="tab"
+          [attr.aria-selected]="activeTab() === tab.id"
+          [class.is-active]="activeTab() === tab.id"
+          (click)="selectTab(tab.id)"
+        >
+          {{ tab.label }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="tab-panels" role="tabpanel">
+    @switch (activeTab()) {
+      @case ('restaurants') {
+        <app-restaurant-api-panel />
+      }
+      @case ('reviews') {
+        <app-review-api-panel />
+      }
+      @case ('users') {
+        <app-user-api-panel />
+      }
+    }
+  </div>
+</div>
