@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, isDevMode } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
@@ -9,7 +8,7 @@ import { AuthService } from '../../core/auth/auth.service';
   selector: 'app-home-page',
   imports: [CommonModule, RouterLink],
   templateUrl: './home.page.html',
-  styleUrl: './home.page.scss'
+  styleUrl: './home.page.scss',
 })
 export class HomePage {
   private readonly auth = inject(AuthService);
@@ -17,9 +16,8 @@ export class HomePage {
 
   readonly showDevApiLink = isDevMode();
 
-  private readonly user = toSignal(this.auth.user$, { initialValue: null });
-  readonly userEmail = computed(() => this.user()?.email ?? '—');
-  readonly userName = computed(() => this.user()?.displayName ?? '—');
+  readonly userEmail = computed(() => this.auth.userProfile()?.email ?? '—');
+  readonly userName = computed(() => this.auth.userProfile()?.displayName ?? '—');
 
   async logout(): Promise<void> {
     await this.auth.signOut();

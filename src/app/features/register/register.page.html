@@ -1,0 +1,73 @@
+<div class="page">
+  <div class="card">
+    <div class="header">
+      <div class="brand">Review Restaurant</div>
+      <h1>Create your profile</h1>
+      <p class="sub">Name and email come from your sign-in and cannot be changed here.</p>
+    </div>
+
+    <form (ngSubmit)="submit()" [formGroup]="form">
+      <fieldset class="fieldset">
+        <legend class="legend">From your account</legend>
+        <label class="field">
+          <span class="field-label">Display name</span>
+          <input class="input" type="text" formControlName="name" autocomplete="name" />
+        </label>
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input class="input" type="email" formControlName="email" autocomplete="email" />
+        </label>
+      </fieldset>
+
+      <fieldset class="fieldset" formGroupName="address">
+        <label class="field">
+          <span class="field-label">City</span>
+          <input
+            class="input"
+            type="text"
+            formControlName="city"
+            autocomplete="address-level2"
+            [class.input-invalid]="
+              form.controls.address.get('city')?.invalid &&
+              form.controls.address.get('city')?.touched
+            "
+          />
+        </label>
+        <label class="field">
+          <span class="field-label">State / region</span>
+          <input
+            class="input"
+            type="text"
+            formControlName="state"
+            autocomplete="address-level1"
+            [class.input-invalid]="
+              form.controls.address.get('state')?.invalid &&
+              form.controls.address.get('state')?.touched
+            "
+          />
+        </label>
+        <label class="field">
+          <span class="field-label">Country</span>
+          <input
+            class="input"
+            type="text"
+            formControlName="country"
+            autocomplete="country-name"
+            [class.input-invalid]="
+              form.controls.address.get('country')?.invalid &&
+              form.controls.address.get('country')?.touched
+            "
+          />
+        </label>
+      </fieldset>
+
+      @if (errorMessage) {
+        <p class="error" role="alert">{{ errorMessage }}</p>
+      }
+
+      <button class="btn btn-primary" type="submit" [disabled]="submitting">
+        {{ submitting ? 'Registering…' : 'Complete registration' }}
+      </button>
+    </form>
+  </div>
+</div>
