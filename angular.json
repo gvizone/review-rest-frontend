@@ -27,6 +27,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@countrystatecity/countries/dist/data",
+                "output": "/csc-data"
               }
             ],
             "styles": [
@@ -85,6 +90,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@countrystatecity/countries/dist/data",
+                "output": "/csc-data"
               }
             ],
             "styles": [

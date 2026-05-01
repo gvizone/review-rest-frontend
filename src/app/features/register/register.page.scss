@@ -91,6 +91,10 @@ h1 {
   cursor: not-allowed;
 }
 
+.select {
+  cursor: pointer;
+}
+
 .input-invalid {
   border-color: color-mix(in oklab, var(--danger) 55%, var(--border));
 }

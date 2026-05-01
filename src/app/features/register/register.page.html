@@ -20,44 +20,60 @@
       </fieldset>
 
       <fieldset class="fieldset" formGroupName="address">
+        <legend class="legend">Location</legend>
+
         <label class="field">
-          <span class="field-label">City</span>
-          <input
-            class="input"
-            type="text"
-            formControlName="city"
-            autocomplete="address-level2"
+          <span class="field-label">Country</span>
+          <select
+            class="input select"
+            formControlName="country"
+            autocomplete="country"
             [class.input-invalid]="
-              form.controls.address.get('city')?.invalid &&
-              form.controls.address.get('city')?.touched
+              form.controls.address.get('country')?.invalid &&
+              form.controls.address.get('country')?.touched
             "
-          />
+          >
+            <option value="">Select country</option>
+            @for (c of countries(); track c.iso2) {
+              <option [value]="c.name">{{ c.name }}</option>
+            }
+          </select>
         </label>
+
         <label class="field">
           <span class="field-label">State / region</span>
-          <input
-            class="input"
-            type="text"
+          <select
+            class="input select"
             formControlName="state"
             autocomplete="address-level1"
             [class.input-invalid]="
               form.controls.address.get('state')?.invalid &&
               form.controls.address.get('state')?.touched
             "
-          />
+          >
+            <option value="">Select state / region</option>
+            @for (s of states(); track s.id) {
+              <option [value]="s.name">{{ s.name }}</option>
+            }
+          </select>
         </label>
+
         <label class="field">
-          <span class="field-label">Country</span>
-          <input
-            class="input"
-            type="text"
-            formControlName="country"
-            autocomplete="country-name"
+          <span class="field-label">City</span>
+          <select
+            class="input select"
+            formControlName="city"
+            autocomplete="address-level2"
             [class.input-invalid]="
-              form.controls.address.get('country')?.invalid &&
-              form.controls.address.get('country')?.touched
+              form.controls.address.get('city')?.invalid &&
+              form.controls.address.get('city')?.touched
             "
-          />
+          >
+            <option value="">Select city</option>
+            @for (city of cities(); track city.id) {
+              <option [value]="city.name">{{ city.name }}</option>
+            }
+          </select>
         </label>
       </fieldset>
 
