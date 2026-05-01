@@ -12,7 +12,6 @@ export const routes: Routes = [
   {
     path: 'home',
     component: HomePage,
-    canActivate: [authGuard, userExistsGuard],
   },
   {
     path: 'dev/api-tests',

@@ -5,7 +5,11 @@
       @if (showDevApiLink) {
         <a routerLink="/dev/api-tests" class="btn btn-ghost link-pill">API tests</a>
       }
-      <button class="btn btn-ghost" type="button" (click)="logout()">Logout</button>
+      @if(this.userProfile()) {
+        <button class="btn btn-ghost" type="button" (click)="logout()">Sign out</button>
+      } @else {
+        <button class="btn btn-ghost" type="button" (click)="login()">Sign in</button>
+      }
     </div>
   </div>
 

@@ -13,14 +13,18 @@ import { AuthService } from '../../core/auth/auth.service';
 export class HomePage {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
-
   readonly showDevApiLink = isDevMode();
 
-  readonly userEmail = computed(() => this.auth.userProfile()?.email ?? '—');
-  readonly userName = computed(() => this.auth.userProfile()?.displayName ?? '—');
+  readonly userProfile = computed(() => this.auth.userProfile());
+  readonly userEmail = computed(() => this.userProfile()?.email ?? '—');
+  readonly userName = computed(() => this.userProfile()?.displayName ?? '—');
 
   async logout(): Promise<void> {
     await this.auth.signOut();
-    await this.router.navigateByUrl('/login');
+    await this.router.navigateByUrl('/home');
+  }
+
+  login() {
+    this.router.navigateByUrl('/login');
   }
 }
