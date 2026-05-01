@@ -8,13 +8,14 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 
 import { bearerTokenInterceptor } from './core/auth/bearer-token-interceptor';
+import { devMockApiInterceptor } from './core/dev/dev-mock-api.interceptor';
 import { getFirebaseOptions } from './core/firebase/firebase-options';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([bearerTokenInterceptor])),
+    provideHttpClient(withInterceptors([devMockApiInterceptor, bearerTokenInterceptor])),
     provideFirebaseApp(() => initializeApp(getFirebaseOptions())),
     provideAuth(() => getAuth())
   ]

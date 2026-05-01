@@ -1,0 +1,12 @@
+@if (shown) {
+  <div class="dev-mock-login-panel" role="region" aria-label="Development mock mode">
+    <label class="row">
+      <input
+        type="checkbox"
+        [checked]="harness.mockEnabled()"
+        (change)="onMockChange($any($event.target).checked)"
+      />
+      <span class="text">Mock auth &amp; API (skip Firebase and backend)</span>
+    </label>
+  </div>
+}

@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
+import { DevMockLoginPanelComponent } from '../../core/dev/dev-mock-login-panel.component';
 
 @Component({
   standalone: true,
   selector: 'app-login-page',
-  imports: [CommonModule],
+  imports: [CommonModule, DevMockLoginPanelComponent],
   templateUrl: './login.page.html',
   styleUrl: './login.page.scss'
 })
