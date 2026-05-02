@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DevMockIndicatorComponent } from './core/dev/dev-mock-indicator.component';
-import { AddRestaurantModalComponent } from './features/restaurants/add-resraurant-modal/add-restaurant-modal.component';
+import { AddRestaurantModalComponent } from './features/restaurants/add-restaurant-modal/add-restaurant-modal.component';
 
 @Component({
   selector: 'app-root',

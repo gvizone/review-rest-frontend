@@ -7,7 +7,7 @@ import { catchError, finalize, take } from 'rxjs/operators';
 import { AuthService } from '../../../core/auth/auth.service';
 import { RestaurantApiService } from '../../../core/api/restaurant-api.service';
 import type { Restaurant } from '../../../core/api/api.models';
-import { AddRestaurantModalService } from '../add-resraurant-modal/add-restaurant-modal.service';
+import { AddRestaurantModalService } from '../add-restaurant-modal/add-restaurant-modal.service';
 
 @Component({
   standalone: true,
