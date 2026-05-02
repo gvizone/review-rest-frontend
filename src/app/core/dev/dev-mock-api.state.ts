@@ -117,39 +117,16 @@ export function devMockFindReviewById(id: string): Review | undefined {
   return reviewsById.get(id);
 }
 
-function mapEmbeddedUser(body: CreateReviewRequest['user']): User {
-  const existing = devMockFindUserByEmail(body.email);
-  if (existing) return existing;
-  return devMockCreateUser(body);
-}
-
-function mapEmbeddedRestaurant(body: CreateReviewRequest['restaurant']): Restaurant {
-  const existing = [...restaurantsById.values()].find(
-    (r) =>
-      r.name === body.name &&
-      r.address.city === body.address.city &&
-      r.address.state === body.address.state &&
-      r.address.country === body.address.country,
-  );
-  if (existing) return existing;
-
-  const id = `mock-restaurant-${restaurantSeq++}`;
-  const restaurant: Restaurant = {
-    id,
-    name: body.name,
-    address: { ...body.address },
-    categories: body.categories.map((c) => ({ name: c.name })),
-    instagram: body.instagram,
-    images: body.images ? [...body.images] : undefined,
-  };
-  restaurantsById.set(id, restaurant);
-  return restaurant;
-}
-
 export function devMockCreateReview(body: CreateReviewRequest): Review {
+  const user = devMockFindUserById(body.userId);
+  if (!user) {
+    throw new Error(`devMockCreateReview: user not found: ${body.userId}`);
+  }
+  const restaurant = devMockFindRestaurantById(body.restaurantId);
+  if (!restaurant) {
+    throw new Error(`devMockCreateReview: restaurant not found: ${body.restaurantId}`);
+  }
   const id = `mock-review-${reviewSeq++}`;
-  const user = mapEmbeddedUser(body.user);
-  const restaurant = mapEmbeddedRestaurant(body.restaurant);
   const review: Review = {
     id,
     user,

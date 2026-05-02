@@ -50,8 +50,8 @@ export interface ReviewNote {
 }
 
 export interface CreateReviewRequest {
-  user: CreateUserRequest;
-  restaurant: CreateRestaurantRequest;
+  userId: string;
+  restaurantId: string;
   note: ReviewNote;
   commentary?: string;
   images: string[];

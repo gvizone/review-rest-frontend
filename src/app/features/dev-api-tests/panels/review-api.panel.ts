@@ -27,23 +27,10 @@ export class ReviewApiPanel {
 
   queryId = '';
 
-  uName = 'Reviewer';
-  uEmail = 'reviewer@example.com';
-  uStreet = '';
-  uCity = 'São Paulo';
-  uState = 'SP';
-  uCountry = 'BR';
-  uZip = '';
-
-  rName = 'Sample Place';
-  rCategories = 'Cafe';
-  rStreet = '';
-  rCity = 'São Paulo';
-  rState = 'SP';
-  rCountry = 'BR';
-  rZip = '';
-  rInstagram = '';
-  rImages = '';
+  /** Use ids from GET /users (mock: e.g. mock-user-1). */
+  userId = '';
+  /** Use ids from GET /restaurants (mock: e.g. mock-restaurant-1). */
+  restaurantId = '';
 
   nService = 4;
   nFood = 4;
@@ -93,65 +80,19 @@ export class ReviewApiPanel {
   }
 
   create(): void {
-    const uName = this.uName.trim();
-    const uEmail = this.uEmail.trim();
-    const uCity = this.uCity.trim();
-    const uState = this.uState.trim();
-    const uCountry = this.uCountry.trim();
-    const rName = this.rName.trim();
-    const rCity = this.rCity.trim();
-    const rState = this.rState.trim();
-    const rCountry = this.rCountry.trim();
-    if (!uName || !uEmail || !uCity || !uState || !uCountry) {
-      this.responseText.set('User name, email, city, state, and country are required.');
+    const userId = this.userId.trim();
+    const restaurantId = this.restaurantId.trim();
+    if (!userId || !restaurantId) {
+      this.responseText.set('User id and restaurant id are required (copy from GET all).');
       return;
     }
-    if (!rName || !rCity || !rState || !rCountry) {
-      this.responseText.set('Restaurant name, city, state, and country are required.');
-      return;
-    }
-    const categories = this.rCategories
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .map((n) => ({ name: n }));
-    if (!categories.length) {
-      this.responseText.set('Add at least one restaurant category (comma-separated).');
-      return;
-    }
-    const rImgs = this.rImages
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean);
     const revImgs = this.images
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean);
     const body: CreateReviewRequest = {
-      user: {
-        name: uName,
-        email: uEmail,
-        address: {
-          city: uCity,
-          state: uState,
-          country: uCountry,
-          ...(this.uStreet.trim() ? { street: this.uStreet.trim() } : {}),
-          ...(this.uZip.trim() ? { zipCode: this.uZip.trim() } : {}),
-        },
-      },
-      restaurant: {
-        name: rName,
-        address: {
-          city: rCity,
-          state: rState,
-          country: rCountry,
-          ...(this.rStreet.trim() ? { street: this.rStreet.trim() } : {}),
-          ...(this.rZip.trim() ? { zipCode: this.rZip.trim() } : {}),
-        },
-        categories,
-        ...(this.rInstagram.trim() ? { instagram: this.rInstagram.trim() } : {}),
-        ...(rImgs.length ? { images: rImgs } : {}),
-      },
+      userId,
+      restaurantId,
       note: {
         service: clampNote(this.nService),
         food: clampNote(this.nFood),

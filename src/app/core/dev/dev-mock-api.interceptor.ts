@@ -122,8 +122,32 @@ function handleReviews(
 
   if (req.method === 'POST' && parts.length === 1) {
     const body = req.body as CreateReviewRequest;
-    const created = mock.devMockCreateReview(body);
-    return json(created, 201);
+    if (!body?.userId?.trim() || !body?.restaurantId?.trim()) {
+      return json(
+        { statusCode: 400, message: 'userId and restaurantId are required' },
+        400,
+      );
+    }
+    if (!mock.devMockFindUserById(body.userId.trim())) {
+      return json({ statusCode: 404, message: `User ${body.userId} not found` }, 404);
+    }
+    if (!mock.devMockFindRestaurantById(body.restaurantId.trim())) {
+      return json(
+        { statusCode: 404, message: `Restaurant ${body.restaurantId} not found` },
+        404,
+      );
+    }
+    try {
+      const created = mock.devMockCreateReview({
+        ...body,
+        userId: body.userId.trim(),
+        restaurantId: body.restaurantId.trim(),
+      });
+      return json(created, 201);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Create review failed';
+      return json({ statusCode: 500, message }, 500);
+    }
   }
 
   return null;

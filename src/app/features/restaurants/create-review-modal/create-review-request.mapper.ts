@@ -17,18 +17,8 @@ export function mapCreateReviewFormToRequest(
     .filter(Boolean);
 
   return {
-    user: {
-      name: user.name,
-      email: user.email,
-      address: { ...user.address },
-    },
-    restaurant: {
-      name: restaurant.name,
-      address: { ...restaurant.address },
-      categories: restaurant.categories.map((c) => ({ name: c.name })),
-      ...(restaurant.instagram?.trim() ? { instagram: restaurant.instagram.trim() } : {}),
-      ...(restaurant.images?.length ? { images: [...restaurant.images] } : {}),
-    },
+    userId: user.id,
+    restaurantId: restaurant.id,
     note: {
       service: clampNote(Number(value.service)),
       food: clampNote(Number(value.food)),

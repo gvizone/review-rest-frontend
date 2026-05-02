@@ -20,79 +20,25 @@
 
   <section class="card block">
     <h3>Create review</h3>
+    <p class="muted hint">
+      Paste existing <strong>user id</strong> and <strong>restaurant id</strong> from the Users and Restaurants panels (GET all).
+    </p>
 
     <div class="subsection">
-      <h4>User</h4>
+      <h4>Relations</h4>
       <div class="form-grid">
-        <label class="field">
-          <span class="field-label">Name</span>
-          <input name="uName" [(ngModel)]="uName" class="input" />
-        </label>
-        <label class="field">
-          <span class="field-label">Email</span>
-          <input name="uEmail" [(ngModel)]="uEmail" class="input" type="email" />
-        </label>
-        <label class="field">
-          <span class="field-label">Street</span>
-          <input name="uStreet" [(ngModel)]="uStreet" class="input" />
-        </label>
-        <label class="field">
-          <span class="field-label">City</span>
-          <input name="uCity" [(ngModel)]="uCity" class="input" />
-        </label>
-        <label class="field">
-          <span class="field-label">State</span>
-          <input name="uState" [(ngModel)]="uState" class="input" />
-        </label>
-        <label class="field">
-          <span class="field-label">Country</span>
-          <input name="uCountry" [(ngModel)]="uCountry" class="input" />
+        <label class="field full">
+          <span class="field-label">User id</span>
+          <input name="userId" [(ngModel)]="userId" class="input" placeholder="uuid or mock-user-1" />
         </label>
         <label class="field full">
-          <span class="field-label">ZIP</span>
-          <input name="uZip" [(ngModel)]="uZip" class="input" />
-        </label>
-      </div>
-    </div>
-
-    <div class="subsection">
-      <h4>Restaurant</h4>
-      <div class="form-grid">
-        <label class="field">
-          <span class="field-label">Name</span>
-          <input name="rName" [(ngModel)]="rName" class="input" />
-        </label>
-        <label class="field">
-          <span class="field-label">Categories (comma-separated)</span>
-          <input name="rCats" [(ngModel)]="rCategories" class="input" />
-        </label>
-        <label class="field">
-          <span class="field-label">Street</span>
-          <input name="rStreet" [(ngModel)]="rStreet" class="input" />
-        </label>
-        <label class="field">
-          <span class="field-label">City</span>
-          <input name="rCity" [(ngModel)]="rCity" class="input" />
-        </label>
-        <label class="field">
-          <span class="field-label">State</span>
-          <input name="rState" [(ngModel)]="rState" class="input" />
-        </label>
-        <label class="field">
-          <span class="field-label">Country</span>
-          <input name="rCountry" [(ngModel)]="rCountry" class="input" />
-        </label>
-        <label class="field">
-          <span class="field-label">ZIP</span>
-          <input name="rZip" [(ngModel)]="rZip" class="input" />
-        </label>
-        <label class="field">
-          <span class="field-label">Instagram URL</span>
-          <input name="rIg" [(ngModel)]="rInstagram" class="input" />
-        </label>
-        <label class="field full">
-          <span class="field-label">Restaurant image URLs (comma-separated)</span>
-          <input name="rImg" [(ngModel)]="rImages" class="input" />
+          <span class="field-label">Restaurant id</span>
+          <input
+            name="restaurantId"
+            [(ngModel)]="restaurantId"
+            class="input"
+            placeholder="uuid or mock-restaurant-1"
+          />
         </label>
       </div>
     </div>
