@@ -50,15 +50,37 @@
             placeholder="What stood out?"
           ></textarea>
         </label>
-        <label class="field">
-          <span class="field-label">Photo URLs</span>
+        <div class="field image-attach-block">
+          <span class="field-label">Photos (optional)</span>
           <input
-            class="input"
-            type="text"
-            formControlName="images"
-            placeholder="Comma-separated image links"
+            #reviewFileInput
+            type="file"
+            class="file-input-native"
+            accept="image/*"
+            multiple
+            (change)="onReviewPhotosSelected($event)"
           />
-        </label>
+          <button type="button" class="btn btn-ghost file-pick-btn" (click)="reviewFileInput.click()">
+            Add photos from device
+          </button>
+          @if (reviewImages().length) {
+            <ul class="image-thumb-list">
+              @for (src of reviewImages(); track $index) {
+                <li class="image-thumb-item">
+                  <img [src]="src" alt="" class="image-thumb" />
+                  <button
+                    type="button"
+                    class="btn-thumb-remove"
+                    (click)="removeReviewPhoto($index)"
+                    aria-label="Remove photo"
+                  >
+                    ×
+                  </button>
+                </li>
+              }
+            </ul>
+          }
+        </div>
         @if (submitError()) {
           <p class="form-error" role="alert">{{ submitError() }}</p>
         }

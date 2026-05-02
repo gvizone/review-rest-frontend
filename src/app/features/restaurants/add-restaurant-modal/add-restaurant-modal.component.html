@@ -115,15 +115,37 @@
             </label>
           </div>
           <div class="form-row">
-            <label class="field field--full">
-              <span class="field-label">Image URLs</span>
+            <div class="field field--full image-attach-block">
+              <span class="field-label">Photos</span>
               <input
-                class="input"
-                type="text"
-                formControlName="images"
-                placeholder="Comma-separated image links"
+                #restaurantFileInput
+                type="file"
+                class="file-input-native"
+                accept="image/*"
+                multiple
+                (change)="onRestaurantPhotosSelected($event)"
               />
-            </label>
+              <button type="button" class="btn btn-ghost file-pick-btn" (click)="restaurantFileInput.click()">
+                Add photos from device
+              </button>
+              @if (restaurantImages().length) {
+                <ul class="image-thumb-list">
+                  @for (src of restaurantImages(); track $index) {
+                    <li class="image-thumb-item">
+                      <img [src]="src" alt="" class="image-thumb" />
+                      <button
+                        type="button"
+                        class="btn-thumb-remove"
+                        (click)="removeRestaurantPhoto($index)"
+                        aria-label="Remove photo"
+                      >
+                        ×
+                      </button>
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
           </div>
         </div>
         @if (submitError()) {

@@ -5,7 +5,10 @@ export type MapAddRestaurantResult =
   | { ok: true; body: CreateRestaurantRequest }
   | { ok: false; message: string };
 
-export function mapAddRestaurantFormToRequest(value: AddRestaurantFormValue): MapAddRestaurantResult {
+export function mapAddRestaurantFormToRequest(
+  value: AddRestaurantFormValue,
+  imageDataUrls: string[],
+): MapAddRestaurantResult {
   const categoryNames = (value.categories ?? '')
     .split(',')
     .map((s) => s.trim())
@@ -13,11 +16,6 @@ export function mapAddRestaurantFormToRequest(value: AddRestaurantFormValue): Ma
   if (!categoryNames.length) {
     return { ok: false, message: 'Add at least one category (comma-separated).' };
   }
-
-  const imageUrls = (value.images ?? '')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean);
 
   const a = value.address;
   const body: CreateRestaurantRequest = {
@@ -31,7 +29,7 @@ export function mapAddRestaurantFormToRequest(value: AddRestaurantFormValue): Ma
     },
     categories: categoryNames.map((name) => ({ name })),
     ...((value.instagram ?? '').trim() ? { instagram: (value.instagram ?? '').trim() } : {}),
-    ...(imageUrls.length ? { images: imageUrls } : {}),
+    ...(imageDataUrls.length ? { images: [...imageDataUrls] } : {}),
   };
 
   return { ok: true, body };

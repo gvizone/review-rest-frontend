@@ -16,6 +16,7 @@ import { UserApiService } from '../../../core/api/user-api.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { LoginModalService } from '../../../core/auth/login-modal.service';
 import { RegisterModalService } from '../../../core/auth/register-modal.service';
+import { readFilesAsDataUrls } from '../../../core/util/image-file.util';
 
 @Component({
   standalone: true,
@@ -38,6 +39,8 @@ export class CreateReviewModalComponent {
 
   readonly form = buildCreateReviewForm(this.fb);
 
+  readonly reviewImages = signal<string[]>([]);
+
   readonly ratingLabels = [
     { key: 'food' as const, label: 'Food' },
     { key: 'service' as const, label: 'Service' },
@@ -53,7 +56,25 @@ export class CreateReviewModalComponent {
 
   dismiss(): void {
     this.submitError.set(null);
+    this.reviewImages.set([]);
     this.modal.close();
+  }
+
+  async onReviewPhotosSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    input.value = '';
+    if (!files?.length) return;
+    try {
+      const urls = await readFilesAsDataUrls(files);
+      this.reviewImages.update((prev) => [...prev, ...urls]);
+    } catch (e) {
+      this.submitError.set(e instanceof Error ? e.message : 'Could not read images.');
+    }
+  }
+
+  removeReviewPhoto(index: number): void {
+    this.reviewImages.update((prev) => prev.filter((_, i) => i !== index));
   }
 
   openRegisterModal(): void {
@@ -95,6 +116,7 @@ export class CreateReviewModalComponent {
             this.form.getRawValue() as CreateReviewFormValue,
             user,
             restaurant,
+            this.reviewImages(),
           );
           return this.reviewsApi.create(body).pipe(
             take(1),
@@ -109,6 +131,7 @@ export class CreateReviewModalComponent {
       .subscribe((created) => {
         if (!created) return;
         this.form.reset(emptyCreateReviewFormValue());
+        this.reviewImages.set([]);
         this.modal.reviewCreated.next(created);
         this.modal.close();
       });

@@ -5,6 +5,7 @@ import { finalize } from 'rxjs';
 import { UserApiService } from '../../../core/api/user-api.service';
 import type { CreateUserRequest } from '../../../core/api/api.models';
 import { formatHttpError } from '../format-http-error';
+import { readFileAsDataUrl } from '../../../core/util/image-file.util';
 
 @Component({
   standalone: true,
@@ -28,6 +29,8 @@ export class UserApiPanel {
   createCountry = 'BR';
   createStreet = '';
   createZip = '';
+
+  profileImageDataUrl: string | null = null;
 
   private setBusy(): void {
     this.loading.set(true);
@@ -69,6 +72,23 @@ export class UserApiPanel {
       });
   }
 
+  async onProfilePhotoChange(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+    try {
+      this.profileImageDataUrl = await readFileAsDataUrl(file);
+      this.responseText.set('');
+    } catch (e) {
+      this.responseText.set(e instanceof Error ? e.message : 'Invalid image');
+    }
+  }
+
+  clearProfilePhoto(): void {
+    this.profileImageDataUrl = null;
+  }
+
   create(): void {
     const name = this.createName.trim();
     const email = this.createEmail.trim();
@@ -89,6 +109,7 @@ export class UserApiPanel {
         ...(this.createStreet.trim() ? { street: this.createStreet.trim() } : {}),
         ...(this.createZip.trim() ? { zipCode: this.createZip.trim() } : {}),
       },
+      ...(this.profileImageDataUrl ? { image: this.profileImageDataUrl } : {}),
     };
     this.setBusy();
     this.api

@@ -73,9 +73,12 @@
           <input name="comm" [(ngModel)]="commentary" class="input" />
         </label>
         <label class="field full">
-          <span class="field-label">Review image URLs (comma-separated)</span>
-          <input name="imgs" [(ngModel)]="images" class="input" />
+          <span class="field-label">Photos (optional, multiple)</span>
+          <input name="imgs" type="file" accept="image/*" multiple class="input" (change)="onReviewPhotosChange($event)" />
         </label>
+        @if (reviewImageDataUrls.length) {
+          <p class="muted">{{ reviewImageDataUrls.length }} image(s). <button type="button" class="btn" (click)="clearReviewPhotos()">Clear</button></p>
+        }
       </div>
     </div>
 

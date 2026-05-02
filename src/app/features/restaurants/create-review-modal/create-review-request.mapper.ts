@@ -10,12 +10,8 @@ export function mapCreateReviewFormToRequest(
   value: CreateReviewFormValue,
   user: User,
   restaurant: Restaurant,
+  imageDataUrls: string[],
 ): CreateReviewRequest {
-  const imageUrls = (value.images ?? '')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean);
-
   return {
     userId: user.id,
     restaurantId: restaurant.id,
@@ -25,7 +21,7 @@ export function mapCreateReviewFormToRequest(
       value: clampNote(Number(value.value)),
       atmosphere: clampNote(Number(value.atmosphere)),
     },
-    images: imageUrls,
+    images: [...imageDataUrls],
     ...(value.commentary?.trim() ? { commentary: value.commentary.trim() } : {}),
   };
 }

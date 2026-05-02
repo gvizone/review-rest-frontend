@@ -49,6 +49,22 @@
         <span class="field-label">ZIP</span>
         <input name="uZip" [(ngModel)]="createZip" class="input" />
       </label>
+      <label class="field full">
+        <span class="field-label">Profile photo (optional)</span>
+        <input
+          name="uPhoto"
+          type="file"
+          accept="image/*"
+          class="input"
+          (change)="onProfilePhotoChange($event)"
+        />
+      </label>
+      @if (profileImageDataUrl) {
+        <p class="muted">
+          Image selected.
+          <button type="button" class="btn" (click)="clearProfilePhoto()">Clear</button>
+        </p>
+      }
     </div>
     <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="create()">
       POST create

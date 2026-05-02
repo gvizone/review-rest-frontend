@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 import { RegisterModalService } from './register-modal.service';
 import { UserApiService } from '../api/user-api.service';
 import { LocationDataService } from '../location/location-data.service';
+import { readFileAsDataUrl } from '../util/image-file.util';
 
 @Component({
   standalone: true,
@@ -43,6 +44,9 @@ export class RegisterModalComponent {
 
   submitting = false;
   errorMessage: string | null = null;
+
+  /** Single profile photo as data URL (optional). */
+  profileImageDataUrl: string | null = null;
 
   constructor() {
     effect(() => {
@@ -108,6 +112,23 @@ export class RegisterModalComponent {
     }
   }
 
+  async onProfilePhotoSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+    try {
+      this.profileImageDataUrl = await readFileAsDataUrl(file);
+      this.errorMessage = null;
+    } catch (e) {
+      this.errorMessage = e instanceof Error ? e.message : 'Could not read image.';
+    }
+  }
+
+  clearProfilePhoto(): void {
+    this.profileImageDataUrl = null;
+  }
+
   submit(): void {
     this.errorMessage = null;
     this.form.markAllAsTouched();
@@ -140,6 +161,7 @@ export class RegisterModalComponent {
           state: (a.state ?? '').trim(),
           country: (a.country ?? '').trim(),
         },
+        ...(this.profileImageDataUrl ? { image: this.profileImageDataUrl } : {}),
       })
       .pipe(
         take(1),
@@ -149,6 +171,7 @@ export class RegisterModalComponent {
       )
       .subscribe({
         next: () => {
+          this.profileImageDataUrl = null;
           this.registerModal.closeAfterSuccessfulRegistration();
           void this.router.navigateByUrl('/home');
         },

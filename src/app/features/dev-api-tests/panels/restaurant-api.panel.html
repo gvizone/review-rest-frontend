@@ -71,8 +71,11 @@
         <input name="cIg" [(ngModel)]="createInstagram" class="input" />
       </label>
       <label class="field full">
-        <span class="field-label">Image URLs (comma-separated)</span>
-        <input name="cImg" [(ngModel)]="createImages" class="input" />
+        <span class="field-label">Photos (optional, multiple)</span>
+        <input name="cImg" type="file" accept="image/*" multiple class="input" (change)="onCreatePhotosChange($event)" />
+        @if (createImageDataUrls.length) {
+          <p class="muted">{{ createImageDataUrls.length }} image(s). <button type="button" class="btn" (click)="clearCreatePhotos()">Clear</button></p>
+        }
       </label>
     </div>
     <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="create()">

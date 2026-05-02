@@ -62,6 +62,7 @@ export function devMockCreateUser(body: CreateUserRequest): User {
     name: body.name,
     email: body.email,
     address: { ...body.address },
+    ...(body.image?.trim() ? { image: body.image.trim() } : {}),
   };
   usersById.set(id, user);
   usersByEmail.set(body.email.toLowerCase(), user);

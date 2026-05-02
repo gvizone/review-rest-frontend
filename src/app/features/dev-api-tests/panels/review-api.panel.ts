@@ -5,6 +5,7 @@ import { finalize } from 'rxjs';
 import { ReviewApiService } from '../../../core/api/review-api.service';
 import type { CreateReviewRequest } from '../../../core/api/api.models';
 import { formatHttpError } from '../format-http-error';
+import { readFilesAsDataUrls } from '../../../core/util/image-file.util';
 
 function clampNote(n: number | string): number {
   const v = typeof n === 'string' ? Number(n) : n;
@@ -37,7 +38,8 @@ export class ReviewApiPanel {
   nValue = 3;
   nAtmosphere = 4;
   commentary = 'Great spot.';
-  images = '';
+
+  reviewImageDataUrls: string[] = [];
 
   private setBusy(): void {
     this.loading.set(true);
@@ -79,6 +81,24 @@ export class ReviewApiPanel {
       });
   }
 
+  async onReviewPhotosChange(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    input.value = '';
+    if (!files?.length) return;
+    try {
+      const urls = await readFilesAsDataUrls(files);
+      this.reviewImageDataUrls = [...this.reviewImageDataUrls, ...urls];
+      this.responseText.set('');
+    } catch (e) {
+      this.responseText.set(e instanceof Error ? e.message : 'Invalid image');
+    }
+  }
+
+  clearReviewPhotos(): void {
+    this.reviewImageDataUrls = [];
+  }
+
   create(): void {
     const userId = this.userId.trim();
     const restaurantId = this.restaurantId.trim();
@@ -86,10 +106,6 @@ export class ReviewApiPanel {
       this.responseText.set('User id and restaurant id are required (copy from GET all).');
       return;
     }
-    const revImgs = this.images
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean);
     const body: CreateReviewRequest = {
       userId,
       restaurantId,
@@ -99,7 +115,7 @@ export class ReviewApiPanel {
         value: clampNote(this.nValue),
         atmosphere: clampNote(this.nAtmosphere),
       },
-      images: revImgs,
+      images: [...this.reviewImageDataUrls],
       ...(this.commentary.trim() ? { commentary: this.commentary.trim() } : {}),
     };
     this.setBusy();

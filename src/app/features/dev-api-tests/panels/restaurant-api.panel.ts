@@ -5,6 +5,7 @@ import { finalize } from 'rxjs';
 import { RestaurantApiService } from '../../../core/api/restaurant-api.service';
 import type { CreateRestaurantRequest } from '../../../core/api/api.models';
 import { formatHttpError } from '../format-http-error';
+import { readFilesAsDataUrls } from '../../../core/util/image-file.util';
 
 @Component({
   standalone: true,
@@ -30,7 +31,8 @@ export class RestaurantApiPanel {
   createZip = '';
   createCategories = 'Italian, Pizza';
   createInstagram = '';
-  createImages = '';
+
+  createImageDataUrls: string[] = [];
 
   private setBusy(): void {
     this.loading.set(true);
@@ -99,6 +101,24 @@ export class RestaurantApiPanel {
       });
   }
 
+  async onCreatePhotosChange(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    input.value = '';
+    if (!files?.length) return;
+    try {
+      const urls = await readFilesAsDataUrls(files);
+      this.createImageDataUrls = [...this.createImageDataUrls, ...urls];
+      this.responseText.set('');
+    } catch (e) {
+      this.responseText.set(e instanceof Error ? e.message : 'Invalid image');
+    }
+  }
+
+  clearCreatePhotos(): void {
+    this.createImageDataUrls = [];
+  }
+
   create(): void {
     const name = this.createName.trim();
     if (!name) {
@@ -121,10 +141,6 @@ export class RestaurantApiPanel {
       this.responseText.set('Add at least one category (comma-separated).');
       return;
     }
-    const images = this.createImages
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean);
     const body: CreateRestaurantRequest = {
       name,
       address: {
@@ -136,7 +152,7 @@ export class RestaurantApiPanel {
       },
       categories,
       ...(this.createInstagram.trim() ? { instagram: this.createInstagram.trim() } : {}),
-      ...(images.length ? { images } : {}),
+      ...(this.createImageDataUrls.length ? { images: [...this.createImageDataUrls] } : {}),
     };
     this.setBusy();
     this.api

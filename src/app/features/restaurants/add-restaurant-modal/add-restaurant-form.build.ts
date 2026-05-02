@@ -12,7 +12,6 @@ export interface AddRestaurantFormValue {
   street: string;
   zipCode: string;
   instagram: string;
-  images: string;
 }
 
 export function buildAddRestaurantForm(fb: FormBuilder): FormGroup {
@@ -27,7 +26,6 @@ export function buildAddRestaurantForm(fb: FormBuilder): FormGroup {
     street: ['', [Validators.required, Validators.minLength(2)]],
     zipCode: [''],
     instagram: [''],
-    images: [''],
   });
 }
 
@@ -39,6 +37,5 @@ export function emptyAddRestaurantFormValue(): AddRestaurantFormValue {
     street: '',
     zipCode: '',
     instagram: '',
-    images: '',
   };
 }

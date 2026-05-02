@@ -16,6 +16,7 @@ import { LoginModalService } from '../../../core/auth/login-modal.service';
 import { httpErrorUserMessage } from '../../../core/api/http-error-user-message';
 import { RestaurantApiService } from '../../../core/api/restaurant-api.service';
 import { AddressFormCascadeService } from '../../../core/location/address-form-cascade.service';
+import { readFilesAsDataUrls } from '../../../core/util/image-file.util';
 
 @Component({
   standalone: true,
@@ -40,6 +41,9 @@ export class AddRestaurantModalComponent {
   readonly states = signal<IState[]>([]);
   readonly cities = signal<ICity[]>([]);
 
+  /** Data URLs from device photos (stored as base64 on API). */
+  readonly restaurantImages = signal<string[]>([]);
+
   readonly form = buildAddRestaurantForm(this.fb);
 
   constructor() {
@@ -59,7 +63,25 @@ export class AddRestaurantModalComponent {
 
   dismiss(): void {
     this.submitError.set(null);
+    this.restaurantImages.set([]);
     this.modal.close();
+  }
+
+  async onRestaurantPhotosSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    input.value = '';
+    if (!files?.length) return;
+    try {
+      const urls = await readFilesAsDataUrls(files);
+      this.restaurantImages.update((prev) => [...prev, ...urls]);
+    } catch (e) {
+      this.submitError.set(e instanceof Error ? e.message : 'Could not read images.');
+    }
+  }
+
+  removeRestaurantPhoto(index: number): void {
+    this.restaurantImages.update((prev) => prev.filter((_, i) => i !== index));
   }
 
   submit(): void {
@@ -74,7 +96,10 @@ export class AddRestaurantModalComponent {
       return;
     }
 
-    const mapped = mapAddRestaurantFormToRequest(this.form.getRawValue() as AddRestaurantFormValue);
+    const mapped = mapAddRestaurantFormToRequest(
+      this.form.getRawValue() as AddRestaurantFormValue,
+      this.restaurantImages(),
+    );
     if (!mapped.ok) {
       this.submitError.set(mapped.message);
       return;
@@ -94,6 +119,7 @@ export class AddRestaurantModalComponent {
       .subscribe((created) => {
         if (!created) return;
         this.form.reset(emptyAddRestaurantFormValue());
+        this.restaurantImages.set([]);
         this.states.set([]);
         this.cities.set([]);
         this.modal.restaurantCreated.next(created);

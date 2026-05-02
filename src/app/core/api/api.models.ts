@@ -33,6 +33,8 @@ export interface CreateUserRequest {
   name: string;
   email: string;
   address: Address;
+  /** Data URL or base64 from uploaded image (optional). */
+  image?: string;
 }
 
 export interface User {
@@ -40,6 +42,7 @@ export interface User {
   name: string;
   email: string;
   address: Address;
+  image?: string;
 }
 
 export interface ReviewNote {

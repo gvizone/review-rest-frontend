@@ -6,7 +6,6 @@ export interface CreateReviewFormValue {
   value: number;
   atmosphere: number;
   commentary: string;
-  images: string;
 }
 
 export function buildCreateReviewForm(fb: FormBuilder): FormGroup {
@@ -20,7 +19,6 @@ export function buildCreateReviewForm(fb: FormBuilder): FormGroup {
     value: score(),
     atmosphere: score(),
     commentary: [''],
-    images: [''],
   });
 }
 
@@ -31,6 +29,5 @@ export function emptyCreateReviewFormValue(): CreateReviewFormValue {
     value: 4,
     atmosphere: 4,
     commentary: '',
-    images: '',
   };
 }

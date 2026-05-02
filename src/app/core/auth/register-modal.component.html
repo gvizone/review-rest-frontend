@@ -36,6 +36,27 @@
             <span class="field-label">Email</span>
             <input class="input" type="email" formControlName="email" autocomplete="email" />
           </label>
+          <div class="field image-attach-block">
+            <span class="field-label">Profile photo (optional)</span>
+            <input
+              #profilePhotoInput
+              type="file"
+              class="file-input-native"
+              accept="image/*"
+              (change)="onProfilePhotoSelected($event)"
+            />
+            <button type="button" class="btn btn-ghost file-pick-btn" (click)="profilePhotoInput.click()">
+              Choose image
+            </button>
+            @if (profileImageDataUrl) {
+              <div class="profile-photo-preview">
+                <img [src]="profileImageDataUrl" alt="" class="profile-photo-img" />
+                <button type="button" class="btn-thumb-remove" (click)="clearProfilePhoto()" aria-label="Remove photo">
+                  ×
+                </button>
+              </div>
+            }
+          </div>
         </fieldset>
 
         <fieldset class="fieldset" formGroupName="address">
