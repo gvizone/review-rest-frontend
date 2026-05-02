@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { isDevMode } from '@angular/core';
 import { DevHarnessService } from './dev-harness.service';
 
-/** Mock mode toggle — only shown on the login page (dev builds). */
+/** Mock mode toggle — shown inside the sign-in modal (dev builds). */
 @Component({
   standalone: true,
   selector: 'app-dev-mock-login-panel',

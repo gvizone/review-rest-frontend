@@ -1,0 +1,39 @@
+@if (loginModal.isOpen()) {
+  <div
+    class="login-modal-overlay"
+    role="presentation"
+    (click)="onBackdropClick($event)"
+  >
+    <div
+      class="login-modal-dialog card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="login-modal-title"
+      (click)="$event.stopPropagation()"
+    >
+      <button
+        class="btn-close"
+        type="button"
+        (click)="loginModal.close()"
+        aria-label="Close"
+      >
+        ×
+      </button>
+      <div class="header">
+        <div class="brand">Review Restaurant</div>
+        <h1 id="login-modal-title">Sign in</h1>
+        <p class="sub">Use your account to continue.</p>
+      </div>
+
+      <button class="btn btn-primary" type="button" (click)="signInWithGoogle()">
+        Continue with Google
+      </button>
+
+      <div class="hint">
+        More providers can be added later without changing the UI structure.
+      </div>
+
+      <app-dev-mock-login-panel />
+    </div>
+  </div>
+}

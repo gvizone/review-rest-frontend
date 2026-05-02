@@ -21,48 +21,110 @@
         Fields marked * are required. Categories: comma-separated (e.g. Italian, Pizza).
       </p>
       <form [formGroup]="form" (ngSubmit)="submit()">
-        <div class="form-grid">
-          <label class="field">
-            <span class="field-label">Name *</span>
-            <input class="input" type="text" formControlName="name" />
-          </label>
-          <label class="field">
-            <span class="field-label">Categories *</span>
-            <input class="input" type="text" formControlName="categories" placeholder="Italian, Pizza" />
-          </label>
-          <label class="field full">
-            <span class="field-label">Street</span>
-            <input class="input" type="text" formControlName="street" />
-          </label>
-          <label class="field">
-            <span class="field-label">City *</span>
-            <input class="input" type="text" formControlName="city" />
-          </label>
-          <label class="field">
-            <span class="field-label">State *</span>
-            <input class="input" type="text" formControlName="state" />
-          </label>
-          <label class="field">
-            <span class="field-label">Country *</span>
-            <input class="input" type="text" formControlName="country" />
-          </label>
-          <label class="field">
-            <span class="field-label">Postal code</span>
-            <input class="input" type="text" formControlName="zipCode" />
-          </label>
-          <label class="field full">
-            <span class="field-label">Instagram URL</span>
-            <input class="input" type="url" formControlName="instagram" placeholder="https://..." />
-          </label>
-          <label class="field full">
-            <span class="field-label">Image URLs</span>
-            <input
-              class="input"
-              type="text"
-              formControlName="images"
-              placeholder="Comma-separated image links"
-            />
-          </label>
+        <div class="form-stack">
+          <div class="form-row form-row--pair">
+            <label class="field">
+              <span class="field-label">Name *</span>
+              <input class="input" type="text" formControlName="name" autocomplete="organization" />
+            </label>
+            <label class="field">
+              <span class="field-label">Categories *</span>
+              <input
+                class="input"
+                type="text"
+                formControlName="categories"
+                placeholder="Italian, Pizza"
+              />
+            </label>
+          </div>
+
+          <div class="location-block" formGroupName="address">
+            <span class="field-label location-legend">Location *</span>
+            <div class="form-row form-row--pair">
+              <label class="field">
+                <span class="field-label">Country</span>
+                <select
+                  class="input select"
+                  formControlName="country"
+                  autocomplete="country"
+                  [class.input-invalid]="
+                    form.controls['address'].get('country')?.invalid &&
+                    form.controls['address'].get('country')?.touched
+                  "
+                >
+                  <option value="">Select country</option>
+                  @for (c of countries(); track c.iso2) {
+                    <option [value]="c.name">{{ c.name }}</option>
+                  }
+                </select>
+              </label>
+              <label class="field">
+                <span class="field-label">State / region</span>
+                <select
+                  class="input select"
+                  formControlName="state"
+                  autocomplete="address-level1"
+                  [class.input-invalid]="
+                    form.controls['address'].get('state')?.invalid &&
+                    form.controls['address'].get('state')?.touched
+                  "
+                >
+                  <option value="">Select state / region</option>
+                  @for (s of states(); track s.id) {
+                    <option [value]="s.name">{{ s.name }}</option>
+                  }
+                </select>
+              </label>
+            </div>
+            <div class="form-row">
+              <label class="field field--full">
+                <span class="field-label">City</span>
+                <select
+                  class="input select"
+                  formControlName="city"
+                  autocomplete="address-level2"
+                  [class.input-invalid]="
+                    form.controls['address'].get('city')?.invalid &&
+                    form.controls['address'].get('city')?.touched
+                  "
+                >
+                  <option value="">Select city</option>
+                  @for (city of cities(); track city.id) {
+                    <option [value]="city.name">{{ city.name }}</option>
+                  }
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row form-row--pair">
+            <label class="field">
+              <span class="field-label">Street *</span>
+              <input class="input" type="text" formControlName="street" autocomplete="street-address" />
+            </label>
+            <label class="field">
+              <span class="field-label">Postal code</span>
+              <input class="input" type="text" formControlName="zipCode" autocomplete="postal-code" />
+            </label>
+          </div>
+
+          <div class="form-row">
+            <label class="field field--full">
+              <span class="field-label">Instagram URL</span>
+              <input class="input" type="url" formControlName="instagram" placeholder="https://..." />
+            </label>
+          </div>
+          <div class="form-row">
+            <label class="field field--full">
+              <span class="field-label">Image URLs</span>
+              <input
+                class="input"
+                type="text"
+                formControlName="images"
+                placeholder="Comma-separated image links"
+              />
+            </label>
+          </div>
         </div>
         @if (submitError()) {
           <p class="form-error" role="alert">{{ submitError() }}</p>

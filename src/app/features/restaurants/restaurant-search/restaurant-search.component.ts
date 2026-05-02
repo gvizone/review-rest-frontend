@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { of } from 'rxjs';
-import { catchError, finalize, take } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, finalize, take } from 'rxjs/operators';
 import { AuthService } from '../../../core/auth/auth.service';
+import { httpErrorUserMessage } from '../../../core/api/http-error-user-message';
 import { RestaurantApiService } from '../../../core/api/restaurant-api.service';
 import type { Restaurant } from '../../../core/api/api.models';
 import { AddRestaurantModalService } from '../add-restaurant-modal/add-restaurant-modal.service';
@@ -47,7 +47,13 @@ export class RestaurantSearchComponent {
   });
 
   constructor() {
-    this.loadRestaurants();
+    this.auth.user$
+      .pipe(
+        distinctUntilChanged((a, b) => (a?.uid ?? '') === (b?.uid ?? '')),
+        takeUntilDestroyed(),
+      )
+      .subscribe(() => this.loadRestaurants());
+
     this.addRestaurantModal.restaurantCreated
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.loadRestaurants());
@@ -69,7 +75,7 @@ export class RestaurantSearchComponent {
       .pipe(
         take(1),
         catchError((err: unknown) => {
-          this.listError.set(this.formatHttpError(err));
+          this.listError.set(httpErrorUserMessage(err));
           return of([] as Restaurant[]);
         }),
         finalize(() => this.listLoading.set(false)),
@@ -83,15 +89,4 @@ export class RestaurantSearchComponent {
     return parts.join(', ');
   }
 
-  private formatHttpError(err: unknown): string {
-    if (err instanceof HttpErrorResponse) {
-      if (typeof err.error === 'object' && err.error && 'message' in err.error) {
-        const msg = (err.error as { message?: unknown }).message;
-        if (typeof msg === 'string') return msg;
-        if (Array.isArray(msg)) return msg.join(', ');
-      }
-      return err.message || `Request failed (${err.status})`;
-    }
-    return 'Something went wrong.';
-  }
 }
