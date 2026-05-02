@@ -42,10 +42,10 @@
   cursor: pointer;
   padding: 0 4px;
   margin: -4px 0 0;
-}
 
-.btn-close:hover {
-  color: var(--text);
+  &:hover {
+    color: var(--text);
+  }
 }
 
 .modal-intro {
@@ -67,22 +67,24 @@
   flex-wrap: wrap;
   gap: 14px 16px;
   align-items: flex-start;
-}
 
-.form-row--pair .field {
-  flex: 1 1 240px;
-  min-width: min(100%, 200px);
+  &--pair {
+    .field {
+      flex: 1 1 240px;
+      min-width: min(100%, 200px);
+    }
+  }
 }
 
 .field {
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
 
-.field--full {
-  flex: 1 1 100%;
-  min-width: 0;
+  &--full {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
 }
 
 .field-label {
@@ -101,11 +103,11 @@
   font: inherit;
   width: 100%;
   box-sizing: border-box;
-}
 
-.input:focus {
-  outline: 2px solid color-mix(in oklab, var(--primary) 55%, transparent);
-  outline-offset: 1px;
+  &:focus {
+    outline: 2px solid color-mix(in oklab, var(--primary) 55%, transparent);
+    outline-offset: 1px;
+  }
 }
 
 .select {
@@ -138,14 +140,11 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 10px;
-}
 
-.modal-actions .btn-ghost {
-  width: auto;
-}
-
-.modal-actions .btn-primary {
-  width: auto;
+  .btn-ghost,
+  .btn-primary {
+    width: auto;
+  }
 }
 
 .file-input-native {
@@ -156,9 +155,11 @@
   pointer-events: none;
 }
 
-.image-attach-block .file-pick-btn {
-  width: auto;
-  margin-top: 4px;
+.image-attach-block {
+  .file-pick-btn {
+    width: auto;
+    margin-top: 4px;
+  }
 }
 
 .image-thumb-list {

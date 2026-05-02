@@ -43,10 +43,10 @@
   cursor: pointer;
   padding: 0 4px;
   margin: -4px 0 0;
-}
 
-.btn-close:hover {
-  color: var(--text);
+  &:hover {
+    color: var(--text);
+  }
 }
 
 .modal-intro {
@@ -86,6 +86,15 @@ button.intro-link-btn {
   grid-template-columns: 92px 1fr 28px;
   align-items: center;
   gap: 10px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 6px;
+
+    .rating-value {
+      text-align: left;
+    }
+  }
 }
 
 .rating-label {
@@ -130,16 +139,16 @@ button.intro-link-btn {
   font: inherit;
   width: 100%;
   box-sizing: border-box;
+
+  &:focus {
+    outline: 2px solid color-mix(in oklab, var(--primary) 55%, transparent);
+    outline-offset: 1px;
+  }
 }
 
 .textarea {
   resize: vertical;
   min-height: 96px;
-}
-
-.input:focus {
-  outline: 2px solid color-mix(in oklab, var(--primary) 55%, transparent);
-  outline-offset: 1px;
 }
 
 .form-error {
@@ -153,11 +162,11 @@ button.intro-link-btn {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 10px;
-}
 
-.modal-actions .btn-ghost,
-.modal-actions .btn-primary {
-  width: auto;
+  .btn-ghost,
+  .btn-primary {
+    width: auto;
+  }
 }
 
 .file-input-native {
@@ -168,9 +177,11 @@ button.intro-link-btn {
   pointer-events: none;
 }
 
-.image-attach-block .file-pick-btn {
-  width: auto;
-  margin-top: 4px;
+.image-attach-block {
+  .file-pick-btn {
+    width: auto;
+    margin-top: 4px;
+  }
 }
 
 .image-thumb-list {
@@ -216,15 +227,4 @@ button.intro-link-btn {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
-}
-
-@media (max-width: 480px) {
-  .rating-row {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-
-  .rating-value {
-    text-align: left;
-  }
 }

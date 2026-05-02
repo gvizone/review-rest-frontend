@@ -32,10 +32,10 @@
   line-height: 1;
   cursor: pointer;
   padding: 4px 8px;
-}
 
-.btn-close:hover {
-  color: var(--text);
+  &:hover {
+    color: var(--text);
+  }
 }
 
 .card {
@@ -47,24 +47,24 @@
 .header {
   margin-bottom: 18px;
   padding-right: 28px;
-}
 
-.brand {
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
+  .brand {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
 
-h1 {
-  margin: 0 0 6px 0;
-  font-size: 22px;
-}
+  h1 {
+    margin: 0 0 6px 0;
+    font-size: 22px;
+  }
 
-.sub {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
+  .sub {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
 }
 
 .fieldset {
@@ -103,16 +103,16 @@ h1 {
   font: inherit;
   width: 100%;
   box-sizing: border-box;
-}
 
-.input:focus {
-  outline: 2px solid color-mix(in oklab, var(--primary) 55%, transparent);
-  outline-offset: 1px;
-}
+  &:focus {
+    outline: 2px solid color-mix(in oklab, var(--primary) 55%, transparent);
+    outline-offset: 1px;
+  }
 
-.input:disabled {
-  opacity: 0.72;
-  cursor: not-allowed;
+  &:disabled {
+    opacity: 0.72;
+    cursor: not-allowed;
+  }
 }
 
 .select {
@@ -131,11 +131,11 @@ h1 {
 
 .btn {
   margin-top: 4px;
-}
 
-.btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
 }
 
 .file-input-native {
@@ -146,9 +146,11 @@ h1 {
   pointer-events: none;
 }
 
-.image-attach-block .file-pick-btn {
-  width: auto;
-  margin-top: 4px;
+.image-attach-block {
+  .file-pick-btn {
+    width: auto;
+    margin-top: 4px;
+  }
 }
 
 .profile-photo-preview {

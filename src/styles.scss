@@ -1,6 +1,5 @@
 :root,
 [data-theme='brand'] {
-
   --palette-1: #dd6e42;
   --palette-2: #4f6d7a;
   --palette-3: #c0d6df;
@@ -35,9 +34,9 @@
 /* Alternate theme (your previous one) */
 [data-theme='classic-dark'] {
   --palette-1: #924032;
-  --palette-2: #FFE8D4;
-  --palette-3: #F28A03;
-  --palette-4: #F27405;
+  --palette-2: #ffe8d4;
+  --palette-3: #f28a03;
+  --palette-4: #f27405;
   --palette-5: #591902;
 
   color-scheme: dark;
@@ -51,7 +50,7 @@
   --border: color-mix(in oklab, rgb(0, 0, 0) 18%, var(--surface));
   --text: rgba(85, 85, 85, 0.96);
   --muted: rgba(75, 75, 75, 0.65);
-  --primary-contrast: var;
+  --primary-contrast: var(--palette-2);
 }
 
 html,
@@ -76,27 +75,27 @@ body {
   font-weight: 600;
   cursor: pointer;
   width: 100%;
-}
 
-.btn:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-}
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
 
-.btn:active {
-  transform: translateY(1px);
-}
+  &:active {
+    transform: translateY(1px);
+  }
 
-.btn-primary {
-  background: var(--primary);
-  border-color: rgba(255, 255, 255, 0.06);
-  color: var(--primary-contrast);
-}
+  &-primary {
+    background: var(--primary);
+    border-color: rgba(255, 255, 255, 0.06);
+    color: var(--primary-contrast);
 
-.btn-primary:hover {
-  filter: brightness(1.05);
-}
+    &:hover {
+      filter: brightness(1.05);
+    }
+  }
 
-.btn-ghost {
-  width: auto;
-  padding: 8px 10px;
+  &-ghost {
+    width: auto;
+    padding: 8px 10px;
+  }
 }

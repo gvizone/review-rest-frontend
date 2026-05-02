@@ -4,25 +4,27 @@
   gap: 16px;
 }
 
-.block h3 {
-  margin: 0 0 12px 0;
-  font-size: 15px;
-  font-weight: 600;
-}
+.block {
+  h3 {
+    margin: 0 0 12px 0;
+    font-size: 15px;
+    font-weight: 600;
+  }
 
-.block h4 {
-  margin: 0 0 10px 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--muted);
+  h4 {
+    margin: 0 0 10px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
 }
 
 .subsection {
   margin-bottom: 16px;
-}
 
-.subsection:last-child {
-  margin-bottom: 0;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .actions {
@@ -30,11 +32,11 @@
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 14px;
-}
 
-.actions .btn {
-  width: auto;
-  min-width: min(140px, 100%);
+  .btn {
+    width: auto;
+    min-width: min(140px, 100%);
+  }
 }
 
 .field-row {
@@ -42,22 +44,20 @@
   flex-direction: column;
   gap: 10px;
   margin-bottom: 12px;
-}
 
-@media (min-width: 560px) {
-  .field-row {
+  @media (min-width: 560px) {
     flex-direction: row;
     align-items: flex-end;
-  }
 
-  .field-row .field {
-    flex: 1;
-    min-width: 0;
-  }
+    .field {
+      flex: 1;
+      min-width: 0;
+    }
 
-  .field-row .btn {
-    width: auto;
-    flex-shrink: 0;
+    .btn {
+      width: auto;
+      flex-shrink: 0;
+    }
   }
 }
 
@@ -82,11 +82,11 @@
   background: var(--bg);
   color: var(--text);
   font: inherit;
-}
 
-.input:focus {
-  outline: 2px solid color-mix(in oklab, var(--primary) 55%, transparent);
-  outline-offset: 1px;
+  &:focus {
+    outline: 2px solid color-mix(in oklab, var(--primary) 55%, transparent);
+    outline-offset: 1px;
+  }
 }
 
 .form-grid {
@@ -94,6 +94,16 @@
   gap: 12px;
   grid-template-columns: 1fr;
   margin-bottom: 14px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.full {
+  @media (min-width: 640px) {
+    grid-column: 1 / -1;
+  }
 }
 
 .notes-grid {
@@ -101,24 +111,16 @@
   gap: 12px;
   grid-template-columns: repeat(2, 1fr);
   margin-bottom: 14px;
-}
 
-@media (min-width: 640px) {
-  .form-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .full {
-    grid-column: 1 / -1;
-  }
-
-  .notes-grid {
+  @media (min-width: 640px) {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
-.response-card .btn-primary {
-  width: auto;
+.response-card {
+  .btn-primary {
+    width: auto;
+  }
 }
 
 .response {

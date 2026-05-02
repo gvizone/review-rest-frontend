@@ -12,13 +12,13 @@
   font-size: 13px;
   color: var(--muted);
   user-select: none;
-}
 
-.row input {
-  margin-top: 2px;
-  accent-color: var(--primary);
-}
+  input {
+    margin-top: 2px;
+    accent-color: var(--primary);
+  }
 
-.text {
-  line-height: 1.35;
+  .text {
+    line-height: 1.35;
+  }
 }

@@ -16,18 +16,18 @@
   gap: 6px;
   text-decoration: none;
   color: inherit;
-}
 
-.brand-mark {
-  font-weight: 800;
-  font-size: 1.15rem;
-  color: var(--primary);
-}
+  .brand-mark {
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--primary);
+  }
 
-.brand-rest {
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: var(--text);
+  .brand-rest {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
 }
 
 .topbar-actions {

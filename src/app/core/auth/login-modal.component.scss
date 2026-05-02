@@ -30,10 +30,10 @@
   line-height: 1;
   cursor: pointer;
   padding: 4px 8px;
-}
 
-.btn-close:hover {
-  color: var(--text);
+  &:hover {
+    color: var(--text);
+  }
 }
 
 .card {
@@ -45,24 +45,24 @@
 .header {
   margin-bottom: 16px;
   padding-right: 28px;
-}
 
-.brand {
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
+  .brand {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
 
-h1 {
-  margin: 0 0 6px 0;
-  font-size: 22px;
-}
+  h1 {
+    margin: 0 0 6px 0;
+    font-size: 22px;
+  }
 
-.sub {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
+  .sub {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
 }
 
 .hint {
