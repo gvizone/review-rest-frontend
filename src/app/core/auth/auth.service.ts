@@ -2,9 +2,9 @@ import { Injectable, inject, isDevMode } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Auth, GoogleAuthProvider, User, signInWithPopup, signOut } from '@angular/fire/auth';
-import { Observable, of } from 'rxjs';
+import { firstValueFrom, Observable, of } from 'rxjs';
 import { authState } from '@angular/fire/auth';
-import { shareReplay, switchMap } from 'rxjs/operators';
+import { shareReplay, switchMap, take } from 'rxjs/operators';
 import { DevHarnessService } from '../dev/dev-harness.service';
 import { DEV_MOCK_FIREBASE_USER } from '../dev/dev-mock-firebase-user';
 
@@ -33,12 +33,17 @@ export class AuthService {
     initialValue: null as User | null,
   });
 
-  async signInWithProvider(providerId: AuthProviderId): Promise<void> {
+  /**
+   * Returns the signed-in Firebase user. Use this after login instead of reading
+   * `userProfile()` immediately — the signal can still be null until `authState` emits.
+   */
+  async signInWithProvider(providerId: AuthProviderId): Promise<User | null> {
     if (isDevMode() && this.devHarness.mockEnabled()) {
-      return;
+      return firstValueFrom(this.user$.pipe(take(1)));
     }
     const provider = this.createProvider(providerId);
-    await signInWithPopup(this.auth, provider);
+    const credential = await signInWithPopup(this.auth, provider);
+    return credential.user;
   }
 
   async signOut(): Promise<void> {
