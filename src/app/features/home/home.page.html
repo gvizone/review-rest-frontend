@@ -1,27 +1,20 @@
-<div class="page">
-  <div class="topbar">
-    <div class="title">Home</div>
+<div class="home">
+  <header class="topbar">
+    <a routerLink="/home" class="brand-link">
+      <span class="brand-mark">Review</span>
+      <span class="brand-rest">Restaurant</span>
+    </a>
     <div class="topbar-actions">
-      @if (showDevApiLink) {
+      @if (isDevMode) {
         <a routerLink="/dev/api-tests" class="btn btn-ghost link-pill">API tests</a>
       }
-      @if(this.userProfile()) {
+      @if (userProfile()) {
         <button class="btn btn-ghost" type="button" (click)="logout()">Sign out</button>
       } @else {
         <button class="btn btn-ghost" type="button" (click)="login()">Sign in</button>
       }
     </div>
-  </div>
+  </header>
 
-  <div class="card">
-    <h2>You're signed in</h2>
-    <div class="row">
-      <div class="label">Name</div>
-      <div class="value">{{ userName() }}</div>
-    </div>
-    <div class="row">
-      <div class="label">Email</div>
-      <div class="value">{{ userEmail() }}</div>
-    </div>
-  </div>
+  <app-restaurant-search />
 </div>

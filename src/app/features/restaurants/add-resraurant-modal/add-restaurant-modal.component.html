@@ -1,0 +1,79 @@
+@if (modal.isOpen()) {
+  <div
+    class="modal-overlay"
+    role="presentation"
+    (click)="onBackdropClick($event)"
+  >
+    <div
+      class="modal-dialog card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-restaurant-title"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="modal-head">
+        <h2 id="add-restaurant-title" class="modal-title">New restaurant</h2>
+        <button class="btn-close" type="button" (click)="dismiss()" aria-label="Close">
+          ×
+        </button>
+      </div>
+      <p class="modal-intro">
+        Fields marked * are required. Categories: comma-separated (e.g. Italian, Pizza).
+      </p>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="form-grid">
+          <label class="field">
+            <span class="field-label">Name *</span>
+            <input class="input" type="text" formControlName="name" />
+          </label>
+          <label class="field">
+            <span class="field-label">Categories *</span>
+            <input class="input" type="text" formControlName="categories" placeholder="Italian, Pizza" />
+          </label>
+          <label class="field full">
+            <span class="field-label">Street</span>
+            <input class="input" type="text" formControlName="street" />
+          </label>
+          <label class="field">
+            <span class="field-label">City *</span>
+            <input class="input" type="text" formControlName="city" />
+          </label>
+          <label class="field">
+            <span class="field-label">State *</span>
+            <input class="input" type="text" formControlName="state" />
+          </label>
+          <label class="field">
+            <span class="field-label">Country *</span>
+            <input class="input" type="text" formControlName="country" />
+          </label>
+          <label class="field">
+            <span class="field-label">Postal code</span>
+            <input class="input" type="text" formControlName="zipCode" />
+          </label>
+          <label class="field full">
+            <span class="field-label">Instagram URL</span>
+            <input class="input" type="url" formControlName="instagram" placeholder="https://..." />
+          </label>
+          <label class="field full">
+            <span class="field-label">Image URLs</span>
+            <input
+              class="input"
+              type="text"
+              formControlName="images"
+              placeholder="Comma-separated image links"
+            />
+          </label>
+        </div>
+        @if (submitError()) {
+          <p class="form-error" role="alert">{{ submitError() }}</p>
+        }
+        <div class="modal-actions">
+          <button class="btn btn-ghost" type="button" (click)="dismiss()">Cancel</button>
+          <button class="btn btn-primary" type="submit" [disabled]="submitLoading()">
+            {{ submitLoading() ? 'Saving…' : 'Save restaurant' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

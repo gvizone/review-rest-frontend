@@ -1,0 +1,78 @@
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">Discover restaurants</h1>
+    <p class="hero-sub">Search by name, city, or cuisine — or list a place others can review.</p>
+    <div class="search-shell">
+      <span class="search-icon" aria-hidden="true">⌕</span>
+      <input
+        class="search-input"
+        type="search"
+        placeholder="Try “Italian”, “São Paulo”, or a restaurant name"
+        autocomplete="off"
+        [value]="searchQuery()"
+        (input)="setSearch($any($event.target).value)"
+      />
+    </div>
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-add" type="button" (click)="openAddRestaurantModal()">
+        + Add a restaurant
+      </button>
+      @if (!userProfile()) {
+        <span class="hero-hint">Sign in to add a listing</span>
+      }
+    </div>
+  </div>
+</section>
+
+<main class="main">
+  @if (listError()) {
+    <p class="banner-error" role="alert">{{ listError() }}</p>
+  }
+
+  <div class="results-head">
+    <h2 class="results-title">
+      @if (listLoading()) {
+        Loading places…
+      } @else if (searchQuery().trim()) {
+        {{ filteredRestaurants().length }} match(es) for “{{ searchQuery().trim() }}”
+      } @else {
+        {{ filteredRestaurants().length }} restaurant(s)
+      }
+    </h2>
+  </div>
+
+  @if (!listLoading() && filteredRestaurants().length === 0 && !listError()) {
+    <div class="empty-state card">
+      <h3>No restaurants found</h3>
+      <p>Try a different search, or add the first listing for this area.</p>
+      <button class="btn btn-primary" type="button" (click)="openAddRestaurantModal()">
+        Add a restaurant
+      </button>
+    </div>
+  }
+
+  <ul class="results-grid">
+    @for (r of filteredRestaurants(); track r.id) {
+      <li class="rest-card">
+        <div class="rest-card-media">
+          @if (r.images?.length) {
+            <img [src]="r.images![0]" [alt]="" class="rest-img" loading="lazy" />
+          } @else {
+            <div class="rest-img-placeholder" aria-hidden="true">{{ r.name.charAt(0) }}</div>
+          }
+        </div>
+        <div class="rest-card-body">
+          <h3 class="rest-name">{{ r.name }}</h3>
+          <p class="rest-location">{{ locationLine(r) }}</p>
+          @if (r.categories.length) {
+            <ul class="rest-tags">
+              @for (c of r.categories; track c.name) {
+                <li>{{ c.name }}</li>
+              }
+            </ul>
+          }
+        </div>
+      </li>
+    }
+  </ul>
+</main>
