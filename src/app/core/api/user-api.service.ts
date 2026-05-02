@@ -24,4 +24,8 @@ export class UserApiService {
   create(body: CreateUserRequest): Observable<User> {
     return this.http.post<User>(this.baseUrl, body);
   }
+
+  deleteAll(): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}`);
+  }
 }

@@ -11,7 +11,7 @@ import { formatHttpError } from '../format-http-error';
   selector: 'app-user-api-panel',
   imports: [CommonModule, FormsModule],
   templateUrl: './user-api.panel.html',
-  styleUrl: './user-api.panel.scss'
+  styleUrl: './user-api.panel.scss',
 })
 export class UserApiPanel {
   private readonly api = inject(UserApiService);
@@ -49,7 +49,7 @@ export class UserApiPanel {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (d) => this.handleResult(d),
-        error: (e) => this.handleError(e)
+        error: (e) => this.handleError(e),
       });
   }
 
@@ -65,7 +65,7 @@ export class UserApiPanel {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (d) => this.handleResult(d),
-        error: (e) => this.handleError(e)
+        error: (e) => this.handleError(e),
       });
   }
 
@@ -87,8 +87,8 @@ export class UserApiPanel {
         state,
         country,
         ...(this.createStreet.trim() ? { street: this.createStreet.trim() } : {}),
-        ...(this.createZip.trim() ? { zipCode: this.createZip.trim() } : {})
-      }
+        ...(this.createZip.trim() ? { zipCode: this.createZip.trim() } : {}),
+      },
     };
     this.setBusy();
     this.api
@@ -96,7 +96,18 @@ export class UserApiPanel {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (d) => this.handleResult(d),
-        error: (e) => this.handleError(e)
+        error: (e) => this.handleError(e),
+      });
+  }
+
+  deleteAll(): void {
+    this.setBusy();
+    this.api
+      .deleteAll()
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (d) => this.handleResult(d),
+        error: (e) => this.handleError(e),
       });
   }
 }

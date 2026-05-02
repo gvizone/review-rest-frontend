@@ -11,7 +11,7 @@ import { formatHttpError } from '../format-http-error';
   selector: 'app-restaurant-api-panel',
   imports: [CommonModule, FormsModule],
   templateUrl: './restaurant-api.panel.html',
-  styleUrl: './restaurant-api.panel.scss'
+  styleUrl: './restaurant-api.panel.scss',
 })
 export class RestaurantApiPanel {
   private readonly api = inject(RestaurantApiService);
@@ -52,7 +52,7 @@ export class RestaurantApiPanel {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (d) => this.handleResult(d),
-        error: (e) => this.handleError(e)
+        error: (e) => this.handleError(e),
       });
   }
 
@@ -63,7 +63,7 @@ export class RestaurantApiPanel {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (d) => this.handleResult(d),
-        error: (e) => this.handleError(e)
+        error: (e) => this.handleError(e),
       });
   }
 
@@ -79,7 +79,7 @@ export class RestaurantApiPanel {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (d) => this.handleResult(d),
-        error: (e) => this.handleError(e)
+        error: (e) => this.handleError(e),
       });
   }
 
@@ -95,7 +95,7 @@ export class RestaurantApiPanel {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (d) => this.handleResult(d),
-        error: (e) => this.handleError(e)
+        error: (e) => this.handleError(e),
       });
   }
 
@@ -132,11 +132,11 @@ export class RestaurantApiPanel {
         state,
         country,
         ...(this.createStreet.trim() ? { street: this.createStreet.trim() } : {}),
-        ...(this.createZip.trim() ? { zipCode: this.createZip.trim() } : {})
+        ...(this.createZip.trim() ? { zipCode: this.createZip.trim() } : {}),
       },
       categories,
       ...(this.createInstagram.trim() ? { instagram: this.createInstagram.trim() } : {}),
-      ...(images.length ? { images } : {})
+      ...(images.length ? { images } : {}),
     };
     this.setBusy();
     this.api
@@ -144,7 +144,18 @@ export class RestaurantApiPanel {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (d) => this.handleResult(d),
-        error: (e) => this.handleError(e)
+        error: (e) => this.handleError(e),
+      });
+  }
+
+  deleteAll(): void {
+    this.setBusy();
+    this.api
+      .deleteAll()
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (d) => this.handleResult(d),
+        error: (e) => this.handleError(e),
       });
   }
 }

@@ -17,7 +17,7 @@ function clampNote(n: number | string): number {
   selector: 'app-review-api-panel',
   imports: [CommonModule, FormsModule],
   templateUrl: './review-api.panel.html',
-  styleUrl: './review-api.panel.scss'
+  styleUrl: './review-api.panel.scss',
 })
 export class ReviewApiPanel {
   private readonly api = inject(ReviewApiService);
@@ -72,7 +72,7 @@ export class ReviewApiPanel {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (d) => this.handleResult(d),
-        error: (e) => this.handleError(e)
+        error: (e) => this.handleError(e),
       });
   }
 
@@ -88,7 +88,7 @@ export class ReviewApiPanel {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (d) => this.handleResult(d),
-        error: (e) => this.handleError(e)
+        error: (e) => this.handleError(e),
       });
   }
 
@@ -136,8 +136,8 @@ export class ReviewApiPanel {
           state: uState,
           country: uCountry,
           ...(this.uStreet.trim() ? { street: this.uStreet.trim() } : {}),
-          ...(this.uZip.trim() ? { zipCode: this.uZip.trim() } : {})
-        }
+          ...(this.uZip.trim() ? { zipCode: this.uZip.trim() } : {}),
+        },
       },
       restaurant: {
         name: rName,
@@ -146,20 +146,20 @@ export class ReviewApiPanel {
           state: rState,
           country: rCountry,
           ...(this.rStreet.trim() ? { street: this.rStreet.trim() } : {}),
-          ...(this.rZip.trim() ? { zipCode: this.rZip.trim() } : {})
+          ...(this.rZip.trim() ? { zipCode: this.rZip.trim() } : {}),
         },
         categories,
         ...(this.rInstagram.trim() ? { instagram: this.rInstagram.trim() } : {}),
-        ...(rImgs.length ? { images: rImgs } : {})
+        ...(rImgs.length ? { images: rImgs } : {}),
       },
       note: {
         service: clampNote(this.nService),
         food: clampNote(this.nFood),
         value: clampNote(this.nValue),
-        atmosphere: clampNote(this.nAtmosphere)
+        atmosphere: clampNote(this.nAtmosphere),
       },
       images: revImgs,
-      ...(this.commentary.trim() ? { commentary: this.commentary.trim() } : {})
+      ...(this.commentary.trim() ? { commentary: this.commentary.trim() } : {}),
     };
     this.setBusy();
     this.api
@@ -167,7 +167,18 @@ export class ReviewApiPanel {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (d) => this.handleResult(d),
-        error: (e) => this.handleError(e)
+        error: (e) => this.handleError(e),
+      });
+  }
+
+  deleteAll(): void {
+    this.setBusy();
+    this.api
+      .deleteAll()
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (d) => this.handleResult(d),
+        error: (e) => this.handleError(e),
       });
   }
 }

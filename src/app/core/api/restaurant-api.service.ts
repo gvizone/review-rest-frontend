@@ -29,4 +29,8 @@ export class RestaurantApiService {
   create(body: CreateRestaurantRequest): Observable<Restaurant> {
     return this.http.post<Restaurant>(this.baseUrl, body);
   }
+
+  deleteAll(): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}`);
+  }
 }

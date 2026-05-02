@@ -12,6 +12,9 @@
         <input name="uId" [(ngModel)]="queryId" class="input" placeholder="uuid" />
       </label>
       <button type="button" class="btn" [disabled]="loading()" (click)="getById()">GET by id</button>
+      <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="deleteAll()">
+        DELETE all
+      </button>
     </div>
   </section>
 

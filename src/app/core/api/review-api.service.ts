@@ -20,4 +20,8 @@ export class ReviewApiService {
   create(body: CreateReviewRequest): Observable<Review> {
     return this.http.post<Review>(this.baseUrl, body);
   }
+
+  deleteAll(): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}`);
+  }
 }
