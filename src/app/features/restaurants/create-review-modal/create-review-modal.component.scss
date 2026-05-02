@@ -1,0 +1,165 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10040;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: rgba(0, 0, 0, 0.55);
+  overflow-y: auto;
+}
+
+.modal-dialog {
+  width: 100%;
+  max-width: 520px;
+  max-height: min(90dvh, 880px);
+  overflow-y: auto;
+  margin: auto;
+  padding: 20px 22px 22px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.btn-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  margin: -4px 0 0;
+}
+
+.btn-close:hover {
+  color: var(--text);
+}
+
+.modal-intro {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.intro-link {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.ratings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.rating-row {
+  display: grid;
+  grid-template-columns: 92px 1fr 28px;
+  align-items: center;
+  gap: 10px;
+}
+
+.rating-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.rating-range {
+  width: 100%;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.rating-value {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: right;
+  color: var(--primary);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.input {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--surface) 88%, var(--bg));
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.input:focus {
+  outline: 2px solid color-mix(in oklab, var(--primary) 55%, transparent);
+  outline-offset: 1px;
+}
+
+.form-error {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--danger);
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-actions .btn-ghost,
+.modal-actions .btn-primary {
+  width: auto;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+@media (max-width: 480px) {
+  .rating-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .rating-value {
+    text-align: left;
+  }
+}

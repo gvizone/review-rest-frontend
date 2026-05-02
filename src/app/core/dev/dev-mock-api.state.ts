@@ -124,6 +124,15 @@ function mapEmbeddedUser(body: CreateReviewRequest['user']): User {
 }
 
 function mapEmbeddedRestaurant(body: CreateReviewRequest['restaurant']): Restaurant {
+  const existing = [...restaurantsById.values()].find(
+    (r) =>
+      r.name === body.name &&
+      r.address.city === body.address.city &&
+      r.address.state === body.address.state &&
+      r.address.country === body.address.country,
+  );
+  if (existing) return existing;
+
   const id = `mock-restaurant-${restaurantSeq++}`;
   const restaurant: Restaurant = {
     id,

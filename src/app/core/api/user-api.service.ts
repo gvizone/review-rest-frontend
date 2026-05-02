@@ -18,7 +18,8 @@ export class UserApiService {
   }
 
   findByEmail(email: string): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/email/${email}`);
+    const encoded = encodeURIComponent(email);
+    return this.http.get<User>(`${this.baseUrl}/email/${encoded}`);
   }
 
   create(body: CreateUserRequest): Observable<User> {

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { of } from 'rxjs';
 import { catchError, distinctUntilChanged, finalize, take } from 'rxjs/operators';
@@ -12,7 +13,7 @@ import { AddRestaurantModalService } from '../add-restaurant-modal/add-restauran
 @Component({
   standalone: true,
   selector: 'app-restaurant-search',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './restaurant-search.component.html',
   styleUrl: './restaurant-search.component.scss',
 })

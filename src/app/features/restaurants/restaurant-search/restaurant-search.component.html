@@ -53,25 +53,27 @@
 
   <ul class="results-grid">
     @for (r of filteredRestaurants(); track r.id) {
-      <li class="rest-card">
-        <div class="rest-card-media">
-          @if (r.images?.length) {
-            <img [src]="r.images![0]" [alt]="" class="rest-img" loading="lazy" />
-          } @else {
-            <div class="rest-img-placeholder" aria-hidden="true">{{ r.name.charAt(0) }}</div>
-          }
-        </div>
-        <div class="rest-card-body">
-          <h3 class="rest-name">{{ r.name }}</h3>
-          <p class="rest-location">{{ locationLine(r) }}</p>
-          @if (r.categories.length) {
-            <ul class="rest-tags">
-              @for (c of r.categories; track c.name) {
-                <li>{{ c.name }}</li>
-              }
-            </ul>
-          }
-        </div>
+      <li>
+        <a class="rest-card" [routerLink]="['/restaurants', r.id]">
+          <div class="rest-card-media">
+            @if (r.images?.length) {
+              <img [src]="r.images![0]" [alt]="" class="rest-img" loading="lazy" />
+            } @else {
+              <div class="rest-img-placeholder" aria-hidden="true">{{ r.name.charAt(0) }}</div>
+            }
+          </div>
+          <div class="rest-card-body">
+            <h3 class="rest-name">{{ r.name }}</h3>
+            <p class="rest-location">{{ locationLine(r) }}</p>
+            @if (r.categories.length) {
+              <ul class="rest-tags">
+                @for (c of r.categories; track c.name) {
+                  <li>{{ c.name }}</li>
+                }
+              </ul>
+            }
+          </div>
+        </a>
       </li>
     }
   </ul>
