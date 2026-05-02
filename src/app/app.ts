@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DevMockIndicatorComponent } from './core/dev/dev-mock-indicator.component';
 import { LoginModalComponent } from './core/auth/login-modal.component';
+import { RegisterModalComponent } from './core/auth/register-modal.component';
 import { AddRestaurantModalComponent } from './features/restaurants/add-restaurant-modal/add-restaurant-modal.component';
 import { CreateReviewModalComponent } from './features/restaurants/create-review-modal/create-review-modal.component';
 
@@ -10,6 +11,7 @@ import { CreateReviewModalComponent } from './features/restaurants/create-review
   imports: [
     RouterOutlet,
     LoginModalComponent,
+    RegisterModalComponent,
     AddRestaurantModalComponent,
     CreateReviewModalComponent,
     DevMockIndicatorComponent,

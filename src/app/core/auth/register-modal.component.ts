@@ -7,23 +7,25 @@ import { Router } from '@angular/router';
 import type { ICity, ICountry, IState } from '@countrystatecity/countries';
 import { from } from 'rxjs';
 import { distinctUntilChanged, finalize, switchMap, take, tap } from 'rxjs/operators';
-import { AuthService } from '../../core/auth/auth.service';
-import { UserApiService } from '../../core/api/user-api.service';
-import { LocationDataService } from '../../core/location/location-data.service';
+import { AuthService } from './auth.service';
+import { RegisterModalService } from './register-modal.service';
+import { UserApiService } from '../api/user-api.service';
+import { LocationDataService } from '../location/location-data.service';
 
 @Component({
   standalone: true,
-  selector: 'app-register-page',
+  selector: 'app-register-modal',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './register.page.html',
-  styleUrl: './register.page.scss',
+  templateUrl: './register-modal.component.html',
+  styleUrl: './register-modal.component.scss',
 })
-export class RegisterPage {
+export class RegisterModalComponent {
   private readonly auth = inject(AuthService);
   private readonly userApi = inject(UserApiService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly locationData = inject(LocationDataService);
+  protected readonly registerModal = inject(RegisterModalService);
 
   protected readonly form = this.fb.group({
     name: [{ value: '', disabled: true }],
@@ -100,6 +102,12 @@ export class RegisterPage {
       );
   }
 
+  onBackdropClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.registerModal.close(); // cancels registration → sign out
+    }
+  }
+
   submit(): void {
     this.errorMessage = null;
     this.form.markAllAsTouched();
@@ -141,10 +149,12 @@ export class RegisterPage {
       )
       .subscribe({
         next: () => {
+          this.registerModal.closeAfterSuccessfulRegistration();
           void this.router.navigateByUrl('/home');
         },
         error: (err: unknown) => {
           this.errorMessage = this.formatError(err);
+          this.registerModal.close(); // failed registration → sign out
         },
       });
   }

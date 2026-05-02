@@ -4,12 +4,14 @@ import { inject } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { UserApiService } from '../api/user-api.service';
 import { LoginModalService } from '../auth/login-modal.service';
+import { RegisterModalService } from '../auth/register-modal.service';
 
 export const userExistsGuard: CanActivateFn = (): ReturnType<CanActivateFn> => {
   const userApi = inject(UserApiService);
   const auth = inject(AuthService);
   const router = inject(Router);
   const loginModal = inject(LoginModalService);
+  const registerModal = inject(RegisterModalService);
 
   const authEmail = auth.userProfile()?.email;
 
@@ -22,7 +24,8 @@ export const userExistsGuard: CanActivateFn = (): ReturnType<CanActivateFn> => {
     take(1),
     map((user): boolean | UrlTree => {
       if (user) return true;
-      return router.createUrlTree(['/register']);
+      registerModal.open();
+      return router.createUrlTree(['/home']);
     }),
   );
 };

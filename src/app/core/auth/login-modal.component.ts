@@ -2,12 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { LoginModalService } from './login-modal.service';
+import { RegisterModalService } from './register-modal.service';
 import { DevMockLoginPanelComponent } from '../dev/dev-mock-login-panel.component';
 import { UserApiService } from '../api/user-api.service';
 import { firstValueFrom, of } from 'rxjs';
 import { catchError, take } from 'rxjs/operators';
-import { Router } from '@angular/router';
-
 @Component({
   standalone: true,
   selector: 'app-login-modal',
@@ -18,7 +17,7 @@ import { Router } from '@angular/router';
 export class LoginModalComponent {
   private readonly auth = inject(AuthService);
   private readonly userApi = inject(UserApiService);
-  private readonly router = inject(Router);
+  private readonly registerModal = inject(RegisterModalService);
   protected readonly loginModal = inject(LoginModalService);
 
   onBackdropClick(event: MouseEvent): void {
@@ -40,7 +39,7 @@ export class LoginModalComponent {
         ),
       );
       if (!backendUser) {
-        await this.router.navigateByUrl('/register');
+        this.registerModal.open();
       }
     } catch {
       // Popup closed or sign-in failed — keep modal open or close in finally

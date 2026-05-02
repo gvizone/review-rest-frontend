@@ -1,10 +1,10 @@
-import { Injectable, inject, isDevMode } from '@angular/core';
+import { effect, Injectable, inject, isDevMode } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Auth, GoogleAuthProvider, User, signInWithPopup, signOut } from '@angular/fire/auth';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { authState } from '@angular/fire/auth';
-import { shareReplay, switchMap, take } from 'rxjs/operators';
+import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { DevHarnessService } from '../dev/dev-harness.service';
 import { DEV_MOCK_FIREBASE_USER } from '../dev/dev-mock-firebase-user';
 
@@ -19,13 +19,27 @@ export class AuthService {
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
+  /** When dev mock auth is on, `signOut()` sets this so `user$` emits null until the next mock sign-in. */
+  private readonly mockSignedOut$ = new BehaviorSubject(false);
+
   readonly user$: Observable<User | null> = toObservable(this.devHarness.mockEnabled).pipe(
     switchMap(() =>
       isDevMode() && this.devHarness.mockEnabled()
-        ? of(DEV_MOCK_FIREBASE_USER)
+        ? this.mockSignedOut$.pipe(
+            map((signedOut) => (signedOut ? null : DEV_MOCK_FIREBASE_USER)),
+          )
         : this.firebaseUser$,
     ),
   );
+
+  constructor() {
+    effect(() => {
+      if (!isDevMode()) return;
+      if (this.devHarness.mockEnabled()) {
+        this.mockSignedOut$.next(false);
+      }
+    });
+  }
 
   readonly userProfile$: Observable<User | null> = this.user$;
 
@@ -39,6 +53,7 @@ export class AuthService {
    */
   async signInWithProvider(providerId: AuthProviderId): Promise<User | null> {
     if (isDevMode() && this.devHarness.mockEnabled()) {
+      this.mockSignedOut$.next(false);
       return firstValueFrom(this.user$.pipe(take(1)));
     }
     const provider = this.createProvider(providerId);
@@ -47,6 +62,10 @@ export class AuthService {
   }
 
   async signOut(): Promise<void> {
+    if (isDevMode() && this.devHarness.mockEnabled()) {
+      this.mockSignedOut$.next(true);
+      return;
+    }
     await signOut(this.auth);
   }
 

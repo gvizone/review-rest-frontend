@@ -19,7 +19,9 @@
       </div>
       <p class="modal-intro">
         Rate your experience (1–5). You need an account with a saved address —
-        <a routerLink="/register" class="intro-link">complete registration</a>
+        <button type="button" class="intro-link intro-link-btn" (click)="openRegisterModal()">
+          complete registration
+        </button>
         if you have not yet.
       </p>
       <form [formGroup]="form" (ngSubmit)="submit()">

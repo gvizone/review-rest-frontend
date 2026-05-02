@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { of } from 'rxjs';
 import { catchError, finalize, switchMap, take } from 'rxjs/operators';
 import { CreateReviewModalService } from './create-review-modal.service';
@@ -16,17 +15,19 @@ import { ReviewApiService } from '../../../core/api/review-api.service';
 import { UserApiService } from '../../../core/api/user-api.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { LoginModalService } from '../../../core/auth/login-modal.service';
+import { RegisterModalService } from '../../../core/auth/register-modal.service';
 
 @Component({
   standalone: true,
   selector: 'app-create-review-modal',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './create-review-modal.component.html',
   styleUrl: './create-review-modal.component.scss',
 })
 export class CreateReviewModalComponent {
   private readonly auth = inject(AuthService);
   private readonly loginModal = inject(LoginModalService);
+  private readonly registerModal = inject(RegisterModalService);
   private readonly userApi = inject(UserApiService);
   private readonly reviewsApi = inject(ReviewApiService);
   private readonly fb = inject(FormBuilder);
@@ -53,6 +54,10 @@ export class CreateReviewModalComponent {
   dismiss(): void {
     this.submitError.set(null);
     this.modal.close();
+  }
+
+  openRegisterModal(): void {
+    this.registerModal.open();
   }
 
   submit(): void {

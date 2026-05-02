@@ -61,6 +61,19 @@
   font-weight: 600;
 }
 
+button.intro-link-btn {
+  display: inline;
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .ratings-grid {
   display: flex;
   flex-direction: column;

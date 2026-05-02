@@ -1,0 +1,109 @@
+@if (registerModal.isOpen()) {
+  <div
+    class="register-modal-overlay"
+    role="presentation"
+    (click)="onBackdropClick($event)"
+  >
+    <div
+      class="register-modal-dialog card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="register-modal-title"
+      (click)="$event.stopPropagation()"
+    >
+      <button
+        class="btn-close"
+        type="button"
+        (click)="registerModal.close()"
+        aria-label="Close"
+      >
+        ×
+      </button>
+      <div class="header">
+        <div class="brand">Review Restaurant</div>
+        <h1 id="register-modal-title">Create your profile</h1>
+        <p class="sub">Name and email come from your sign-in and cannot be changed here.</p>
+      </div>
+
+      <form (ngSubmit)="submit()" [formGroup]="form">
+        <fieldset class="fieldset">
+          <legend class="legend">From your account</legend>
+          <label class="field">
+            <span class="field-label">Display name</span>
+            <input class="input" type="text" formControlName="name" autocomplete="name" />
+          </label>
+          <label class="field">
+            <span class="field-label">Email</span>
+            <input class="input" type="email" formControlName="email" autocomplete="email" />
+          </label>
+        </fieldset>
+
+        <fieldset class="fieldset" formGroupName="address">
+          <legend class="legend">Location</legend>
+
+          <label class="field">
+            <span class="field-label">Country</span>
+            <select
+              class="input select"
+              formControlName="country"
+              autocomplete="country"
+              [class.input-invalid]="
+                form.controls.address.get('country')?.invalid &&
+                form.controls.address.get('country')?.touched
+              "
+            >
+              <option value="">Select country</option>
+              @for (c of countries(); track c.iso2) {
+                <option [value]="c.name">{{ c.name }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="field">
+            <span class="field-label">State / region</span>
+            <select
+              class="input select"
+              formControlName="state"
+              autocomplete="address-level1"
+              [class.input-invalid]="
+                form.controls.address.get('state')?.invalid &&
+                form.controls.address.get('state')?.touched
+              "
+            >
+              <option value="">Select state / region</option>
+              @for (s of states(); track s.id) {
+                <option [value]="s.name">{{ s.name }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="field">
+            <span class="field-label">City</span>
+            <select
+              class="input select"
+              formControlName="city"
+              autocomplete="address-level2"
+              [class.input-invalid]="
+                form.controls.address.get('city')?.invalid &&
+                form.controls.address.get('city')?.touched
+              "
+            >
+              <option value="">Select city</option>
+              @for (city of cities(); track city.id) {
+                <option [value]="city.name">{{ city.name }}</option>
+              }
+            </select>
+          </label>
+        </fieldset>
+
+        @if (errorMessage) {
+          <p class="error" role="alert">{{ errorMessage }}</p>
+        }
+
+        <button class="btn btn-primary" type="submit" [disabled]="submitting">
+          {{ submitting ? 'Registering…' : 'Complete registration' }}
+        </button>
+      </form>
+    </div>
+  </div>
+}

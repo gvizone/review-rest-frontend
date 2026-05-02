@@ -1,22 +1,52 @@
-.page {
-  min-height: 100dvh;
+.register-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10070;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: 24px 16px;
+  background: rgba(0, 0, 0, 0.55);
+  overflow-y: auto;
+}
+
+.register-modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: min(90dvh, 880px);
+  overflow-y: auto;
+  margin: auto;
+  padding: 22px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.btn-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.btn-close:hover {
+  color: var(--text);
 }
 
 .card {
-  width: 100%;
-  max-width: 480px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 22px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 .header {
   margin-bottom: 18px;
+  padding-right: 28px;
 }
 
 .brand {
@@ -61,12 +91,6 @@ h1 {
 .field-label {
   font-size: 13px;
   color: var(--text);
-}
-
-.optional {
-  font-weight: 400;
-  color: var(--muted);
-  font-size: 12px;
 }
 
 .input {
