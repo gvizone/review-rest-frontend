@@ -1,0 +1,124 @@
+<div class="profile-page">
+  <app-topbar [showDiscovery]="true" />
+
+  @if (loading()) {
+    <div class="state-wrap">
+      <p class="state-msg">Loading your profile…</p>
+    </div>
+  } @else if (error()) {
+    <div class="state-wrap">
+      <p class="banner-error" role="alert">{{ error() }}</p>
+      <p class="state-hint">
+        @if (showRegisterCta()) {
+          <button type="button" class="btn btn-primary" (click)="openRegister()">
+            Complete registration
+          </button>
+          <button type="button" class="btn btn-ghost" (click)="loadProfile()">Refresh after registering</button>
+        } @else {
+          <a routerLink="/home" class="btn btn-primary link-btn">Back to discovery</a>
+        }
+      </p>
+    </div>
+  } @else if (profile(); as p) {
+    <main class="profile-main">
+      <section class="card profile-hero">
+        <div class="profile-identity">
+          <div class="avatar-wrap">
+            @if (p.user.image) {
+              <img [src]="p.user.image" [alt]="p.user.name" class="avatar" />
+            } @else {
+              <div class="avatar avatar--placeholder" aria-hidden="true">
+                {{ p.user.name.charAt(0).toUpperCase() }}
+              </div>
+            }
+          </div>
+          <div class="profile-text">
+            <h1 class="profile-name">{{ p.user.name }}</h1>
+            <p class="profile-email">{{ p.user.email }}</p>
+            <p class="profile-location muted">
+              {{ p.user.address.city }}, {{ p.user.address.state }} · {{ p.user.address.country }}
+            </p>
+            <div class="photo-actions">
+              <input
+                #photoInput
+                type="file"
+                class="file-input-hidden"
+                accept="image/*"
+                (change)="onPhotoSelected($event)"
+              />
+              <button
+                type="button"
+                class="btn btn-primary"
+                [disabled]="imageSaving()"
+                (click)="photoInput.click()"
+              >
+                {{ p.user.image ? 'Change photo' : 'Add photo' }}
+              </button>
+              @if (p.user.image) {
+                <button
+                  type="button"
+                  class="btn btn-ghost"
+                  [disabled]="imageSaving()"
+                  (click)="clearPhoto()"
+                >
+                  Remove photo
+                </button>
+              }
+            </div>
+            @if (imageError()) {
+              <p class="field-error" role="alert">{{ imageError() }}</p>
+            }
+          </div>
+        </div>
+      </section>
+
+      <div class="profile-columns">
+        <section class="card block">
+          <h2 class="block-title">Places you’ve reviewed</h2>
+          @if (!p.visitedRestaurants.length) {
+            <p class="muted">No restaurants yet. Write a review from a restaurant page.</p>
+          } @else {
+            <ul class="visited-list">
+              @for (r of p.visitedRestaurants; track r.id) {
+                <li>
+                  <a [routerLink]="['/restaurants', r.id]" class="visited-link">{{ r.name }}</a>
+                  <span class="visited-meta muted">{{ r.address.city }}</span>
+                </li>
+              }
+            </ul>
+          }
+        </section>
+
+        <section class="card block">
+          <h2 class="block-title">Your reviews</h2>
+          @if (!p.reviews.length) {
+            <p class="muted">You haven’t posted any reviews yet.</p>
+          } @else {
+            <ul class="reviews-list">
+              @for (rev of p.reviews; track rev.id) {
+                <li class="review-item">
+                  <div class="review-head">
+                    <a [routerLink]="['/restaurants', rev.restaurant.id]" class="review-rest-name">{{
+                      rev.restaurant.name
+                    }}</a>
+                    <span class="review-score">Avg {{ averageNote(rev.note) }}/5</span>
+                  </div>
+                  @if (rev.commentary) {
+                    <p class="review-comment">{{ rev.commentary }}</p>
+                  }
+                  @if (rev.images.length) {
+                    <div class="review-thumbs">
+                      @for (img of rev.images; track img) {
+                        <img [src]="img" alt="" class="review-thumb" />
+                      }
+                    </div>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </section>
+      </div>
+    </main>
+  }
+</div>

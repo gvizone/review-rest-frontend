@@ -1,0 +1,20 @@
+<header class="topbar">
+  <a routerLink="/home" class="brand-link">
+    <span class="brand-mark">Review</span>
+    <span class="brand-rest">Restaurant</span>
+  </a>
+  <div class="topbar-actions">
+    @if (isDevMode) {
+      <a routerLink="/dev/api-tests" class="btn btn-ghost link-pill">API tests</a>
+    }
+    @if (showDiscovery()) {
+      <a routerLink="/home" class="btn btn-ghost link-pill">Discovery</a>
+    }
+    @if (userProfile()) {
+      <a routerLink="/profile" class="btn btn-ghost link-pill">Profile</a>
+      <button class="btn btn-ghost" type="button" (click)="logout()">Sign out</button>
+    } @else {
+      <button class="btn btn-ghost" type="button" (click)="login()">Sign in</button>
+    }
+  </div>
+</header>

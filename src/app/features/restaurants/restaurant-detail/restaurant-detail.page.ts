@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, isDevMode, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, finalize, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
 import { LoginModalService } from '../../../core/auth/login-modal.service';
 import { httpErrorUserMessage } from '../../../core/api/http-error-user-message';
+import { AppTopbarComponent } from '../../../core/layout/app-topbar.component';
 import { RestaurantApiService } from '../../../core/api/restaurant-api.service';
 import { ReviewApiService } from '../../../core/api/review-api.service';
 import type { Restaurant, Review } from '../../../core/api/api.models';
@@ -20,13 +21,12 @@ import { CreateReviewModalService } from '../create-review-modal/create-review-m
 @Component({
   standalone: true,
   selector: 'app-restaurant-detail-page',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, AppTopbarComponent],
   templateUrl: './restaurant-detail.page.html',
   styleUrl: './restaurant-detail.page.scss',
 })
 export class RestaurantDetailPage {
   private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
   private readonly restaurantsApi = inject(RestaurantApiService);
   private readonly reviewsApi = inject(ReviewApiService);
   private readonly auth = inject(AuthService);
@@ -35,9 +35,6 @@ export class RestaurantDetailPage {
 
   /** Template helper (TripAdvisor-style overall score per review). */
   protected readonly avgNote = averageNote;
-
-  readonly isDevMode = isDevMode();
-  readonly userProfile = computed(() => this.auth.userProfile());
 
   readonly restaurant = signal<Restaurant | null>(null);
   readonly reviews = signal<Review[]>([]);
@@ -124,15 +121,6 @@ export class RestaurantDetailPage {
     const a = r.address;
     const parts = [a.street, a.city, a.state, a.country].filter(Boolean);
     return parts.join(', ');
-  }
-
-  login(): void {
-    this.loginModal.open();
-  }
-
-  async logout(): Promise<void> {
-    await this.auth.signOut();
-    await this.router.navigateByUrl('/home');
   }
 
   openReviewModal(): void {

@@ -6,6 +6,7 @@ import type {
   Restaurant,
   Review,
   User,
+  UserProfileResponse,
 } from '../api/api.models';
 import { DEV_MOCK_AUTH_DISPLAY_NAME, DEV_MOCK_AUTH_EMAIL } from './dev-mock-firebase-user';
 
@@ -53,6 +54,46 @@ export function devMockFindUserByEmail(email: string): User | undefined {
 
 export function devMockFindUserById(id: string): User | undefined {
   return usersById.get(id);
+}
+
+export function devMockGetUserProfile(userId: string): UserProfileResponse | null {
+  const user = devMockFindUserById(userId);
+  if (!user) return null;
+  const reviews = [...reviewsById.values()].filter((r) => r.user.id === userId);
+  return {
+    user,
+    reviews,
+    visitedRestaurants: dedupeVisitedRestaurants(reviews),
+  };
+}
+
+function dedupeVisitedRestaurants(reviews: Review[]): Restaurant[] {
+  const seen = new Set<string>();
+  const out: Restaurant[] = [];
+  for (const r of reviews) {
+    if (!seen.has(r.restaurant.id)) {
+      seen.add(r.restaurant.id);
+      out.push(r.restaurant);
+    }
+  }
+  return out;
+}
+
+export function devMockPatchUserImage(userId: string, image?: string): User | undefined {
+  const u = usersById.get(userId);
+  if (!u) return undefined;
+  if (image === undefined) {
+    return u;
+  }
+  const next: User = { ...u };
+  if (image === '') {
+    delete next.image;
+  } else {
+    next.image = image;
+  }
+  usersById.set(userId, next);
+  usersByEmail.set(next.email.toLowerCase(), next);
+  return next;
 }
 
 export function devMockCreateUser(body: CreateUserRequest): User {

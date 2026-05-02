@@ -1,20 +1,4 @@
 <div class="home">
-  <header class="topbar">
-    <a routerLink="/home" class="brand-link">
-      <span class="brand-mark">Review</span>
-      <span class="brand-rest">Restaurant</span>
-    </a>
-    <div class="topbar-actions">
-      @if (isDevMode) {
-        <a routerLink="/dev/api-tests" class="btn btn-ghost link-pill">API tests</a>
-      }
-      @if (userProfile()) {
-        <button class="btn btn-ghost" type="button" (click)="logout()">Sign out</button>
-      } @else {
-        <button class="btn btn-ghost" type="button" (click)="login()">Sign in</button>
-      }
-    </div>
-  </header>
-
+  <app-topbar />
   <app-restaurant-search />
 </div>

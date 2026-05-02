@@ -15,6 +15,7 @@ import type {
 } from '../api/api.models';
 import { environment } from '../../../environments/environment';
 import { DevHarnessService } from './dev-harness.service';
+import { DEV_MOCK_AUTH_EMAIL } from './dev-mock-firebase-user';
 import * as mock from './dev-mock-api.state';
 
 function apiSuffix(url: string): string | null {
@@ -153,6 +154,34 @@ function handleReviews(
   return null;
 }
 
+function handleProfile(
+  req: HttpRequest<unknown>,
+  parts: string[],
+): Observable<HttpEvent<unknown>> | null {
+  if (parts[0] !== 'profile' || parts[1] !== 'me') return null;
+
+  const mockUser = mock.devMockFindUserByEmail(DEV_MOCK_AUTH_EMAIL);
+  if (!mockUser) {
+    return json(
+      { statusCode: 404, message: 'No profile found for this account.' },
+      404,
+    );
+  }
+
+  if (req.method === 'GET' && parts.length === 2) {
+    const snapshot = mock.devMockGetUserProfile(mockUser.id);
+    return snapshot ? json(snapshot) : notFound();
+  }
+
+  if (req.method === 'PATCH' && parts.length === 3 && parts[2] === 'image') {
+    const body = req.body as { image?: string };
+    const updated = mock.devMockPatchUserImage(mockUser.id, body.image);
+    return updated ? json(updated) : notFound();
+  }
+
+  return null;
+}
+
 function handleDevMockApiRequest(req: HttpRequest<unknown>): Observable<HttpEvent<unknown>> {
   const suffix = apiSuffix(req.url);
   if (suffix === null) return notFound();
@@ -160,6 +189,7 @@ function handleDevMockApiRequest(req: HttpRequest<unknown>): Observable<HttpEven
   if (!parts.length) return notFound();
 
   const root = parts[0];
+  if (root === 'profile') return handleProfile(req, parts) ?? notFound();
   if (root === 'users') return handleUsers(req, parts) ?? notFound();
   if (root === 'restaurants') return handleRestaurants(req, parts) ?? notFound();
   if (root === 'reviews') return handleReviews(req, parts) ?? notFound();

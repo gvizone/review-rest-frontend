@@ -14,7 +14,7 @@ export class UserApiService {
   }
 
   findById(id: string): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/${id}`);
+    return this.http.get<User>(`${this.baseUrl}/id/${id}`);
   }
 
   findByEmail(email: string): Observable<User> {

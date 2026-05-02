@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/auth/auth.guard';
 import { devOnlyGuard } from './core/guards/dev-only.guard';
 import { HomePage } from './features/home/home.page';
+import { ProfilePage } from './features/profile/profile.page';
 import { RestaurantDetailPage } from './features/restaurants/restaurant-detail/restaurant-detail.page';
 
 export const routes: Routes = [
@@ -8,6 +10,11 @@ export const routes: Routes = [
   {
     path: 'home',
     component: HomePage,
+  },
+  {
+    path: 'profile',
+    canActivate: [authGuard],
+    component: ProfilePage,
   },
   {
     path: 'restaurants/:id',

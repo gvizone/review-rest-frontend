@@ -68,3 +68,10 @@ export interface Review {
   commentary?: string;
   images: string[];
 }
+
+/** GET /profile/me */
+export interface UserProfileResponse {
+  user: User;
+  reviews: Review[];
+  visitedRestaurants: Restaurant[];
+}
