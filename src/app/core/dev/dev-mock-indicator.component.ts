@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { isDevMode } from '@angular/core';
-import { DevHarnessService } from './dev-harness.service';
+import { DevHarnessService } from '../../services/dev/dev-harness.service';
 
 /** Non-interactive banner when mock mode is on (dev builds). */
 @Component({

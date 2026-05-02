@@ -4,19 +4,19 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import type { ICity, ICountry, IState } from '@countrystatecity/countries';
 import { of } from 'rxjs';
 import { catchError, finalize, take } from 'rxjs/operators';
-import { AddRestaurantModalService } from './add-restaurant-modal.service';
+import { AddRestaurantModalService } from '../../../services/ui/add-restaurant-modal.service';
 import {
   type AddRestaurantFormValue,
   buildAddRestaurantForm,
   emptyAddRestaurantFormValue,
 } from './add-restaurant-form.build';
 import { mapAddRestaurantFormToRequest } from './add-restaurant-request.mapper';
-import { AuthService } from '../../../core/auth/auth.service';
-import { LoginModalService } from '../../../core/auth/login-modal.service';
-import { httpErrorUserMessage } from '../../../core/api/http-error-user-message';
-import { RestaurantApiService } from '../../../core/api/restaurant-api.service';
-import { AddressFormCascadeService } from '../../../core/location/address-form-cascade.service';
-import { readFilesAsDataUrls } from '../../../core/util/image-file.util';
+import { AuthService } from '../../../services/auth/auth.service';
+import { LoginModalService } from '../../../services/ui/login-modal.service';
+import { httpErrorUserMessage } from '../../../utils/http-error-message';
+import { RestaurantApiService } from '../../../services/api/restaurant-api.service';
+import { AddressFormCascadeService } from '../../../services/location/address-form-cascade.service';
+import { readFilesAsDataUrls } from '../../../utils/image-file';
 
 @Component({
   standalone: true,

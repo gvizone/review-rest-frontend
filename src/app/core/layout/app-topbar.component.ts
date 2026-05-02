@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, isDevMode } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
-import { LoginModalService } from '../auth/login-modal.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { LoginModalService } from '../../services/ui/login-modal.service';
 
 @Component({
   standalone: true,

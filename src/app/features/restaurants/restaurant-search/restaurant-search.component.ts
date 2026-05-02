@@ -4,11 +4,11 @@ import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { of } from 'rxjs';
 import { catchError, distinctUntilChanged, finalize, take } from 'rxjs/operators';
-import { AuthService } from '../../../core/auth/auth.service';
-import { httpErrorUserMessage } from '../../../core/api/http-error-user-message';
-import { RestaurantApiService } from '../../../core/api/restaurant-api.service';
-import type { Restaurant } from '../../../core/api/api.models';
-import { AddRestaurantModalService } from '../add-restaurant-modal/add-restaurant-modal.service';
+import { AuthService } from '../../../services/auth/auth.service';
+import { httpErrorUserMessage } from '../../../utils/http-error-message';
+import { RestaurantApiService } from '../../../services/api/restaurant-api.service';
+import type { Restaurant } from '../../../domain/models';
+import { AddRestaurantModalService } from '../../../services/ui/add-restaurant-modal.service';
 
 @Component({
   standalone: true,

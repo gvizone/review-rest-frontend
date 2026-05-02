@@ -1,4 +1,4 @@
-import type { CreateReviewRequest, Restaurant, User } from '../../../core/api/api.models';
+import type { CreateReviewRequest, Restaurant, User } from '../../../domain/models';
 import type { CreateReviewFormValue } from './create-review-form.build';
 
 function clampNote(n: number): number {

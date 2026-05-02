@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
-import { UserApiService } from '../../../core/api/user-api.service';
-import type { CreateUserRequest } from '../../../core/api/api.models';
+import { UserApiService } from '../../../services/api/user-api.service';
+import type { CreateUserRequest } from '../../../domain/models';
 import { formatHttpError } from '../format-http-error';
-import { readFileAsDataUrl } from '../../../core/util/image-file.util';
+import { readFileAsDataUrl } from '../../../utils/image-file';
 
 @Component({
   standalone: true,

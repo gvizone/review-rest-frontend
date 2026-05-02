@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { CreateUserRequest, User } from './api.models';
+import type { CreateUserRequest, User } from '../../domain/models';
 
 @Injectable({ providedIn: 'root' })
 export class UserApiService {

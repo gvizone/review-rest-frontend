@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { finalize, take } from 'rxjs';
-import { httpErrorUserMessage } from '../../core/api/http-error-user-message';
-import type { UserProfileResponse } from '../../core/api/api.models';
-import { ProfileApiService } from '../../core/api/profile-api.service';
-import { RegisterModalService } from '../../core/auth/register-modal.service';
+import { httpErrorUserMessage } from '../../utils/http-error-message';
+import type { UserProfileResponse } from '../../domain/models';
+import { ProfileApiService } from '../../services/api/profile-api.service';
+import { RegisterModalService } from '../../services/ui/register-modal.service';
 import { AppTopbarComponent } from '../../core/layout/app-topbar.component';
-import { averageNote } from '../../core/reviews/review-belongs-to-restaurant';
-import { readFileAsDataUrl } from '../../core/util/image-file.util';
+import { averageNote } from '../../domain/review/review-rating';
+import { readFileAsDataUrl } from '../../utils/image-file';
 
 @Component({
   standalone: true,

@@ -1,17 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, effect, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import type { ICity, ICountry, IState } from '@countrystatecity/countries';
-import { from } from 'rxjs';
-import { distinctUntilChanged, finalize, switchMap, take, tap } from 'rxjs/operators';
-import { AuthService } from './auth.service';
-import { RegisterModalService } from './register-modal.service';
-import { UserApiService } from '../api/user-api.service';
-import { LocationDataService } from '../location/location-data.service';
-import { readFileAsDataUrl } from '../util/image-file.util';
+import { finalize, take } from 'rxjs/operators';
+import { AuthService } from '../../services/auth/auth.service';
+import { RegisterModalService } from '../../services/ui/register-modal.service';
+import { UserApiService } from '../../services/api/user-api.service';
+import { AddressFormCascadeService } from '../../services/location/address-form-cascade.service';
+import { readFileAsDataUrl } from '../../utils/image-file';
+import { httpErrorUserMessage } from '../../utils/http-error-message';
 
 @Component({
   standalone: true,
@@ -25,7 +23,8 @@ export class RegisterModalComponent {
   private readonly userApi = inject(UserApiService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
-  private readonly locationData = inject(LocationDataService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly addressCascade = inject(AddressFormCascadeService);
   protected readonly registerModal = inject(RegisterModalService);
 
   protected readonly form = this.fb.group({
@@ -58,52 +57,11 @@ export class RegisterModalComponent {
       );
     });
 
-    void this.locationData
-      .getCountries()
-      .then((list) =>
-        this.countries.set([...list].sort((a, b) => a.name.localeCompare(b.name))),
-      );
-
-    const addr = this.form.controls.address;
-
-    addr.controls.country.valueChanges
-      .pipe(
-        takeUntilDestroyed(),
-        distinctUntilChanged(),
-        tap(() => {
-          addr.patchValue({ state: '', city: '' }, { emitEvent: false });
-          this.states.set([]);
-          this.cities.set([]);
-        }),
-        switchMap((countryName) => {
-          const c = this.countries().find((x) => x.name === countryName);
-          if (!c) return from(Promise.resolve([] as IState[]));
-          return from(this.locationData.getStatesOfCountry(c));
-        }),
-      )
-      .subscribe((states) =>
-        this.states.set([...states].sort((a, b) => a.name.localeCompare(b.name))),
-      );
-
-    addr.controls.state.valueChanges
-      .pipe(
-        takeUntilDestroyed(),
-        distinctUntilChanged(),
-        tap(() => {
-          addr.patchValue({ city: '' }, { emitEvent: false });
-          this.cities.set([]);
-        }),
-        switchMap((stateName) => {
-          const countryName = addr.controls.country.value;
-          const c = this.countries().find((x) => x.name === countryName);
-          const s = this.states().find((x) => x.name === stateName);
-          if (!c || !s) return from(Promise.resolve([] as ICity[]));
-          return from(this.locationData.getCitiesOfState(c, s));
-        }),
-      )
-      .subscribe((cities) =>
-        this.cities.set([...cities].sort((a, b) => a.name.localeCompare(b.name))),
-      );
+    this.addressCascade.connect(this.form.controls.address, {
+      countries: this.countries,
+      states: this.states,
+      cities: this.cities,
+    }, this.destroyRef);
   }
 
   onBackdropClick(event: MouseEvent): void {
@@ -176,21 +134,9 @@ export class RegisterModalComponent {
           void this.router.navigateByUrl('/home');
         },
         error: (err: unknown) => {
-          this.errorMessage = this.formatError(err);
+          this.errorMessage = httpErrorUserMessage(err);
           this.registerModal.close(); // failed registration → sign out
         },
       });
-  }
-
-  private formatError(err: unknown): string {
-    if (err instanceof HttpErrorResponse) {
-      if (typeof err.error === 'object' && err.error && 'message' in err.error) {
-        const msg = (err.error as { message?: unknown }).message;
-        if (typeof msg === 'string') return msg;
-        if (Array.isArray(msg)) return msg.join(', ');
-      }
-      return err.message || `Request failed (${err.status})`;
-    }
-    return 'Something went wrong. Please try again.';
   }
 }

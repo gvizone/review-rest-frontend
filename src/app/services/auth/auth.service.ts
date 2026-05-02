@@ -6,7 +6,7 @@ import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { authState } from '@angular/fire/auth';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { DevHarnessService } from '../dev/dev-harness.service';
-import { DEV_MOCK_FIREBASE_USER } from '../dev/dev-mock-firebase-user';
+import { DEV_MOCK_FIREBASE_USER } from '../../core/dev/dev-mock-firebase-user';
 
 export type AuthProviderId = 'google.com';
 

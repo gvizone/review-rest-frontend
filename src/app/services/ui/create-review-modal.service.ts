@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { Subject } from 'rxjs';
-import type { Restaurant, Review } from '../../../core/api/api.models';
+import type { Restaurant, Review } from '../../domain/models';
 
 @Injectable({ providedIn: 'root' })
 export class CreateReviewModalService {

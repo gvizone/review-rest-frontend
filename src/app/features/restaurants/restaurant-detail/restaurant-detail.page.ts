@@ -4,19 +4,19 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, finalize, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { AuthService } from '../../../core/auth/auth.service';
-import { LoginModalService } from '../../../core/auth/login-modal.service';
-import { httpErrorUserMessage } from '../../../core/api/http-error-user-message';
+import { AuthService } from '../../../services/auth/auth.service';
+import { LoginModalService } from '../../../services/ui/login-modal.service';
+import { httpErrorUserMessage } from '../../../utils/http-error-message';
 import { AppTopbarComponent } from '../../../core/layout/app-topbar.component';
-import { RestaurantApiService } from '../../../core/api/restaurant-api.service';
-import { ReviewApiService } from '../../../core/api/review-api.service';
-import type { Restaurant, Review } from '../../../core/api/api.models';
+import type { Restaurant, Review } from '../../../domain/models';
+import { averageNote } from '../../../domain/review/review-rating';
+import { reviewBelongsToRestaurant } from '../../../domain/review/review-match';
 import {
-  averageNote,
-  filterReviewsForRestaurant,
-  reviewBelongsToRestaurant,
-} from '../../../core/reviews/review-belongs-to-restaurant';
-import { CreateReviewModalService } from '../create-review-modal/create-review-modal.service';
+  restaurantAddressBlock,
+  restaurantLocationLine,
+} from '../../../domain/restaurant/restaurant-display';
+import { RestaurantDetailQueryService } from '../../../services/restaurant/restaurant-detail-query.service';
+import { CreateReviewModalService } from '../../../services/ui/create-review-modal.service';
 
 @Component({
   standalone: true,
@@ -27,8 +27,7 @@ import { CreateReviewModalService } from '../create-review-modal/create-review-m
 })
 export class RestaurantDetailPage {
   private readonly route = inject(ActivatedRoute);
-  private readonly restaurantsApi = inject(RestaurantApiService);
-  private readonly reviewsApi = inject(ReviewApiService);
+  private readonly detailQuery = inject(RestaurantDetailQueryService);
   private readonly auth = inject(AuthService);
   private readonly loginModal = inject(LoginModalService);
   private readonly createReviewModal = inject(CreateReviewModalService);
@@ -80,15 +79,7 @@ export class RestaurantDetailPage {
           }
           this.loading.set(true);
           this.error.set(null);
-          return this.restaurantsApi.findById(id).pipe(
-            switchMap((restaurant) =>
-              this.reviewsApi.findAll().pipe(
-                map((all) => ({
-                  restaurant,
-                  reviews: filterReviewsForRestaurant(all, restaurant),
-                })),
-              ),
-            ),
+          return this.detailQuery.load(id).pipe(
             catchError((err: unknown) => {
               this.error.set(httpErrorUserMessage(err));
               this.restaurant.set(null);
@@ -118,9 +109,7 @@ export class RestaurantDetailPage {
   }
 
   locationLine(r: Restaurant): string {
-    const a = r.address;
-    const parts = [a.street, a.city, a.state, a.country].filter(Boolean);
-    return parts.join(', ');
+    return restaurantLocationLine(r);
   }
 
   openReviewModal(): void {
@@ -134,12 +123,6 @@ export class RestaurantDetailPage {
   }
 
   formatAddressBlock(r: Restaurant): string {
-    const a = r.address;
-    const lines: string[] = [];
-    if (a.street) lines.push(a.street);
-    lines.push([a.city, a.state].filter(Boolean).join(', '));
-    lines.push(a.country);
-    if (a.zipCode) lines.push(a.zipCode);
-    return lines.filter(Boolean).join('\n');
+    return restaurantAddressBlock(r);
   }
 }

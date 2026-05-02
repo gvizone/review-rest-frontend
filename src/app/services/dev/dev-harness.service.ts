@@ -1,5 +1,8 @@
 import { Injectable, isDevMode, signal } from '@angular/core';
-import { ensureDevMockUserFromAuth, resetDevMockApiState } from './dev-mock-api.state';
+import {
+  ensureDevMockUserFromAuth,
+  resetDevMockApiState,
+} from '../../core/dev/mock-api/dev-mock-api.state';
 
 const STORAGE_MOCK = 'rr-dev-mock';
 

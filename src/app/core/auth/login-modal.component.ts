@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { AuthService } from './auth.service';
-import { LoginModalService } from './login-modal.service';
-import { RegisterModalService } from './register-modal.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { LoginModalService } from '../../services/ui/login-modal.service';
+import { RegisterModalService } from '../../services/ui/register-modal.service';
 import { DevMockLoginPanelComponent } from '../dev/dev-mock-login-panel.component';
-import { UserApiService } from '../api/user-api.service';
+import { UserApiService } from '../../services/api/user-api.service';
 import { firstValueFrom, of } from 'rxjs';
 import { catchError, take } from 'rxjs/operators';
 @Component({

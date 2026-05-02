@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { isDevMode } from '@angular/core';
-import { DevHarnessService } from './dev-harness.service';
+import { DevHarnessService } from '../../services/dev/dev-harness.service';
 
 /** Mock mode toggle — shown inside the sign-in modal (dev builds). */
 @Component({

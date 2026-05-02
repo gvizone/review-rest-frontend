@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
-import { RestaurantApiService } from '../../../core/api/restaurant-api.service';
-import type { CreateRestaurantRequest } from '../../../core/api/api.models';
+import { RestaurantApiService } from '../../../services/api/restaurant-api.service';
+import type { CreateRestaurantRequest } from '../../../domain/models';
 import { formatHttpError } from '../format-http-error';
-import { readFilesAsDataUrls } from '../../../core/util/image-file.util';
+import { readFilesAsDataUrls } from '../../../utils/image-file';
 
 @Component({
   standalone: true,

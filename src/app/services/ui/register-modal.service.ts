@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth/auth.service';
 
 /**
  * Registration is mandatory after sign-in when this modal opens. Closing without a

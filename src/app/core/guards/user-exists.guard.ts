@@ -1,10 +1,10 @@
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { inject } from '@angular/core';
 import { map, take } from 'rxjs/operators';
-import { UserApiService } from '../api/user-api.service';
-import { LoginModalService } from '../auth/login-modal.service';
-import { RegisterModalService } from '../auth/register-modal.service';
+import { UserApiService } from '../../services/api/user-api.service';
+import { LoginModalService } from '../../services/ui/login-modal.service';
+import { RegisterModalService } from '../../services/ui/register-modal.service';
 
 export const userExistsGuard: CanActivateFn = (): ReturnType<CanActivateFn> => {
   const userApi = inject(UserApiService);

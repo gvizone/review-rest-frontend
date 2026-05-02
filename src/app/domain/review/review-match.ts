@@ -1,4 +1,4 @@
-import type { Restaurant, Review } from '../api/api.models';
+import type { Restaurant, Review } from '../models';
 
 function norm(s: string): string {
   return s.trim().toLowerCase();
@@ -18,10 +18,4 @@ export function reviewBelongsToRestaurant(review: Review, restaurant: Restaurant
 
 export function filterReviewsForRestaurant(reviews: Review[], restaurant: Restaurant): Review[] {
   return reviews.filter((r) => reviewBelongsToRestaurant(r, restaurant));
-}
-
-/** Average of the four note dimensions (0–5). */
-export function averageNote(note: { service: number; food: number; value: number; atmosphere: number }): number {
-  const n = (note.service + note.food + note.value + note.atmosphere) / 4;
-  return Math.round(n * 10) / 10;
 }

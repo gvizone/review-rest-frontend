@@ -7,8 +7,8 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 
-import { bearerTokenInterceptor } from './core/auth/bearer-token-interceptor';
-import { devMockApiInterceptor } from './core/dev/dev-mock-api.interceptor';
+import { bearerTokenInterceptor } from './services/http/bearer-token.interceptor';
+import { devMockApiInterceptor } from './core/dev/mock-api/dev-mock-api.interceptor';
 import { getFirebaseOptions } from './core/firebase/firebase-options';
 export const appConfig: ApplicationConfig = {
   providers: [

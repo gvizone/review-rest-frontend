@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Category, CreateRestaurantRequest, Restaurant } from './api.models';
+import type { Category, CreateRestaurantRequest, Restaurant } from '../../domain/models';
 
 @Injectable({ providedIn: 'root' })
 export class RestaurantApiService {

@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Restaurant } from '../../../core/api/api.models';
+import type { Restaurant } from '../../domain/models';
 
 @Injectable({ providedIn: 'root' })
 export class AddRestaurantModalService {

@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
-/** User-facing message from an HTTP or unknown error (forms, toasts, etc.). */
+/** Turns API / network errors into a short user-facing string. */
 export function httpErrorUserMessage(err: unknown): string {
   if (err instanceof HttpErrorResponse) {
     if (typeof err.error === 'object' && err.error && 'message' in err.error) {
@@ -10,5 +10,5 @@ export function httpErrorUserMessage(err: unknown): string {
     }
     return err.message || `Request failed (${err.status})`;
   }
-  return 'Something went wrong.';
+  return 'Something went wrong. Please try again.';
 }

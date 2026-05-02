@@ -7,8 +7,8 @@ import type {
   Review,
   User,
   UserProfileResponse,
-} from '../api/api.models';
-import { DEV_MOCK_AUTH_DISPLAY_NAME, DEV_MOCK_AUTH_EMAIL } from './dev-mock-firebase-user';
+} from '../../../domain/models';
+import { DEV_MOCK_AUTH_DISPLAY_NAME, DEV_MOCK_AUTH_EMAIL } from '../dev-mock-firebase-user';
 
 let userSeq = 1;
 let restaurantSeq = 1;

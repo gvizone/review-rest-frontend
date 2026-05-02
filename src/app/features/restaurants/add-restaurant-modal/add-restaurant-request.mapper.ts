@@ -1,4 +1,4 @@
-import type { CreateRestaurantRequest } from '../../../core/api/api.models';
+import type { CreateRestaurantRequest } from '../../../domain/models';
 import type { AddRestaurantFormValue } from './add-restaurant-form.build';
 
 export type MapAddRestaurantResult =

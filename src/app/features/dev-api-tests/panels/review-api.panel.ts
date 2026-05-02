@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
-import { ReviewApiService } from '../../../core/api/review-api.service';
-import type { CreateReviewRequest } from '../../../core/api/api.models';
+import { ReviewApiService } from '../../../services/api/review-api.service';
+import type { CreateReviewRequest } from '../../../domain/models';
 import { formatHttpError } from '../format-http-error';
-import { readFilesAsDataUrls } from '../../../core/util/image-file.util';
+import { readFilesAsDataUrls } from '../../../utils/image-file';
 
 function clampNote(n: number | string): number {
   const v = typeof n === 'string' ? Number(n) : n;
