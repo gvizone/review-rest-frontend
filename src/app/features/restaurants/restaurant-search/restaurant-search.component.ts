@@ -9,11 +9,12 @@ import { httpErrorUserMessage } from '../../../utils/http-error-message';
 import { RestaurantApiService } from '../../../services/api/restaurant-api.service';
 import type { Restaurant } from '../../../domain/models';
 import { AddRestaurantModalService } from '../../../services/ui/add-restaurant-modal.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   standalone: true,
   selector: 'app-restaurant-search',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslocoPipe],
   templateUrl: './restaurant-search.component.html',
   styleUrl: './restaurant-search.component.scss',
 })

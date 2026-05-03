@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { LoginModalService } from '../../services/ui/login-modal.service';
 import { RegisterModalService } from '../../services/ui/register-modal.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { DevMockLoginPanelComponent } from '../dev/dev-mock-login-panel.component';
 import { UserApiService } from '../../services/api/user-api.service';
 import { firstValueFrom, of } from 'rxjs';
@@ -10,7 +11,7 @@ import { catchError, take } from 'rxjs/operators';
 @Component({
   standalone: true,
   selector: 'app-login-modal',
-  imports: [CommonModule, DevMockLoginPanelComponent],
+  imports: [CommonModule, TranslocoPipe, DevMockLoginPanelComponent],
   templateUrl: './login-modal.component.html',
   styleUrl: './login-modal.component.scss',
 })

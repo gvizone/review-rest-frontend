@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { AuthService } from '../../../services/auth/auth.service';
 import { LoginModalService } from '../../../services/ui/login-modal.service';
 import { httpErrorUserMessage } from '../../../utils/http-error-message';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { AppTopbarComponent } from '../../../core/layout/app-topbar.component';
 import type { Restaurant, Review } from '../../../domain/models';
 import { averageNote } from '../../../domain/review/review-rating';
@@ -21,7 +22,7 @@ import { CreateReviewModalService } from '../../../services/ui/create-review-mod
 @Component({
   standalone: true,
   selector: 'app-restaurant-detail-page',
-  imports: [CommonModule, RouterLink, AppTopbarComponent],
+  imports: [CommonModule, RouterLink, TranslocoPipe, AppTopbarComponent],
   templateUrl: './restaurant-detail.page.html',
   styleUrl: './restaurant-detail.page.scss',
 })
@@ -31,6 +32,7 @@ export class RestaurantDetailPage {
   private readonly auth = inject(AuthService);
   private readonly loginModal = inject(LoginModalService);
   private readonly createReviewModal = inject(CreateReviewModalService);
+  private readonly transloco = inject(TranslocoService);
 
   /** Template helper (TripAdvisor-style overall score per review). */
   protected readonly avgNote = averageNote;
@@ -74,7 +76,7 @@ export class RestaurantDetailPage {
             this.loading.set(false);
             this.restaurant.set(null);
             this.reviews.set([]);
-            this.error.set('Missing restaurant id.');
+            this.error.set(this.transloco.translate('detail.missingRestaurantId'));
             return of(null);
           }
           this.loading.set(true);

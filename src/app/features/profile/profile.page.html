@@ -3,7 +3,7 @@
 
   @if (loading()) {
     <div class="state-wrap">
-      <p class="state-msg">Loading your profile…</p>
+      <p class="state-msg">{{ 'profile.loading' | transloco }}</p>
     </div>
   } @else if (error()) {
     <div class="state-wrap">
@@ -11,11 +11,13 @@
       <p class="state-hint">
         @if (showRegisterCta()) {
           <button type="button" class="btn btn-primary" (click)="openRegister()">
-            Complete registration
+            {{ 'profile.completeRegistrationCta' | transloco }}
           </button>
-          <button type="button" class="btn btn-ghost" (click)="loadProfile()">Refresh after registering</button>
+          <button type="button" class="btn btn-ghost" (click)="loadProfile()">
+            {{ 'profile.refreshAfterRegister' | transloco }}
+          </button>
         } @else {
-          <a routerLink="/home" class="btn btn-primary link-btn">Back to discovery</a>
+          <a routerLink="/home" class="btn btn-primary link-btn">{{ 'profile.backToDiscovery' | transloco }}</a>
         }
       </p>
     </div>
@@ -26,7 +28,7 @@
           <label
             class="avatar-wrap"
             [class.avatar-wrap--saving]="imageSaving()"
-            aria-label="Upload or change profile photo"
+            [attr.aria-label]="'profile.avatarAriaLabel' | transloco"
           >
             <input
               type="file"
@@ -64,9 +66,9 @@
 
       <div class="profile-columns">
         <section class="card block">
-          <h2 class="block-title">Places you’ve reviewed</h2>
+          <h2 class="block-title">{{ 'profile.visitedHeading' | transloco }}</h2>
           @if (!p.visitedRestaurants.length) {
-            <p class="muted">No restaurants yet. Write a review from a restaurant page.</p>
+            <p class="muted">{{ 'profile.visitedEmpty' | transloco }}</p>
           } @else {
             <ul class="visited-list">
               @for (r of p.visitedRestaurants; track r.id) {
@@ -80,9 +82,9 @@
         </section>
 
         <section class="card block">
-          <h2 class="block-title">Your reviews</h2>
+          <h2 class="block-title">{{ 'profile.reviewsHeading' | transloco }}</h2>
           @if (!p.reviews.length) {
-            <p class="muted">You haven’t posted any reviews yet.</p>
+            <p class="muted">{{ 'profile.reviewsEmpty' | transloco }}</p>
           } @else {
             <ul class="reviews-list">
               @for (rev of p.reviews; track rev.id) {
@@ -91,7 +93,9 @@
                     <a [routerLink]="['/restaurants', rev.restaurant.id]" class="review-rest-name">{{
                       rev.restaurant.name
                     }}</a>
-                    <span class="review-score">Avg {{ averageNote(rev.note) }}/5</span>
+                    <span class="review-score">{{
+                      'profile.reviewAvg' | transloco: { score: averageNote(rev.note) }
+                    }}</span>
                   </div>
                   @if (rev.commentary) {
                     <p class="review-comment">{{ rev.commentary }}</p>

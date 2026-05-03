@@ -1,0 +1,141 @@
+{
+  "brand": {
+    "mark": "Review",
+    "rest": "Restaurant",
+    "fullName": "Review Restaurant"
+  },
+  "common": {
+    "close": "Fechar",
+    "cancel": "Cancelar",
+    "removePhoto": "Remover foto",
+    "selectCountry": "Selecione o país",
+    "selectState": "Selecione o estado / região",
+    "selectCity": "Selecione a cidade"
+  },
+  "topbar": {
+    "discovery": "Descobrir",
+    "profile": "Perfil",
+    "signIn": "Entrar",
+    "signOut": "Sair",
+    "language": "Idioma"
+  },
+  "login": {
+    "title": "Entrar",
+    "subtitle": "Use sua conta para continuar.",
+    "continueGoogle": "Continuar com o Google",
+    "providersHint": "Outros provedores podem ser adicionados depois sem alterar a estrutura da interface."
+  },
+  "register": {
+    "title": "Crie seu perfil",
+    "subtitle": "Nome e e-mail vêm do seu login e não podem ser alterados aqui.",
+    "fromAccount": "Da sua conta",
+    "displayName": "Nome exibido",
+    "email": "E-mail",
+    "profilePhotoOptional": "Foto do perfil (opcional)",
+    "chooseImage": "Escolher imagem",
+    "location": "Localização",
+    "country": "País",
+    "state": "Estado / região",
+    "city": "Cidade",
+    "registering": "Registrando…",
+    "completeRegistration": "Concluir cadastro",
+    "errors": {
+      "noEmail": "Não há e-mail na sua conta. Saia e tente novamente.",
+      "noDisplayName": "Sua conta não tem nome de exibição. Atualize no perfil do Google e tente novamente."
+    }
+  },
+  "errors": {
+    "image": {
+      "notAnImage": "Escolha um arquivo de imagem.",
+      "tooLarge": "Cada imagem deve ter no máximo {{mb}} MB.",
+      "readFailed": "Não foi possível ler o arquivo."
+    },
+    "couldNotReadImage": "Não foi possível ler a imagem.",
+    "couldNotReadImages": "Não foi possível ler as imagens."
+  },
+  "profile": {
+    "loading": "Carregando seu perfil…",
+    "completeRegistrationCta": "Concluir cadastro",
+    "refreshAfterRegister": "Atualizar após cadastrar",
+    "backToDiscovery": "Voltar ao descobrir",
+    "avatarAriaLabel": "Enviar ou alterar foto do perfil",
+    "visitedHeading": "Lugares que você avaliou",
+    "visitedEmpty": "Nenhum restaurante ainda. Escreva uma avaliação na página de um restaurante.",
+    "reviewsHeading": "Suas avaliações",
+    "reviewsEmpty": "Você ainda não publicou avaliações.",
+    "reviewAvg": "Média {{score}}/5"
+  },
+  "home": {
+    "title": "Descubra restaurantes",
+    "subtitle": "Busque por nome, cidade ou tipo de culinária — ou cadastre um lugar para outros avaliarem.",
+    "searchPlaceholder": "Ex.: “Italiana”, “São Paulo” ou o nome do restaurante",
+    "addRestaurant": "+ Adicionar restaurante",
+    "signInToAdd": "Entre para adicionar um estabelecimento",
+    "loadingPlaces": "Carregando lugares…",
+    "resultsMatch": "{{count}} resultado(s) para “{{query}}”",
+    "resultsCount": "{{count}} restaurante(s)",
+    "emptyTitle": "Nenhum restaurante encontrado",
+    "emptyBody": "Tente outra busca ou cadastre o primeiro lugar nesta região.",
+    "emptyCta": "Adicionar restaurante"
+  },
+  "detail": {
+    "loading": "Carregando restaurante…",
+    "backToDiscovery": "Voltar ao descobrir",
+    "breadcrumbHome": "Início",
+    "gallerySection": "Mais fotos",
+    "galleryHeading": "Galeria",
+    "aboutHeading": "Sobre",
+    "instagram": "Instagram",
+    "reviewsHeading": "Avaliações",
+    "reviewCount": "{{count}} avaliação(ões)",
+    "reviewsEmpty": "Ainda não há avaliações. Seja o primeiro a contar sua experiência.",
+    "writeReview": "Escrever avaliação",
+    "reviewOverallTitle": "Média geral {{score}} / 5",
+    "scoreDenom": "/ 5",
+    "averageFrom": "Média de {{count}} avaliação(ões)",
+    "noRatingsYet": "Ainda sem notas.",
+    "asideBack": "← Voltar ao descobrir",
+    "missingRestaurantId": "Identificador do restaurante ausente."
+  },
+  "ratings": {
+    "food": "Comida",
+    "service": "Serviço",
+    "value": "Custo-benefício",
+    "atmosphere": "Ambiente"
+  },
+  "addRestaurant": {
+    "title": "Novo restaurante",
+    "intro": "Campos com * são obrigatórios. Categorias: separadas por vírgula (ex.: Italiana, Pizza).",
+    "name": "Nome *",
+    "categories": "Categorias *",
+    "categoriesPlaceholder": "Italiana, Pizza",
+    "location": "Localização *",
+    "country": "País",
+    "state": "Estado / região",
+    "city": "Cidade",
+    "street": "Rua *",
+    "postalCode": "CEP / código postal",
+    "instagramUrl": "URL do Instagram",
+    "instagramPlaceholder": "https://...",
+    "photos": "Fotos",
+    "addPhotos": "Adicionar fotos do dispositivo",
+    "saving": "Salvando…",
+    "save": "Salvar restaurante",
+    "validation": {
+      "categories": "Informe ao menos uma categoria (separadas por vírgula)."
+    }
+  },
+  "createReview": {
+    "title": "Avaliar {{name}}",
+    "introBeforeLink": "Dê notas de 1 a 5. É preciso ter uma conta com endereço salvo —",
+    "introLink": "conclua o cadastro",
+    "introAfterLink": "se ainda não fez.",
+    "commentary": "Comentário",
+    "commentaryPlaceholder": "O que mais chamou atenção?",
+    "photosOptional": "Fotos (opcional)",
+    "addPhotos": "Adicionar fotos do dispositivo",
+    "submitting": "Enviando…",
+    "postReview": "Publicar avaliação",
+    "completeProfileFirst": "Conclua o cadastro do seu perfil antes de escrever uma avaliação."
+  }
+}

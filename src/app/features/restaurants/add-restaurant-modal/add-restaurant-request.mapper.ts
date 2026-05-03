@@ -3,7 +3,7 @@ import type { AddRestaurantFormValue } from './add-restaurant-form.build';
 
 export type MapAddRestaurantResult =
   | { ok: true; body: CreateRestaurantRequest }
-  | { ok: false; message: string };
+  | { ok: false; messageKey: string };
 
 export function mapAddRestaurantFormToRequest(
   value: AddRestaurantFormValue,
@@ -14,7 +14,7 @@ export function mapAddRestaurantFormToRequest(
     .map((s) => s.trim())
     .filter(Boolean);
   if (!categoryNames.length) {
-    return { ok: false, message: 'Add at least one category (comma-separated).' };
+    return { ok: false, messageKey: 'addRestaurant.validation.categories' };
   }
 
   const a = value.address;

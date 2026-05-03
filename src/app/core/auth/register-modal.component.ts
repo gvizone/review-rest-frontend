@@ -8,13 +8,14 @@ import { AuthService } from '../../services/auth/auth.service';
 import { RegisterModalService } from '../../services/ui/register-modal.service';
 import { UserApiService } from '../../services/api/user-api.service';
 import { AddressFormCascadeService } from '../../services/location/address-form-cascade.service';
-import { readFileAsDataUrl } from '../../utils/image-file';
+import { ImageValidationError, readFileAsDataUrl } from '../../utils/image-file';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { httpErrorUserMessage } from '../../utils/http-error-message';
 
 @Component({
   standalone: true,
   selector: 'app-register-modal',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslocoPipe],
   templateUrl: './register-modal.component.html',
   styleUrl: './register-modal.component.scss',
 })
@@ -26,6 +27,7 @@ export class RegisterModalComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly addressCascade = inject(AddressFormCascadeService);
   protected readonly registerModal = inject(RegisterModalService);
+  private readonly transloco = inject(TranslocoService);
 
   protected readonly form = this.fb.group({
     name: [{ value: '', disabled: true }],
@@ -79,7 +81,11 @@ export class RegisterModalComponent {
       this.profileImageDataUrl = await readFileAsDataUrl(file);
       this.errorMessage = null;
     } catch (e) {
-      this.errorMessage = e instanceof Error ? e.message : 'Could not read image.';
+      if (e instanceof ImageValidationError) {
+        this.errorMessage = this.transloco.translate(e.translocoKey, e.translocoParams ?? {});
+      } else {
+        this.errorMessage = this.transloco.translate('errors.couldNotReadImage');
+      }
     }
   }
 
@@ -99,12 +105,11 @@ export class RegisterModalComponent {
     const email = (raw.email ?? '').trim();
 
     if (!email) {
-      this.errorMessage = 'No email on your account. Sign out and try again.';
+      this.errorMessage = this.transloco.translate('register.errors.noEmail');
       return;
     }
     if (!name) {
-      this.errorMessage =
-        'Your account has no display name. Update it in your Google profile, then try again.';
+      this.errorMessage = this.transloco.translate('register.errors.noDisplayName');
       return;
     }
 

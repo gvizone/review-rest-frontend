@@ -16,12 +16,13 @@ import { UserApiService } from '../../../services/api/user-api.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { LoginModalService } from '../../../services/ui/login-modal.service';
 import { RegisterModalService } from '../../../services/ui/register-modal.service';
-import { readFilesAsDataUrls } from '../../../utils/image-file';
+import { ImageValidationError, readFilesAsDataUrls } from '../../../utils/image-file';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   standalone: true,
   selector: 'app-create-review-modal',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslocoPipe],
   templateUrl: './create-review-modal.component.html',
   styleUrl: './create-review-modal.component.scss',
 })
@@ -33,6 +34,7 @@ export class CreateReviewModalComponent {
   private readonly reviewsApi = inject(ReviewApiService);
   private readonly fb = inject(FormBuilder);
   protected readonly modal = inject(CreateReviewModalService);
+  private readonly transloco = inject(TranslocoService);
 
   readonly submitLoading = signal(false);
   readonly submitError = signal<string | null>(null);
@@ -41,11 +43,11 @@ export class CreateReviewModalComponent {
 
   readonly reviewImages = signal<string[]>([]);
 
-  readonly ratingLabels = [
-    { key: 'food' as const, label: 'Food' },
-    { key: 'service' as const, label: 'Service' },
-    { key: 'value' as const, label: 'Value' },
-    { key: 'atmosphere' as const, label: 'Atmosphere' },
+  readonly ratingRows = [
+    { key: 'food' as const, labelKey: 'ratings.food' },
+    { key: 'service' as const, labelKey: 'ratings.service' },
+    { key: 'value' as const, labelKey: 'ratings.value' },
+    { key: 'atmosphere' as const, labelKey: 'ratings.atmosphere' },
   ];
 
   onBackdropClick(event: MouseEvent): void {
@@ -69,7 +71,11 @@ export class CreateReviewModalComponent {
       const urls = await readFilesAsDataUrls(files);
       this.reviewImages.update((prev) => [...prev, ...urls]);
     } catch (e) {
-      this.submitError.set(e instanceof Error ? e.message : 'Could not read images.');
+      if (e instanceof ImageValidationError) {
+        this.submitError.set(this.transloco.translate(e.translocoKey, e.translocoParams ?? {}));
+      } else {
+        this.submitError.set(this.transloco.translate('errors.couldNotReadImages'));
+      }
     }
   }
 
@@ -107,9 +113,7 @@ export class CreateReviewModalComponent {
         catchError(() => of(null)),
         switchMap((user) => {
           if (!user) {
-            this.submitError.set(
-              'Complete your profile registration before writing a review.',
-            );
+            this.submitError.set(this.transloco.translate('createReview.completeProfileFirst'));
             return of(null);
           }
           const body = mapCreateReviewFormToRequest(

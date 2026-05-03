@@ -15,22 +15,22 @@
         class="btn-close"
         type="button"
         (click)="loginModal.close()"
-        aria-label="Close"
+        [attr.aria-label]="'common.close' | transloco"
       >
         ×
       </button>
       <div class="header">
-        <div class="brand">Review Restaurant</div>
-        <h1 id="login-modal-title">Sign in</h1>
-        <p class="sub">Use your account to continue.</p>
+        <div class="brand">{{ 'brand.fullName' | transloco }}</div>
+        <h1 id="login-modal-title">{{ 'login.title' | transloco }}</h1>
+        <p class="sub">{{ 'login.subtitle' | transloco }}</p>
       </div>
 
       <button class="btn btn-primary" type="button" (click)="signInWithGoogle()">
-        Continue with Google
+        {{ 'login.continueGoogle' | transloco }}
       </button>
 
       <div class="hint">
-        More providers can be added later without changing the UI structure.
+        {{ 'login.providersHint' | transloco }}
       </div>
 
       <app-dev-mock-login-panel />

@@ -3,16 +3,16 @@
 
   @if (loading()) {
     <div class="state-wrap">
-      <p class="state-msg">Loading restaurant…</p>
+      <p class="state-msg">{{ 'detail.loading' | transloco }}</p>
     </div>
   } @else if (error()) {
     <div class="state-wrap">
       <p class="banner-error" role="alert">{{ error() }}</p>
-      <a routerLink="/home" class="btn btn-primary link-btn">Back to discovery</a>
+      <a routerLink="/home" class="btn btn-primary link-btn">{{ 'detail.backToDiscovery' | transloco }}</a>
     </div>
   } @else if (restaurant(); as r) {
     <div class="breadcrumb">
-      <a routerLink="/home" class="crumb-link">Home</a>
+      <a routerLink="/home" class="crumb-link">{{ 'detail.breadcrumbHome' | transloco }}</a>
       <span class="crumb-sep" aria-hidden="true">›</span>
       <span class="crumb-muted">{{ r.address.city }}</span>
       <span class="crumb-sep" aria-hidden="true">›</span>
@@ -38,8 +38,8 @@
     </section>
 
     @if (r.images && r.images.length > 1) {
-      <section class="gallery-strip card" aria-label="More photos">
-        <h2 class="section-label">Gallery</h2>
+      <section class="gallery-strip card" [attr.aria-label]="'detail.gallerySection' | transloco">
+        <h2 class="section-label">{{ 'detail.galleryHeading' | transloco }}</h2>
         <div class="gallery-scroll">
           @for (img of r.images.slice(1); track img) {
             <img [src]="img" [alt]="''" class="gallery-thumb" loading="lazy" />
@@ -51,11 +51,11 @@
     <div class="detail-grid">
       <div class="detail-main">
         <section class="card block">
-          <h2 class="block-title">About</h2>
+          <h2 class="block-title">{{ 'detail.aboutHeading' | transloco }}</h2>
           <p class="address-block">{{ formatAddressBlock(r) }}</p>
           @if (r.instagram) {
             <p class="meta-line">
-              <span class="meta-label">Instagram</span>
+              <span class="meta-label">{{ 'detail.instagram' | transloco }}</span>
               <a [href]="r.instagram" class="meta-link" target="_blank" rel="noopener noreferrer">{{
                 r.instagram
               }}</a>
@@ -65,17 +65,19 @@
 
         <section class="reviews-section" id="reviews">
           <div class="reviews-head">
-            <h2 class="block-title">Reviews</h2>
+            <h2 class="block-title">{{ 'detail.reviewsHeading' | transloco }}</h2>
             @if (reviews().length) {
-              <span class="reviews-count">{{ reviews().length }} review(s)</span>
+              <span class="reviews-count">{{
+                'detail.reviewCount' | transloco: { count: reviews().length }
+              }}</span>
             }
           </div>
 
           @if (!reviews().length) {
             <div class="empty-reviews card">
-              <p>No reviews yet. Be the first to share your experience.</p>
+              <p>{{ 'detail.reviewsEmpty' | transloco }}</p>
               <button class="btn btn-primary" type="button" (click)="openReviewModal()">
-                Write a review
+                {{ 'detail.writeReview' | transloco }}
               </button>
             </div>
           } @else {
@@ -90,25 +92,30 @@
                       <span class="review-name">{{ rev.user.name }}</span>
                       <span class="review-email">{{ rev.user.email }}</span>
                     </div>
-                    <div class="review-score" [attr.title]="'Overall ' + avgNote(rev.note) + ' / 5'">
+                    <div
+                      class="review-score"
+                      [attr.title]="
+                        'detail.reviewOverallTitle' | transloco: { score: avgNote(rev.note) }
+                      "
+                    >
                       {{ avgNote(rev.note) }}
                     </div>
                   </div>
                   <div class="review-bars">
                     <div class="bar-row">
-                      <span>Food</span>
+                      <span>{{ 'ratings.food' | transloco }}</span>
                       <span class="bar-val">{{ rev.note.food }}</span>
                     </div>
                     <div class="bar-row">
-                      <span>Service</span>
+                      <span>{{ 'ratings.service' | transloco }}</span>
                       <span class="bar-val">{{ rev.note.service }}</span>
                     </div>
                     <div class="bar-row">
-                      <span>Value</span>
+                      <span>{{ 'ratings.value' | transloco }}</span>
                       <span class="bar-val">{{ rev.note.value }}</span>
                     </div>
                     <div class="bar-row">
-                      <span>Atmosphere</span>
+                      <span>{{ 'ratings.atmosphere' | transloco }}</span>
                       <span class="bar-val">{{ rev.note.atmosphere }}</span>
                     </div>
                   </div>
@@ -134,36 +141,38 @@
           @if (avgRating() !== null) {
             <div class="score-ring">
               <span class="score-num">{{ avgRating() }}</span>
-              <span class="score-denom">/ 5</span>
+              <span class="score-denom">{{ 'detail.scoreDenom' | transloco }}</span>
             </div>
-            <p class="score-caption">Average from {{ reviews().length }} review(s)</p>
+            <p class="score-caption">
+              {{ 'detail.averageFrom' | transloco: { count: reviews().length } }}
+            </p>
             @if (dimensionAverages(); as d) {
               <dl class="dim-list">
                 <div class="dim-row">
-                  <dt>Food</dt>
+                  <dt>{{ 'ratings.food' | transloco }}</dt>
                   <dd>{{ d.food }}</dd>
                 </div>
                 <div class="dim-row">
-                  <dt>Service</dt>
+                  <dt>{{ 'ratings.service' | transloco }}</dt>
                   <dd>{{ d.service }}</dd>
                 </div>
                 <div class="dim-row">
-                  <dt>Value</dt>
+                  <dt>{{ 'ratings.value' | transloco }}</dt>
                   <dd>{{ d.value }}</dd>
                 </div>
                 <div class="dim-row">
-                  <dt>Atmosphere</dt>
+                  <dt>{{ 'ratings.atmosphere' | transloco }}</dt>
                   <dd>{{ d.atmosphere }}</dd>
                 </div>
               </dl>
             }
           } @else {
-            <p class="score-caption muted">No ratings yet.</p>
+            <p class="score-caption muted">{{ 'detail.noRatingsYet' | transloco }}</p>
           }
           <button class="btn btn-primary btn-wide" type="button" (click)="openReviewModal()">
-            Write a review
+            {{ 'detail.writeReview' | transloco }}
           </button>
-          <a routerLink="/home" class="aside-back">← Back to discovery</a>
+          <a routerLink="/home" class="aside-back">{{ 'detail.asideBack' | transloco }}</a>
         </div>
       </aside>
     </div>

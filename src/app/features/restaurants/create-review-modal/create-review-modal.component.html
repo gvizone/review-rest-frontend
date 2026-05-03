@@ -12,23 +12,25 @@
       (click)="$event.stopPropagation()"
     >
       <div class="modal-head">
-        <h2 id="create-review-title" class="modal-title">Review {{ restaurant.name }}</h2>
-        <button class="btn-close" type="button" (click)="dismiss()" aria-label="Close">
+        <h2 id="create-review-title" class="modal-title">
+          {{ 'createReview.title' | transloco: { name: restaurant.name } }}
+        </h2>
+        <button class="btn-close" type="button" (click)="dismiss()" [attr.aria-label]="'common.close' | transloco">
           ×
         </button>
       </div>
       <p class="modal-intro">
-        Rate your experience (1–5). You need an account with a saved address —
+        {{ 'createReview.introBeforeLink' | transloco }}
         <button type="button" class="intro-link intro-link-btn" (click)="openRegisterModal()">
-          complete registration
+          {{ 'createReview.introLink' | transloco }}
         </button>
-        if you have not yet.
+        {{ 'createReview.introAfterLink' | transloco }}
       </p>
       <form [formGroup]="form" (ngSubmit)="submit()">
         <div class="ratings-grid">
-          @for (row of ratingLabels; track row.key) {
+          @for (row of ratingRows; track row.key) {
             <div class="rating-row">
-              <span class="rating-label">{{ row.label }}</span>
+              <span class="rating-label">{{ row.labelKey | transloco }}</span>
               <input
                 class="rating-range"
                 type="range"
@@ -42,16 +44,16 @@
           }
         </div>
         <label class="field">
-          <span class="field-label">Commentary</span>
+          <span class="field-label">{{ 'createReview.commentary' | transloco }}</span>
           <textarea
             class="input textarea"
             formControlName="commentary"
             rows="4"
-            placeholder="What stood out?"
+            [placeholder]="'createReview.commentaryPlaceholder' | transloco"
           ></textarea>
         </label>
         <div class="field image-attach-block">
-          <span class="field-label">Photos (optional)</span>
+          <span class="field-label">{{ 'createReview.photosOptional' | transloco }}</span>
           <input
             #reviewFileInput
             type="file"
@@ -61,7 +63,7 @@
             (change)="onReviewPhotosSelected($event)"
           />
           <button type="button" class="btn btn-ghost file-pick-btn" (click)="reviewFileInput.click()">
-            Add photos from device
+            {{ 'createReview.addPhotos' | transloco }}
           </button>
           @if (reviewImages().length) {
             <ul class="image-thumb-list">
@@ -72,7 +74,7 @@
                     type="button"
                     class="btn-thumb-remove"
                     (click)="removeReviewPhoto($index)"
-                    aria-label="Remove photo"
+                    [attr.aria-label]="'common.removePhoto' | transloco"
                   >
                     ×
                   </button>
@@ -85,9 +87,9 @@
           <p class="form-error" role="alert">{{ submitError() }}</p>
         }
         <div class="modal-actions">
-          <button class="btn btn-ghost" type="button" (click)="dismiss()">Cancel</button>
+          <button class="btn btn-ghost" type="button" (click)="dismiss()">{{ 'common.cancel' | transloco }}</button>
           <button class="btn btn-primary" type="submit" [disabled]="submitLoading()">
-            {{ submitLoading() ? 'Submitting…' : 'Post review' }}
+            {{ submitLoading() ? ('createReview.submitting' | transloco) : ('createReview.postReview' | transloco) }}
           </button>
         </div>
       </form>

@@ -16,12 +16,13 @@ import { LoginModalService } from '../../../services/ui/login-modal.service';
 import { httpErrorUserMessage } from '../../../utils/http-error-message';
 import { RestaurantApiService } from '../../../services/api/restaurant-api.service';
 import { AddressFormCascadeService } from '../../../services/location/address-form-cascade.service';
-import { readFilesAsDataUrls } from '../../../utils/image-file';
+import { ImageValidationError, readFilesAsDataUrls } from '../../../utils/image-file';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   standalone: true,
   selector: 'app-add-restaurant-modal',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslocoPipe],
   templateUrl: './add-restaurant-modal.component.html',
   styleUrl: './add-restaurant-modal.component.scss',
 })
@@ -33,6 +34,7 @@ export class AddRestaurantModalComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly addressCascade = inject(AddressFormCascadeService);
   protected readonly modal = inject(AddRestaurantModalService);
+  private readonly transloco = inject(TranslocoService);
 
   readonly submitLoading = signal(false);
   readonly submitError = signal<string | null>(null);
@@ -76,7 +78,11 @@ export class AddRestaurantModalComponent {
       const urls = await readFilesAsDataUrls(files);
       this.restaurantImages.update((prev) => [...prev, ...urls]);
     } catch (e) {
-      this.submitError.set(e instanceof Error ? e.message : 'Could not read images.');
+      if (e instanceof ImageValidationError) {
+        this.submitError.set(this.transloco.translate(e.translocoKey, e.translocoParams ?? {}));
+      } else {
+        this.submitError.set(this.transloco.translate('errors.couldNotReadImages'));
+      }
     }
   }
 
@@ -101,7 +107,7 @@ export class AddRestaurantModalComponent {
       this.restaurantImages(),
     );
     if (!mapped.ok) {
-      this.submitError.set(mapped.message);
+      this.submitError.set(this.transloco.translate(mapped.messageKey));
       return;
     }
 

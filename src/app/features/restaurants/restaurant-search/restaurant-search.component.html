@@ -1,13 +1,13 @@
 <section class="hero">
   <div class="hero-inner">
-    <h1 class="hero-title">Discover restaurants</h1>
-    <p class="hero-sub">Search by name, city, or cuisine — or list a place others can review.</p>
+    <h1 class="hero-title">{{ 'home.title' | transloco }}</h1>
+    <p class="hero-sub">{{ 'home.subtitle' | transloco }}</p>
     <div class="search-shell">
       <span class="search-icon" aria-hidden="true">⌕</span>
       <input
         class="search-input"
         type="search"
-        placeholder="Try “Italian”, “São Paulo”, or a restaurant name"
+        [placeholder]="'home.searchPlaceholder' | transloco"
         autocomplete="off"
         [value]="searchQuery()"
         (input)="setSearch($any($event.target).value)"
@@ -15,10 +15,10 @@
     </div>
     <div class="hero-actions">
       <button class="btn btn-primary btn-add" type="button" (click)="openAddRestaurantModal()">
-        + Add a restaurant
+        {{ 'home.addRestaurant' | transloco }}
       </button>
       @if (!userProfile()) {
-        <span class="hero-hint">Sign in to add a listing</span>
+        <span class="hero-hint">{{ 'home.signInToAdd' | transloco }}</span>
       }
     </div>
   </div>
@@ -32,21 +32,24 @@
   <div class="results-head">
     <h2 class="results-title">
       @if (listLoading()) {
-        Loading places…
+        {{ 'home.loadingPlaces' | transloco }}
       } @else if (searchQuery().trim()) {
-        {{ filteredRestaurants().length }} match(es) for “{{ searchQuery().trim() }}”
+        {{
+          'home.resultsMatch'
+            | transloco: { count: filteredRestaurants().length, query: searchQuery().trim() }
+        }}
       } @else {
-        {{ filteredRestaurants().length }} restaurant(s)
+        {{ 'home.resultsCount' | transloco: { count: filteredRestaurants().length } }}
       }
     </h2>
   </div>
 
   @if (!listLoading() && filteredRestaurants().length === 0 && !listError()) {
     <div class="empty-state card">
-      <h3>No restaurants found</h3>
-      <p>Try a different search, or add the first listing for this area.</p>
+      <h3>{{ 'home.emptyTitle' | transloco }}</h3>
+      <p>{{ 'home.emptyBody' | transloco }}</p>
       <button class="btn btn-primary" type="button" (click)="openAddRestaurantModal()">
-        Add a restaurant
+        {{ 'home.emptyCta' | transloco }}
       </button>
     </div>
   }

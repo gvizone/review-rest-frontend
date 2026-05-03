@@ -1,0 +1,141 @@
+{
+  "brand": {
+    "mark": "Review",
+    "rest": "Restaurant",
+    "fullName": "Review Restaurant"
+  },
+  "common": {
+    "close": "Close",
+    "cancel": "Cancel",
+    "removePhoto": "Remove photo",
+    "selectCountry": "Select country",
+    "selectState": "Select state / region",
+    "selectCity": "Select city"
+  },
+  "topbar": {
+    "discovery": "Discovery",
+    "profile": "Profile",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "language": "Language"
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Use your account to continue.",
+    "continueGoogle": "Continue with Google",
+    "providersHint": "More providers can be added later without changing the UI structure."
+  },
+  "register": {
+    "title": "Create your profile",
+    "subtitle": "Name and email come from your sign-in and cannot be changed here.",
+    "fromAccount": "From your account",
+    "displayName": "Display name",
+    "email": "Email",
+    "profilePhotoOptional": "Profile photo (optional)",
+    "chooseImage": "Choose image",
+    "location": "Location",
+    "country": "Country",
+    "state": "State / region",
+    "city": "City",
+    "registering": "Registering…",
+    "completeRegistration": "Complete registration",
+    "errors": {
+      "noEmail": "No email on your account. Sign out and try again.",
+      "noDisplayName": "Your account has no display name. Update it in your Google profile, then try again."
+    }
+  },
+  "errors": {
+    "image": {
+      "notAnImage": "Please choose an image file.",
+      "tooLarge": "Each image must be {{mb}} MB or smaller.",
+      "readFailed": "Could not read file."
+    },
+    "couldNotReadImage": "Could not read image.",
+    "couldNotReadImages": "Could not read images."
+  },
+  "profile": {
+    "loading": "Loading your profile…",
+    "completeRegistrationCta": "Complete registration",
+    "refreshAfterRegister": "Refresh after registering",
+    "backToDiscovery": "Back to discovery",
+    "avatarAriaLabel": "Upload or change profile photo",
+    "visitedHeading": "Places you’ve reviewed",
+    "visitedEmpty": "No restaurants yet. Write a review from a restaurant page.",
+    "reviewsHeading": "Your reviews",
+    "reviewsEmpty": "You haven’t posted any reviews yet.",
+    "reviewAvg": "Avg {{score}}/5"
+  },
+  "home": {
+    "title": "Discover restaurants",
+    "subtitle": "Search by name, city, or cuisine — or list a place others can review.",
+    "searchPlaceholder": "Try “Italian”, “São Paulo”, or a restaurant name",
+    "addRestaurant": "+ Add a restaurant",
+    "signInToAdd": "Sign in to add a listing",
+    "loadingPlaces": "Loading places…",
+    "resultsMatch": "{{count}} match(es) for “{{query}}”",
+    "resultsCount": "{{count}} restaurant(s)",
+    "emptyTitle": "No restaurants found",
+    "emptyBody": "Try a different search, or add the first listing for this area.",
+    "emptyCta": "Add a restaurant"
+  },
+  "detail": {
+    "loading": "Loading restaurant…",
+    "backToDiscovery": "Back to discovery",
+    "breadcrumbHome": "Home",
+    "gallerySection": "More photos",
+    "galleryHeading": "Gallery",
+    "aboutHeading": "About",
+    "instagram": "Instagram",
+    "reviewsHeading": "Reviews",
+    "reviewCount": "{{count}} review(s)",
+    "reviewsEmpty": "No reviews yet. Be the first to share your experience.",
+    "writeReview": "Write a review",
+    "reviewOverallTitle": "Overall {{score}} / 5",
+    "scoreDenom": "/ 5",
+    "averageFrom": "Average from {{count}} review(s)",
+    "noRatingsYet": "No ratings yet.",
+    "asideBack": "← Back to discovery",
+    "missingRestaurantId": "Missing restaurant id."
+  },
+  "ratings": {
+    "food": "Food",
+    "service": "Service",
+    "value": "Value",
+    "atmosphere": "Atmosphere"
+  },
+  "addRestaurant": {
+    "title": "New restaurant",
+    "intro": "Fields marked * are required. Categories: comma-separated (e.g. Italian, Pizza).",
+    "name": "Name *",
+    "categories": "Categories *",
+    "categoriesPlaceholder": "Italian, Pizza",
+    "location": "Location *",
+    "country": "Country",
+    "state": "State / region",
+    "city": "City",
+    "street": "Street *",
+    "postalCode": "Postal code",
+    "instagramUrl": "Instagram URL",
+    "instagramPlaceholder": "https://...",
+    "photos": "Photos",
+    "addPhotos": "Add photos from device",
+    "saving": "Saving…",
+    "save": "Save restaurant",
+    "validation": {
+      "categories": "Add at least one category (comma-separated)."
+    }
+  },
+  "createReview": {
+    "title": "Review {{name}}",
+    "introBeforeLink": "Rate your experience (1–5). You need an account with a saved address —",
+    "introLink": "complete registration",
+    "introAfterLink": "if you have not yet.",
+    "commentary": "Commentary",
+    "commentaryPlaceholder": "What stood out?",
+    "photosOptional": "Photos (optional)",
+    "addPhotos": "Add photos from device",
+    "submitting": "Submitting…",
+    "postReview": "Post review",
+    "completeProfileFirst": "Complete your profile registration before writing a review."
+  }
+}

@@ -15,29 +15,29 @@
         class="btn-close"
         type="button"
         (click)="registerModal.close()"
-        aria-label="Close"
+        [attr.aria-label]="'common.close' | transloco"
       >
         ×
       </button>
       <div class="header">
-        <div class="brand">Review Restaurant</div>
-        <h1 id="register-modal-title">Create your profile</h1>
-        <p class="sub">Name and email come from your sign-in and cannot be changed here.</p>
+        <div class="brand">{{ 'brand.fullName' | transloco }}</div>
+        <h1 id="register-modal-title">{{ 'register.title' | transloco }}</h1>
+        <p class="sub">{{ 'register.subtitle' | transloco }}</p>
       </div>
 
       <form (ngSubmit)="submit()" [formGroup]="form">
         <fieldset class="fieldset">
-          <legend class="legend">From your account</legend>
+          <legend class="legend">{{ 'register.fromAccount' | transloco }}</legend>
           <label class="field">
-            <span class="field-label">Display name</span>
+            <span class="field-label">{{ 'register.displayName' | transloco }}</span>
             <input class="input" type="text" formControlName="name" autocomplete="name" />
           </label>
           <label class="field">
-            <span class="field-label">Email</span>
+            <span class="field-label">{{ 'register.email' | transloco }}</span>
             <input class="input" type="email" formControlName="email" autocomplete="email" />
           </label>
           <div class="field image-attach-block">
-            <span class="field-label">Profile photo (optional)</span>
+            <span class="field-label">{{ 'register.profilePhotoOptional' | transloco }}</span>
             <input
               #profilePhotoInput
               type="file"
@@ -46,12 +46,17 @@
               (change)="onProfilePhotoSelected($event)"
             />
             <button type="button" class="btn btn-ghost file-pick-btn" (click)="profilePhotoInput.click()">
-              Choose image
+              {{ 'register.chooseImage' | transloco }}
             </button>
             @if (profileImageDataUrl) {
               <div class="profile-photo-preview">
                 <img [src]="profileImageDataUrl" alt="" class="profile-photo-img" />
-                <button type="button" class="btn-thumb-remove" (click)="clearProfilePhoto()" aria-label="Remove photo">
+                <button
+                  type="button"
+                  class="btn-thumb-remove"
+                  (click)="clearProfilePhoto()"
+                  [attr.aria-label]="'common.removePhoto' | transloco"
+                >
                   ×
                 </button>
               </div>
@@ -60,10 +65,10 @@
         </fieldset>
 
         <fieldset class="fieldset" formGroupName="address">
-          <legend class="legend">Location</legend>
+          <legend class="legend">{{ 'register.location' | transloco }}</legend>
 
           <label class="field">
-            <span class="field-label">Country</span>
+            <span class="field-label">{{ 'register.country' | transloco }}</span>
             <select
               class="input select"
               formControlName="country"
@@ -73,7 +78,7 @@
                 form.controls.address.get('country')?.touched
               "
             >
-              <option value="">Select country</option>
+              <option value="">{{ 'common.selectCountry' | transloco }}</option>
               @for (c of countries(); track c.iso2) {
                 <option [value]="c.name">{{ c.name }}</option>
               }
@@ -81,7 +86,7 @@
           </label>
 
           <label class="field">
-            <span class="field-label">State / region</span>
+            <span class="field-label">{{ 'register.state' | transloco }}</span>
             <select
               class="input select"
               formControlName="state"
@@ -91,7 +96,7 @@
                 form.controls.address.get('state')?.touched
               "
             >
-              <option value="">Select state / region</option>
+              <option value="">{{ 'common.selectState' | transloco }}</option>
               @for (s of states(); track s.id) {
                 <option [value]="s.name">{{ s.name }}</option>
               }
@@ -99,7 +104,7 @@
           </label>
 
           <label class="field">
-            <span class="field-label">City</span>
+            <span class="field-label">{{ 'register.city' | transloco }}</span>
             <select
               class="input select"
               formControlName="city"
@@ -109,7 +114,7 @@
                 form.controls.address.get('city')?.touched
               "
             >
-              <option value="">Select city</option>
+              <option value="">{{ 'common.selectCity' | transloco }}</option>
               @for (city of cities(); track city.id) {
                 <option [value]="city.name">{{ city.name }}</option>
               }
@@ -122,7 +127,7 @@
         }
 
         <button class="btn btn-primary" type="submit" [disabled]="submitting">
-          {{ submitting ? 'Registering…' : 'Complete registration' }}
+          {{ submitting ? ('register.registering' | transloco) : ('register.completeRegistration' | transloco) }}
         </button>
       </form>
     </div>

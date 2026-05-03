@@ -8,18 +8,20 @@ import { ProfileApiService } from '../../services/api/profile-api.service';
 import { RegisterModalService } from '../../services/ui/register-modal.service';
 import { AppTopbarComponent } from '../../core/layout/app-topbar.component';
 import { averageNote } from '../../domain/review/review-rating';
-import { readFileAsDataUrl } from '../../utils/image-file';
+import { ImageValidationError, readFileAsDataUrl } from '../../utils/image-file';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   standalone: true,
   selector: 'app-profile-page',
-  imports: [CommonModule, RouterLink, AppTopbarComponent],
+  imports: [CommonModule, RouterLink, TranslocoPipe, AppTopbarComponent],
   templateUrl: './profile.page.html',
   styleUrl: './profile.page.scss',
 })
 export class ProfilePage {
   private readonly profileApi = inject(ProfileApiService);
   private readonly registerModal = inject(RegisterModalService);
+  private readonly transloco = inject(TranslocoService);
 
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
@@ -72,7 +74,11 @@ export class ProfilePage {
     try {
       dataUrl = await readFileAsDataUrl(file);
     } catch (e) {
-      this.imageError.set(e instanceof Error ? e.message : 'Could not read image.');
+      if (e instanceof ImageValidationError) {
+        this.imageError.set(this.transloco.translate(e.translocoKey, e.translocoParams ?? {}));
+      } else {
+        this.imageError.set(this.transloco.translate('errors.couldNotReadImage'));
+      }
       return;
     }
     this.imageError.set(null);

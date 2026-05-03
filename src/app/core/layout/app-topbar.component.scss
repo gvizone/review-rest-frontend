@@ -37,6 +37,30 @@
   align-items: center;
 }
 
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  padding: 2px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+}
+
+.lang-btn {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 999px;
+  line-height: 1.2;
+
+  &.is-active {
+    background: color-mix(in oklab, var(--primary) 22%, var(--surface));
+    color: var(--primary);
+  }
+}
+
 .link-pill {
   width: auto;
   text-decoration: none;

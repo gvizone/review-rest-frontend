@@ -12,37 +12,37 @@
       (click)="$event.stopPropagation()"
     >
       <div class="modal-head">
-        <h2 id="add-restaurant-title" class="modal-title">New restaurant</h2>
-        <button class="btn-close" type="button" (click)="dismiss()" aria-label="Close">
+        <h2 id="add-restaurant-title" class="modal-title">{{ 'addRestaurant.title' | transloco }}</h2>
+        <button class="btn-close" type="button" (click)="dismiss()" [attr.aria-label]="'common.close' | transloco">
           ×
         </button>
       </div>
       <p class="modal-intro">
-        Fields marked * are required. Categories: comma-separated (e.g. Italian, Pizza).
+        {{ 'addRestaurant.intro' | transloco }}
       </p>
       <form [formGroup]="form" (ngSubmit)="submit()">
         <div class="form-stack">
           <div class="form-row form-row--pair">
             <label class="field">
-              <span class="field-label">Name *</span>
+              <span class="field-label">{{ 'addRestaurant.name' | transloco }}</span>
               <input class="input" type="text" formControlName="name" autocomplete="organization" />
             </label>
             <label class="field">
-              <span class="field-label">Categories *</span>
+              <span class="field-label">{{ 'addRestaurant.categories' | transloco }}</span>
               <input
                 class="input"
                 type="text"
                 formControlName="categories"
-                placeholder="Italian, Pizza"
+                [placeholder]="'addRestaurant.categoriesPlaceholder' | transloco"
               />
             </label>
           </div>
 
           <div class="location-block" formGroupName="address">
-            <span class="field-label location-legend">Location *</span>
+            <span class="field-label location-legend">{{ 'addRestaurant.location' | transloco }}</span>
             <div class="form-row form-row--pair">
               <label class="field">
-                <span class="field-label">Country</span>
+                <span class="field-label">{{ 'addRestaurant.country' | transloco }}</span>
                 <select
                   class="input select"
                   formControlName="country"
@@ -52,14 +52,14 @@
                     form.controls['address'].get('country')?.touched
                   "
                 >
-                  <option value="">Select country</option>
+                  <option value="">{{ 'common.selectCountry' | transloco }}</option>
                   @for (c of countries(); track c.iso2) {
                     <option [value]="c.name">{{ c.name }}</option>
                   }
                 </select>
               </label>
               <label class="field">
-                <span class="field-label">State / region</span>
+                <span class="field-label">{{ 'addRestaurant.state' | transloco }}</span>
                 <select
                   class="input select"
                   formControlName="state"
@@ -69,7 +69,7 @@
                     form.controls['address'].get('state')?.touched
                   "
                 >
-                  <option value="">Select state / region</option>
+                  <option value="">{{ 'common.selectState' | transloco }}</option>
                   @for (s of states(); track s.id) {
                     <option [value]="s.name">{{ s.name }}</option>
                   }
@@ -78,7 +78,7 @@
             </div>
             <div class="form-row">
               <label class="field field--full">
-                <span class="field-label">City</span>
+                <span class="field-label">{{ 'addRestaurant.city' | transloco }}</span>
                 <select
                   class="input select"
                   formControlName="city"
@@ -88,7 +88,7 @@
                     form.controls['address'].get('city')?.touched
                   "
                 >
-                  <option value="">Select city</option>
+                  <option value="">{{ 'common.selectCity' | transloco }}</option>
                   @for (city of cities(); track city.id) {
                     <option [value]="city.name">{{ city.name }}</option>
                   }
@@ -99,24 +99,29 @@
 
           <div class="form-row form-row--pair">
             <label class="field">
-              <span class="field-label">Street *</span>
+              <span class="field-label">{{ 'addRestaurant.street' | transloco }}</span>
               <input class="input" type="text" formControlName="street" autocomplete="street-address" />
             </label>
             <label class="field">
-              <span class="field-label">Postal code</span>
+              <span class="field-label">{{ 'addRestaurant.postalCode' | transloco }}</span>
               <input class="input" type="text" formControlName="zipCode" autocomplete="postal-code" />
             </label>
           </div>
 
           <div class="form-row">
             <label class="field field--full">
-              <span class="field-label">Instagram URL</span>
-              <input class="input" type="url" formControlName="instagram" placeholder="https://..." />
+              <span class="field-label">{{ 'addRestaurant.instagramUrl' | transloco }}</span>
+              <input
+                class="input"
+                type="url"
+                formControlName="instagram"
+                [placeholder]="'addRestaurant.instagramPlaceholder' | transloco"
+              />
             </label>
           </div>
           <div class="form-row">
             <div class="field field--full image-attach-block">
-              <span class="field-label">Photos</span>
+              <span class="field-label">{{ 'addRestaurant.photos' | transloco }}</span>
               <input
                 #restaurantFileInput
                 type="file"
@@ -126,7 +131,7 @@
                 (change)="onRestaurantPhotosSelected($event)"
               />
               <button type="button" class="btn btn-ghost file-pick-btn" (click)="restaurantFileInput.click()">
-                Add photos from device
+                {{ 'addRestaurant.addPhotos' | transloco }}
               </button>
               @if (restaurantImages().length) {
                 <ul class="image-thumb-list">
@@ -137,7 +142,7 @@
                         type="button"
                         class="btn-thumb-remove"
                         (click)="removeRestaurantPhoto($index)"
-                        aria-label="Remove photo"
+                        [attr.aria-label]="'common.removePhoto' | transloco"
                       >
                         ×
                       </button>
@@ -152,9 +157,9 @@
           <p class="form-error" role="alert">{{ submitError() }}</p>
         }
         <div class="modal-actions">
-          <button class="btn btn-ghost" type="button" (click)="dismiss()">Cancel</button>
+          <button class="btn btn-ghost" type="button" (click)="dismiss()">{{ 'common.cancel' | transloco }}</button>
           <button class="btn btn-primary" type="submit" [disabled]="submitLoading()">
-            {{ submitLoading() ? 'Saving…' : 'Save restaurant' }}
+            {{ submitLoading() ? ('addRestaurant.saving' | transloco) : ('addRestaurant.save' | transloco) }}
           </button>
         </div>
       </form>

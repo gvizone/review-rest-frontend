@@ -1,20 +1,38 @@
 <header class="topbar">
   <a routerLink="/home" class="brand-link">
-    <span class="brand-mark">Review</span>
-    <span class="brand-rest">Restaurant</span>
+    <span class="brand-mark">{{ 'brand.mark' | transloco }}</span>
+    <span class="brand-rest">{{ 'brand.rest' | transloco }}</span>
   </a>
   <div class="topbar-actions">
+    <div class="lang-switch" role="group" [attr.aria-label]="'topbar.language' | transloco">
+      <button
+        type="button"
+        class="btn btn-ghost lang-btn"
+        [class.is-active]="activeLang() === 'pt'"
+        (click)="setLang('pt')"
+      >
+        PT
+      </button>
+      <button
+        type="button"
+        class="btn btn-ghost lang-btn"
+        [class.is-active]="activeLang() === 'en'"
+        (click)="setLang('en')"
+      >
+        EN
+      </button>
+    </div>
     @if (isDevMode) {
       <a routerLink="/dev/api-tests" class="btn btn-ghost link-pill">API tests</a>
     }
     @if (showDiscovery()) {
-      <a routerLink="/home" class="btn btn-ghost link-pill">Discovery</a>
+      <a routerLink="/home" class="btn btn-ghost link-pill">{{ 'topbar.discovery' | transloco }}</a>
     }
     @if (userProfile()) {
-      <a routerLink="/profile" class="btn btn-ghost link-pill">Profile</a>
-      <button class="btn btn-ghost" type="button" (click)="logout()">Sign out</button>
+      <a routerLink="/profile" class="btn btn-ghost link-pill">{{ 'topbar.profile' | transloco }}</a>
+      <button class="btn btn-ghost" type="button" (click)="logout()">{{ 'topbar.signOut' | transloco }}</button>
     } @else {
-      <button class="btn btn-ghost" type="button" (click)="login()">Sign in</button>
+      <button class="btn btn-ghost" type="button" (click)="login()">{{ 'topbar.signIn' | transloco }}</button>
     }
   </div>
 </header>
