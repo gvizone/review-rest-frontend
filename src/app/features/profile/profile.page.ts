@@ -92,23 +92,4 @@ export class ProfilePage {
         },
       });
   }
-
-  clearPhoto(): void {
-    this.imageError.set(null);
-    this.imageSaving.set(true);
-    this.profileApi
-      .updateMyProfileImage('')
-      .pipe(
-        take(1),
-        finalize(() => this.imageSaving.set(false)),
-      )
-      .subscribe({
-        next: (user) => {
-          this.profile.update((p) => (p ? { ...p, user } : null));
-        },
-        error: (err: unknown) => {
-          this.imageError.set(httpErrorUserMessage(err));
-        },
-      });
-  }
 }

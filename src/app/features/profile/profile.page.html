@@ -23,7 +23,18 @@
     <main class="profile-main">
       <section class="card profile-hero">
         <div class="profile-identity">
-          <div class="avatar-wrap">
+          <label
+            class="avatar-wrap"
+            [class.avatar-wrap--saving]="imageSaving()"
+            aria-label="Upload or change profile photo"
+          >
+            <input
+              type="file"
+              class="file-input-hidden"
+              accept="image/*"
+              [disabled]="imageSaving()"
+              (change)="onPhotoSelected($event)"
+            />
             @if (p.user.image) {
               <img [src]="p.user.image" [alt]="p.user.name" class="avatar" />
             } @else {
@@ -31,40 +42,19 @@
                 {{ p.user.name.charAt(0).toUpperCase() }}
               </div>
             }
-          </div>
+            <span class="avatar-camera-overlay" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="avatar-camera-icon">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                <circle cx="12" cy="13" r="4" />
+              </svg>
+            </span>
+          </label>
           <div class="profile-text">
             <h1 class="profile-name">{{ p.user.name }}</h1>
             <p class="profile-email">{{ p.user.email }}</p>
             <p class="profile-location muted">
               {{ p.user.address.city }}, {{ p.user.address.state }} · {{ p.user.address.country }}
             </p>
-            <div class="photo-actions">
-              <input
-                #photoInput
-                type="file"
-                class="file-input-hidden"
-                accept="image/*"
-                (change)="onPhotoSelected($event)"
-              />
-              <button
-                type="button"
-                class="btn btn-primary"
-                [disabled]="imageSaving()"
-                (click)="photoInput.click()"
-              >
-                {{ p.user.image ? 'Change photo' : 'Add photo' }}
-              </button>
-              @if (p.user.image) {
-                <button
-                  type="button"
-                  class="btn btn-ghost"
-                  [disabled]="imageSaving()"
-                  (click)="clearPhoto()"
-                >
-                  Remove photo
-                </button>
-              }
-            </div>
             @if (imageError()) {
               <p class="field-error" role="alert">{{ imageError() }}</p>
             }
