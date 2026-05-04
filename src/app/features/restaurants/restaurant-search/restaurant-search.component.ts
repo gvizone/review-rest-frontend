@@ -4,12 +4,12 @@ import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { of } from 'rxjs';
 import { catchError, distinctUntilChanged, finalize, take } from 'rxjs/operators';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthService } from '../../../services/auth/auth.service';
 import { httpErrorUserMessage } from '../../../utils/http-error-message';
 import { RestaurantApiService } from '../../../services/api/restaurant-api.service';
 import type { Restaurant } from '../../../domain/models';
 import { AddRestaurantModalService } from '../../../services/ui/add-restaurant-modal.service';
-import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   standalone: true,
@@ -23,30 +23,26 @@ export class RestaurantSearchComponent {
   private readonly restaurantsApi = inject(RestaurantApiService);
   private readonly addRestaurantModal = inject(AddRestaurantModalService);
 
-  readonly searchQuery = signal('');
+  /** Page size (must match default `limit` on `GET /restaurants/search`). */
+  readonly pageSize = 10;
+
+  /** Text in the search field (not submitted until the user clicks Search). */
+  readonly draftQuery = signal('');
+
+  /** Last submitted query (empty string = “show all” paginated). */
+  readonly submittedQuery = signal<string | undefined>(undefined);
+
   readonly restaurants = signal<Restaurant[]>([]);
+  readonly total = signal(0);
+  readonly hasMore = signal(false);
+  readonly hasSearched = signal(false);
+  /** Last page number returned by the API (1-based). */
+  readonly lastLoadedPage = signal(0);
   readonly listLoading = signal(false);
+  readonly loadMoreLoading = signal(false);
   readonly listError = signal<string | null>(null);
 
   readonly userProfile = computed(() => this.auth.userProfile());
-
-  readonly filteredRestaurants = computed(() => {
-    const q = this.searchQuery().trim().toLowerCase();
-    const all = this.restaurants();
-    if (!q) return all;
-    return all.filter((r) => {
-      const haystack = [
-        r.name,
-        r.address.city,
-        r.address.state,
-        r.address.country,
-        ...r.categories.map((c) => c.name),
-      ]
-        .join(' ')
-        .toLowerCase();
-      return haystack.includes(q);
-    });
-  });
 
   constructor() {
     this.auth.user$
@@ -54,35 +50,82 @@ export class RestaurantSearchComponent {
         distinctUntilChanged((a, b) => (a?.uid ?? '') === (b?.uid ?? '')),
         takeUntilDestroyed(),
       )
-      .subscribe(() => this.loadRestaurants());
+      .subscribe(() => this.refreshLastSearch());
 
-    this.addRestaurantModal.restaurantCreated
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => this.loadRestaurants());
+    this.addRestaurantModal.restaurantCreated.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.refreshLastSearch();
+    });
   }
 
-  setSearch(value: string): void {
-    this.searchQuery.set(value);
+  setDraft(value: string): void {
+    this.draftQuery.set(value);
+  }
+
+  runSearch(): void {
+    const q = this.draftQuery().trim();
+    this.submittedQuery.set(q);
+    this.fetchPage(1, true);
+  }
+
+  loadMore(): void {
+    if (!this.hasMore() || this.loadMoreLoading() || this.listLoading()) {
+      return;
+    }
+    this.fetchPage(this.lastLoadedPage() + 1, false);
   }
 
   openAddRestaurantModal(): void {
     this.addRestaurantModal.open();
   }
 
-  loadRestaurants(): void {
-    this.listError.set(null);
-    this.listLoading.set(true);
+  private refreshLastSearch(): void {
+    if (!this.hasSearched()) {
+      return;
+    }
+    this.fetchPage(1, true);
+  }
+
+  private fetchPage(page: number, replace: boolean): void {
+    if (replace) {
+      this.listLoading.set(true);
+      this.hasSearched.set(true);
+      this.listError.set(null);
+      this.restaurants.set([]);
+      this.total.set(0);
+      this.hasMore.set(false);
+    } else {
+      this.loadMoreLoading.set(true);
+    }
+
+    const q = this.submittedQuery() ?? '';
+
     this.restaurantsApi
-      .findAll()
+      .search({ q, page, limit: this.pageSize })
       .pipe(
         take(1),
         catchError((err: unknown) => {
           this.listError.set(httpErrorUserMessage(err));
-          return of([] as Restaurant[]);
+          return of(null);
         }),
-        finalize(() => this.listLoading.set(false)),
+        finalize(() => {
+          this.listLoading.set(false);
+          this.loadMoreLoading.set(false);
+        }),
       )
-      .subscribe((list) => this.restaurants.set(list));
+      .subscribe((res) => {
+        if (!res) {
+          return;
+        }
+        this.listError.set(null);
+        this.total.set(res.total);
+        this.hasMore.set(res.hasMore);
+        this.lastLoadedPage.set(res.page);
+        if (replace) {
+          this.restaurants.set(res.items);
+        } else {
+          this.restaurants.update((prev) => [...prev, ...res.items]);
+        }
+      });
   }
 
   locationLine(r: Restaurant): string {
@@ -90,5 +133,4 @@ export class RestaurantSearchComponent {
     const parts = [a.city, a.state, a.country].filter(Boolean);
     return parts.join(', ');
   }
-
 }

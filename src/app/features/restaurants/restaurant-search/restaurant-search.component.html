@@ -2,16 +2,35 @@
   <div class="hero-inner">
     <h1 class="hero-title">{{ 'home.title' | transloco }}</h1>
     <p class="hero-sub">{{ 'home.subtitle' | transloco }}</p>
-    <div class="search-shell">
-      <span class="search-icon" aria-hidden="true">⌕</span>
-      <input
-        class="search-input"
-        type="search"
-        [placeholder]="'home.searchPlaceholder' | transloco"
-        autocomplete="off"
-        [value]="searchQuery()"
-        (input)="setSearch($any($event.target).value)"
-      />
+    <div class="search-row">
+      <div class="search-shell">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input
+          class="search-input"
+          type="search"
+          [placeholder]="'home.searchPlaceholder' | transloco"
+          autocomplete="off"
+          [value]="draftQuery()"
+          (input)="setDraft($any($event.target).value)"
+          (keydown.enter)="runSearch(); $event.preventDefault()"
+        />
+      </div>
+      <button
+        class="btn btn-primary search-submit"
+        type="button"
+        (click)="runSearch()"
+        [disabled]="listLoading()"
+      >
+        {{ 'home.searchButton' | transloco }}
+      </button>
+    </div>
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-add" type="button" (click)="openAddRestaurantModal()">
+        {{ 'home.addRestaurant' | transloco }}
+      </button>
+      @if (!userProfile()) {
+        <span class="hero-hint">{{ 'home.signInToAdd' | transloco }}</span>
+      }
     </div>
   </div>
 </section>
@@ -21,22 +40,27 @@
     <p class="banner-error" role="alert">{{ listError() }}</p>
   }
 
-  <div class="results-head">
-    <h2 class="results-title">
-      @if (listLoading()) {
-        {{ 'home.loadingPlaces' | transloco }}
-      } @else if (searchQuery().trim()) {
-        {{
-          'home.resultsMatch'
-            | transloco: { count: filteredRestaurants().length, query: searchQuery().trim() }
-        }}
-      } @else {
-        {{ 'home.resultsCount' | transloco: { count: filteredRestaurants().length } }}
-      }
-    </h2>
-  </div>
+  @if (hasSearched()) {
+    <div class="results-head">
+      <h2 class="results-title">
+        @if (listLoading()) {
+          {{ 'home.loadingPlaces' | transloco }}
+        } @else if ((submittedQuery() ?? '').length > 0) {
+          {{ 'home.resultsMatch' | transloco: { count: total(), query: submittedQuery() } }}
+        } @else {
+          {{ 'home.resultsCount' | transloco: { count: total() } }}
+        }
+      </h2>
+    </div>
+  } @else {
+    <div class="search-prompt card">
+      <p>{{ 'home.searchPrompt' | transloco }}</p>
+    </div>
+  }
 
-  @if (!listLoading() && filteredRestaurants().length === 0 && !listError()) {
+  @if (
+    hasSearched() && !listLoading() && restaurants().length === 0 && !listError()
+  ) {
     <div class="empty-state card">
       <h3>{{ 'home.emptyTitle' | transloco }}</h3>
       <p>{{ 'home.emptyBody' | transloco }}</p>
@@ -47,7 +71,7 @@
   }
 
   <ul class="results-grid">
-    @for (r of filteredRestaurants(); track r.id) {
+    @for (r of restaurants(); track r.id) {
       <li>
         <a class="rest-card" [routerLink]="['/restaurants', r.id]">
           <div class="rest-card-media">
@@ -72,4 +96,21 @@
       </li>
     }
   </ul>
+
+  @if (hasSearched() && hasMore() && !listLoading()) {
+    <div class="load-more-wrap">
+      <button
+        class="btn btn-ghost load-more-btn"
+        type="button"
+        (click)="loadMore()"
+        [disabled]="loadMoreLoading()"
+      >
+        @if (loadMoreLoading()) {
+          {{ 'home.loadingMore' | transloco }}
+        } @else {
+          {{ 'home.loadMore' | transloco }}
+        }
+      </button>
+    </div>
+  }
 </main>

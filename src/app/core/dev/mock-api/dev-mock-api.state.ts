@@ -114,6 +114,46 @@ export function devMockListRestaurants(): Restaurant[] {
   return [...restaurantsById.values()];
 }
 
+export type DevMockRestaurantSearchPage = {
+  items: Restaurant[];
+  total: number;
+  page: number;
+  limit: number;
+  hasMore: boolean;
+};
+
+function devMockRestaurantMatchesQuery(r: Restaurant, q: string): boolean {
+  const t = q.trim().toLowerCase();
+  if (!t) return true;
+  const haystack = [
+    r.name,
+    r.address.city,
+    r.address.state,
+    r.address.country,
+    ...r.categories.map((c) => c.name),
+  ]
+    .join(' ')
+    .toLowerCase();
+  return haystack.includes(t);
+}
+
+export function devMockSearchRestaurantsPaged(
+  q: string,
+  page: number,
+  limit: number,
+): DevMockRestaurantSearchPage {
+  const safePage = Number.isFinite(page) && page >= 1 ? Math.floor(page) : 1;
+  const safeLimit = Math.min(50, Math.max(1, Math.floor(limit) || 10));
+  const all = devMockListRestaurants()
+    .filter((r) => devMockRestaurantMatchesQuery(r, q))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const total = all.length;
+  const offset = (safePage - 1) * safeLimit;
+  const items = all.slice(offset, offset + safeLimit);
+  const hasMore = offset + items.length < total;
+  return { items, total, page: safePage, limit: safeLimit, hasMore };
+}
+
 export function devMockRestaurantCategories(): Category[] {
   const names = new Set<string>();
   for (const r of restaurantsById.values()) {

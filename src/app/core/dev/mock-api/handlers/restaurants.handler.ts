@@ -4,6 +4,11 @@ import type { CreateRestaurantRequest } from '../../../../domain/models';
 import * as mock from '../dev-mock-api.state';
 import { jsonResponse, notFoundResponse } from '../http-shims';
 
+function queryStringFromRequestUrl(url: string): string {
+  const idx = url.indexOf('?');
+  return idx >= 0 ? url.slice(idx + 1) : '';
+}
+
 export function handleDevMockRestaurants(
   req: HttpRequest<unknown>,
   parts: string[],
@@ -16,6 +21,14 @@ export function handleDevMockRestaurants(
 
   if (req.method === 'GET' && parts.length === 2 && parts[1] === 'categories') {
     return jsonResponse(mock.devMockRestaurantCategories());
+  }
+
+  if (req.method === 'GET' && parts.length === 2 && parts[1] === 'search') {
+    const sp = new URLSearchParams(queryStringFromRequestUrl(req.url));
+    const q = sp.get('q') ?? '';
+    const page = Math.max(1, parseInt(sp.get('page') ?? '1', 10) || 1);
+    const limit = Math.min(50, Math.max(1, parseInt(sp.get('limit') ?? '10', 10) || 10));
+    return jsonResponse(mock.devMockSearchRestaurantsPaged(q, page, limit));
   }
 
   if (req.method === 'GET' && parts.length === 3 && parts[1] === 'category') {

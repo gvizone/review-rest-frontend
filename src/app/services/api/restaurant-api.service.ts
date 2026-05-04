@@ -1,8 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import type { Category, CreateRestaurantRequest, Restaurant } from '../../domain/models';
+import type {
+  Category,
+  CreateRestaurantRequest,
+  Restaurant,
+  RestaurantSearchPage,
+} from '../../domain/models';
 
 @Injectable({ providedIn: 'root' })
 export class RestaurantApiService {
@@ -11,6 +16,15 @@ export class RestaurantApiService {
 
   findAll(): Observable<Restaurant[]> {
     return this.http.get<Restaurant[]>(this.baseUrl);
+  }
+
+  search(params: { q: string; page: number; limit?: number }): Observable<RestaurantSearchPage> {
+    const limit = params.limit ?? 10;
+    const httpParams = new HttpParams()
+      .set('q', params.q)
+      .set('page', String(params.page))
+      .set('limit', String(limit));
+    return this.http.get<RestaurantSearchPage>(`${this.baseUrl}/search`, { params: httpParams });
   }
 
   findCategories(): Observable<Category[]> {

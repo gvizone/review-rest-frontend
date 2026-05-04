@@ -30,6 +30,7 @@
   }
 
   &-actions {
+    margin-top: 8px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -43,12 +44,31 @@
   }
 }
 
+.search-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 12px;
+  max-width: 720px;
+  margin: 0 auto 20px;
+}
+
+.search-submit {
+  flex-shrink: 0;
+  align-self: stretch;
+  padding-left: 22px;
+  padding-right: 22px;
+  border-radius: 999px;
+}
+
 .search-shell {
   display: flex;
   align-items: center;
   gap: 10px;
-  max-width: 560px;
-  margin: 0 auto 20px;
+  flex: 1;
+  min-width: 200px;
+  margin: 0;
   padding: 4px 4px 4px 14px;
   border-radius: 999px;
   background: color-mix(in oklab, var(--surface) 88%, var(--bg));
@@ -108,6 +128,27 @@
   margin: 0;
   font-size: 1.15rem;
   font-weight: 700;
+}
+
+.search-prompt {
+  text-align: center;
+  color: var(--muted);
+  margin: 0 0 24px;
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 8px;
+}
+
+.load-more-btn {
+  min-width: 168px;
 }
 
 .empty-state {

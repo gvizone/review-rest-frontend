@@ -17,3 +17,12 @@ export interface Restaurant {
   instagram?: string;
   images?: string[];
 }
+
+/** Paginated `GET /restaurants/search` response. */
+export interface RestaurantSearchPage {
+  items: Restaurant[];
+  total: number;
+  page: number;
+  limit: number;
+  hasMore: boolean;
+}
