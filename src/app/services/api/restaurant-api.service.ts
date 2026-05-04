@@ -44,6 +44,11 @@ export class RestaurantApiService {
     return this.http.post<Restaurant>(this.baseUrl, body);
   }
 
+  /** `POST /restaurants/bulk` — each item may include optional `id` (UUID). */
+  bulkCreate(items: (CreateRestaurantRequest & { id?: string })[]): Observable<Restaurant[]> {
+    return this.http.post<Restaurant[]>(`${this.baseUrl}/bulk`, { items });
+  }
+
   deleteAll(): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}`);
   }

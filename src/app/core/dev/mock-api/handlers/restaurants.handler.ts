@@ -41,6 +41,18 @@ export function handleDevMockRestaurants(
     return r ? jsonResponse(r) : notFoundResponse();
   }
 
+  if (req.method === 'POST' && parts.length === 2 && parts[1] === 'bulk') {
+    const body = req.body as { items?: mock.DevMockRestaurantCreateBody[] };
+    if (!body?.items || !Array.isArray(body.items) || body.items.length === 0) {
+      return jsonResponse(
+        { message: 'Expected JSON body { "items": [ { ...restaurant }, ... ] } with at least one item.' },
+        400,
+      );
+    }
+    const created = mock.devMockBulkCreateRestaurants(body.items);
+    return jsonResponse(created, 201);
+  }
+
   if (req.method === 'POST' && parts.length === 1) {
     const body = req.body as CreateRestaurantRequest;
     const created = mock.devMockCreateRestaurant(body);

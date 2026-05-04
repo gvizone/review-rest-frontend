@@ -83,6 +83,29 @@
     </button>
   </section>
 
+  <section class="card block">
+    <h3>Bulk import (JSON dump)</h3>
+    <p class="muted hint-block">
+      Paste a JSON <strong>array</strong> of restaurant objects, or <code>&#123; "items": [ ... ] &#125;</code>.
+      Each object may include optional <code>id</code> (UUID). Use strict JSON (no trailing commas). Sends
+      <code>POST /restaurants/bulk</code>.
+    </p>
+    <label class="field full">
+      <span class="field-label">JSON</span>
+      <textarea
+        name="bulkDump"
+        class="input textarea bulk-json"
+        rows="14"
+        spellcheck="false"
+        [(ngModel)]="bulkDumpJson"
+        placeholder='[&#10;  &#123; "name": "Example", "address": &#123; "city": "São Paulo", "state": "SP", "country": "BR" &#125;, "categories": [&#123; "name": "Italian" &#125;] &#125;&#10;]'
+      ></textarea>
+    </label>
+    <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="bulkImportFromJson()">
+      POST bulk import
+    </button>
+  </section>
+
   <section class="card block response-card">
     <h3>Response</h3>
     @if (loading()) {

@@ -34,6 +34,9 @@ export class RestaurantApiPanel {
 
   createImageDataUrls: string[] = [];
 
+  /** Raw JSON: either `[ {...}, ... ]` or `{ "items": [ ... ] }` (valid JSON only — no trailing commas). */
+  bulkDumpJson = '';
+
   private setBusy(): void {
     this.loading.set(true);
     this.responseText.set('');
@@ -173,5 +176,86 @@ export class RestaurantApiPanel {
         next: (d) => this.handleResult(d),
         error: (e) => this.handleError(e),
       });
+  }
+
+  bulkImportFromJson(): void {
+    const raw = this.bulkDumpJson.trim();
+    if (!raw) {
+      this.responseText.set('Paste a JSON array or { "items": [...] } first.');
+      return;
+    }
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw) as unknown;
+    } catch {
+      this.responseText.set('Invalid JSON. Fix syntax (e.g. remove trailing commas after the last property).');
+      return;
+    }
+    const items = this.normalizeBulkPayload(parsed);
+    if (!items.length) {
+      this.responseText.set('No restaurant objects found. Use a non-empty array or { "items": [ ... ] }.');
+      return;
+    }
+    const err = this.validateBulkItems(items);
+    if (err) {
+      this.responseText.set(err);
+      return;
+    }
+    this.setBusy();
+    this.api
+      .bulkCreate(items)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (d) => this.handleResult(d),
+        error: (e) => this.handleError(e),
+      });
+  }
+
+  private normalizeBulkPayload(parsed: unknown): (CreateRestaurantRequest & { id?: string })[] {
+    if (Array.isArray(parsed)) {
+      return parsed as (CreateRestaurantRequest & { id?: string })[];
+    }
+    if (parsed && typeof parsed === 'object' && 'items' in parsed) {
+      const items = (parsed as { items: unknown }).items;
+      if (Array.isArray(items)) {
+        return items as (CreateRestaurantRequest & { id?: string })[];
+      }
+    }
+    return [];
+  }
+
+  private validateBulkItems(items: (CreateRestaurantRequest & { id?: string })[]): string | null {
+    for (let i = 0; i < items.length; i++) {
+      const row = items[i] as unknown as Record<string, unknown>;
+      if (!row || typeof row !== 'object') {
+        return `Item ${i}: must be an object.`;
+      }
+      const name = row['name'];
+      if (typeof name !== 'string' || !name.trim()) {
+        return `Item ${i}: "name" is required (non-empty string).`;
+      }
+      const addr = row['address'];
+      if (!addr || typeof addr !== 'object') {
+        return `Item ${i}: "address" object is required.`;
+      }
+      const a = addr as Record<string, unknown>;
+      for (const key of ['city', 'state', 'country'] as const) {
+        if (typeof a[key] !== 'string' || !(a[key] as string).trim()) {
+          return `Item ${i}: address.${key} is required (non-empty string).`;
+        }
+      }
+      const cats = row['categories'];
+      if (!Array.isArray(cats) || cats.length === 0) {
+        return `Item ${i}: "categories" must be a non-empty array of { name: string }.`;
+      }
+      for (let j = 0; j < cats.length; j++) {
+        const c = cats[j] as unknown as Record<string, unknown>;
+        const catName = c['name'];
+        if (!c || typeof catName !== 'string' || !catName.trim()) {
+          return `Item ${i}, category ${j}: must have { "name": "..." }.`;
+        }
+      }
+    }
+    return null;
   }
 }

@@ -1,1 +1,19 @@
 @use './api-test-panel.shared.scss';
+
+.hint-block {
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.bulk-json {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  resize: vertical;
+  min-height: 200px;
+}
+
+.textarea {
+  min-height: 80px;
+}

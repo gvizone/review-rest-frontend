@@ -177,18 +177,26 @@ export function devMockFindRestaurantById(id: string): Restaurant | undefined {
   return restaurantsById.get(id);
 }
 
-export function devMockCreateRestaurant(body: CreateRestaurantRequest): Restaurant {
-  const id = `mock-restaurant-${restaurantSeq++}`;
+export type DevMockRestaurantCreateBody = CreateRestaurantRequest & { id?: string };
+
+export function devMockCreateRestaurant(body: DevMockRestaurantCreateBody): Restaurant {
+  const rawId = typeof body.id === 'string' ? body.id.trim() : '';
+  const id = rawId.length > 0 ? rawId : `mock-restaurant-${restaurantSeq++}`;
+  const { id: _drop, ...rest } = body;
   const restaurant: Restaurant = {
     id,
-    name: body.name,
-    address: { ...body.address },
-    categories: body.categories.map((c) => ({ name: c.name })),
-    instagram: body.instagram,
-    images: body.images ? [...body.images] : undefined,
+    name: rest.name,
+    address: { ...rest.address },
+    categories: rest.categories.map((c) => ({ name: c.name })),
+    instagram: rest.instagram,
+    images: rest.images ? [...rest.images] : undefined,
   };
   restaurantsById.set(id, restaurant);
   return restaurant;
+}
+
+export function devMockBulkCreateRestaurants(items: DevMockRestaurantCreateBody[]): Restaurant[] {
+  return items.map((item) => devMockCreateRestaurant(item));
 }
 
 export function devMockListReviews(): Review[] {
