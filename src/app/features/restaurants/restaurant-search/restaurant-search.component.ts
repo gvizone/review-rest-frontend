@@ -24,7 +24,7 @@ export class RestaurantSearchComponent {
   private readonly addRestaurantModal = inject(AddRestaurantModalService);
 
   /** Page size (must match default `limit` on `GET /restaurants/search`). */
-  readonly pageSize = 10;
+  readonly pageSize = 9;
 
   /** Text in the search field (not submitted until the user clicks Search). */
   readonly draftQuery = signal('');

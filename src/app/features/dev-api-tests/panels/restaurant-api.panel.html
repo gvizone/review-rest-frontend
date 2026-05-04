@@ -36,6 +36,84 @@
   </section>
 
   <section class="card block">
+    <h3>Edit restaurant</h3>
+    <p class="muted hint-block">
+      Enter an id, load the row, then adjust address, about text, or photos and save. Sends
+      <code>PATCH /restaurants/:id</code>. New photos append as data URLs; remove thumbnails to drop
+      URLs from the list.
+    </p>
+    <div class="field-row">
+      <label class="field">
+        <span class="field-label">Restaurant id</span>
+        <input name="eId" [(ngModel)]="editId" class="input" placeholder="uuid" />
+      </label>
+      <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="loadRestaurantForEdit()">
+        Load for edit
+      </button>
+      <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="saveRestaurantEdit()">
+        PATCH save
+      </button>
+    </div>
+    <div class="form-grid">
+      <label class="field">
+        <span class="field-label">Name</span>
+        <input name="eName" [(ngModel)]="editName" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">Street</span>
+        <input name="eStreet" [(ngModel)]="editStreet" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">City</span>
+        <input name="eCity" [(ngModel)]="editCity" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">State</span>
+        <input name="eState" [(ngModel)]="editState" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">Country</span>
+        <input name="eCountry" [(ngModel)]="editCountry" class="input" />
+      </label>
+      <label class="field">
+        <span class="field-label">ZIP</span>
+        <input name="eZip" [(ngModel)]="editZip" class="input" />
+      </label>
+      <label class="field full">
+        <span class="field-label">About</span>
+        <textarea
+          name="eAbout"
+          class="input textarea edit-about"
+          rows="6"
+          spellcheck="true"
+          [(ngModel)]="editAbout"
+        ></textarea>
+      </label>
+      <label class="field full">
+        <span class="field-label">Add photos (optional)</span>
+        <input
+          name="eImg"
+          type="file"
+          accept="image/*"
+          multiple
+          class="input"
+          (change)="onEditPhotosChange($event)"
+        />
+      </label>
+    </div>
+    @if (editImageUrls.length) {
+      <div class="edit-photo-grid" role="list">
+        @for (url of editImageUrls; track $index) {
+          <div class="edit-photo-card" role="listitem">
+            <img [src]="url" alt="" class="edit-photo-thumb" />
+            <button type="button" class="btn" (click)="removeEditPhotoAt($index)">Remove</button>
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="card block">
     <h3>Create</h3>
     <div class="form-grid">
       <label class="field">
@@ -69,6 +147,16 @@
       <label class="field">
         <span class="field-label">Instagram URL</span>
         <input name="cIg" [(ngModel)]="createInstagram" class="input" />
+      </label>
+      <label class="field full">
+        <span class="field-label">About (optional)</span>
+        <textarea
+          name="cAbout"
+          class="input textarea"
+          rows="4"
+          [(ngModel)]="createAbout"
+          spellcheck="true"
+        ></textarea>
       </label>
       <label class="field full">
         <span class="field-label">Photos (optional, multiple)</span>

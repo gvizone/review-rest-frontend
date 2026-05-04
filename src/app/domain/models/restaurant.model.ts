@@ -7,7 +7,16 @@ export interface CreateRestaurantRequest {
   categories: Category[];
   instagram?: string;
   images?: string[];
+  about?: string;
 }
+
+/** `PATCH /restaurants/:id` — only include fields to change. */
+export type UpdateRestaurantRequest = Partial<
+  Pick<
+    CreateRestaurantRequest,
+    'name' | 'address' | 'categories' | 'instagram' | 'images' | 'about'
+  >
+>;
 
 export interface Restaurant {
   id: string;
@@ -16,6 +25,7 @@ export interface Restaurant {
   categories: Category[];
   instagram?: string;
   images?: string[];
+  about?: string;
 }
 
 /** Paginated `GET /restaurants/search` response. */

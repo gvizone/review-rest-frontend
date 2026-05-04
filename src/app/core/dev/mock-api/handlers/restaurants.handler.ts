@@ -1,6 +1,6 @@
 import { HttpEvent, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import type { CreateRestaurantRequest } from '../../../../domain/models';
+import type { CreateRestaurantRequest, UpdateRestaurantRequest } from '../../../../domain/models';
 import * as mock from '../dev-mock-api.state';
 import { jsonResponse, notFoundResponse } from '../http-shims';
 
@@ -57,6 +57,13 @@ export function handleDevMockRestaurants(
     const body = req.body as CreateRestaurantRequest;
     const created = mock.devMockCreateRestaurant(body);
     return jsonResponse(created, 201);
+  }
+
+  if (req.method === 'PATCH' && parts.length === 2) {
+    const id = parts[1];
+    const body = req.body as UpdateRestaurantRequest;
+    const updated = mock.devMockUpdateRestaurant(id, body);
+    return updated ? jsonResponse(updated) : notFoundResponse();
   }
 
   return null;

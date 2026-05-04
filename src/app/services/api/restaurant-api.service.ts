@@ -7,6 +7,7 @@ import type {
   CreateRestaurantRequest,
   Restaurant,
   RestaurantSearchPage,
+  UpdateRestaurantRequest,
 } from '../../domain/models';
 
 @Injectable({ providedIn: 'root' })
@@ -42,6 +43,10 @@ export class RestaurantApiService {
 
   create(body: CreateRestaurantRequest): Observable<Restaurant> {
     return this.http.post<Restaurant>(this.baseUrl, body);
+  }
+
+  update(id: string, body: UpdateRestaurantRequest): Observable<Restaurant> {
+    return this.http.patch<Restaurant>(`${this.baseUrl}/${id}`, body);
   }
 
   /** `POST /restaurants/bulk` — each item may include optional `id` (UUID). */

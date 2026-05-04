@@ -52,6 +52,9 @@
       <div class="detail-main">
         <section class="card block">
           <h2 class="block-title">{{ 'detail.aboutHeading' | transloco }}</h2>
+          @if (r.about?.trim()) {
+            <p class="about-prose">{{ r.about }}</p>
+          }
           <p class="address-block">{{ formatAddressBlock(r) }}</p>
           @if (r.instagram) {
             <p class="meta-line">

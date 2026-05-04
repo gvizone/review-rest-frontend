@@ -5,6 +5,7 @@ import type {
   CreateUserRequest,
   Restaurant,
   Review,
+  UpdateRestaurantRequest,
   User,
   UserProfileResponse,
 } from '../../../domain/models';
@@ -130,6 +131,7 @@ function devMockRestaurantMatchesQuery(r: Restaurant, q: string): boolean {
     r.address.city,
     r.address.state,
     r.address.country,
+    r.about ?? '',
     ...r.categories.map((c) => c.name),
   ]
     .join(' ')
@@ -190,9 +192,42 @@ export function devMockCreateRestaurant(body: DevMockRestaurantCreateBody): Rest
     categories: rest.categories.map((c) => ({ name: c.name })),
     instagram: rest.instagram,
     images: rest.images ? [...rest.images] : undefined,
+    ...(rest.about?.trim() ? { about: rest.about.trim() } : {}),
   };
   restaurantsById.set(id, restaurant);
   return restaurant;
+}
+
+export function devMockUpdateRestaurant(
+  id: string,
+  body: UpdateRestaurantRequest,
+): Restaurant | undefined {
+  const cur = restaurantsById.get(id);
+  if (!cur) return undefined;
+  const next: Restaurant = { ...cur };
+  if (body.name !== undefined) next.name = body.name;
+  if (body.address !== undefined) {
+    next.address = { ...next.address, ...body.address };
+  }
+  if (body.categories !== undefined) {
+    next.categories = body.categories.map((c) => ({ name: c.name }));
+  }
+  if (body.instagram !== undefined) {
+    next.instagram = body.instagram;
+  }
+  if (body.images !== undefined) {
+    next.images = body.images.length ? [...body.images] : undefined;
+  }
+  if (body.about !== undefined) {
+    const t = body.about.trim();
+    if (!t) {
+      delete (next as { about?: string }).about;
+    } else {
+      next.about = body.about;
+    }
+  }
+  restaurantsById.set(id, next);
+  return next;
 }
 
 export function devMockBulkCreateRestaurants(items: DevMockRestaurantCreateBody[]): Restaurant[] {

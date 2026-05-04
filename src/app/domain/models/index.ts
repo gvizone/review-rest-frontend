@@ -4,6 +4,7 @@ export type {
   CreateRestaurantRequest,
   Restaurant,
   RestaurantSearchPage,
+  UpdateRestaurantRequest,
 } from './restaurant.model';
 export type { CreateUserRequest, User } from './user.model';
 export type { CreateReviewRequest, Review, ReviewNote } from './review.model';

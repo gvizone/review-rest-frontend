@@ -3,7 +3,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { RestaurantApiService } from '../../../services/api/restaurant-api.service';
-import type { CreateRestaurantRequest } from '../../../domain/models';
+import type { CreateRestaurantRequest, UpdateRestaurantRequest } from '../../../domain/models';
 import { formatHttpError } from '../format-http-error';
 import { readFilesAsDataUrls } from '../../../utils/image-file';
 
@@ -31,8 +31,19 @@ export class RestaurantApiPanel {
   createZip = '';
   createCategories = 'Italian, Pizza';
   createInstagram = '';
+  createAbout = '';
 
   createImageDataUrls: string[] = [];
+
+  editId = '';
+  editName = '';
+  editStreet = '';
+  editCity = '';
+  editState = '';
+  editCountry = '';
+  editZip = '';
+  editAbout = '';
+  editImageUrls: string[] = [];
 
   /** Raw JSON: either `[ {...}, ... ]` or `{ "items": [ ... ] }` (valid JSON only — no trailing commas). */
   bulkDumpJson = '';
@@ -122,6 +133,85 @@ export class RestaurantApiPanel {
     this.createImageDataUrls = [];
   }
 
+  loadRestaurantForEdit(): void {
+    const id = this.editId.trim();
+    if (!id) {
+      this.responseText.set('Enter a restaurant id to load.');
+      return;
+    }
+    this.setBusy();
+    this.api
+      .findById(id)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (r) => {
+          this.editId = r.id;
+          this.editName = r.name;
+          this.editStreet = r.address.street ?? '';
+          this.editCity = r.address.city;
+          this.editState = r.address.state;
+          this.editCountry = r.address.country;
+          this.editZip = r.address.zipCode ?? '';
+          this.editAbout = r.about ?? '';
+          this.editImageUrls = r.images?.length ? [...r.images] : [];
+          this.handleResult(r);
+        },
+        error: (e) => this.handleError(e),
+      });
+  }
+
+  async onEditPhotosChange(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    input.value = '';
+    if (!files?.length) return;
+    try {
+      const urls = await readFilesAsDataUrls(files);
+      this.editImageUrls = [...this.editImageUrls, ...urls];
+      this.responseText.set('');
+    } catch (e) {
+      this.responseText.set(e instanceof Error ? e.message : 'Invalid image');
+    }
+  }
+
+  removeEditPhotoAt(index: number): void {
+    this.editImageUrls = this.editImageUrls.filter((_, i) => i !== index);
+  }
+
+  saveRestaurantEdit(): void {
+    const id = this.editId.trim();
+    if (!id) {
+      this.responseText.set('Enter a restaurant id (load first).');
+      return;
+    }
+    const city = this.editCity.trim();
+    const state = this.editState.trim();
+    const country = this.editCountry.trim();
+    if (!city || !state || !country) {
+      this.responseText.set('Address city, state, and country are required.');
+      return;
+    }
+    const body: UpdateRestaurantRequest = {
+      address: {
+        city,
+        state,
+        country,
+        street: this.editStreet.trim(),
+        zipCode: this.editZip.trim(),
+      },
+      about: this.editAbout,
+      images: [...this.editImageUrls],
+    };
+    this.setBusy();
+    this.api
+      .update(id, body)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (d) => this.handleResult(d),
+        error: (e) => this.handleError(e),
+      });
+  }
+
   create(): void {
     const name = this.createName.trim();
     if (!name) {
@@ -156,6 +246,7 @@ export class RestaurantApiPanel {
       categories,
       ...(this.createInstagram.trim() ? { instagram: this.createInstagram.trim() } : {}),
       ...(this.createImageDataUrls.length ? { images: [...this.createImageDataUrls] } : {}),
+      ...(this.createAbout.trim() ? { about: this.createAbout.trim() } : {}),
     };
     this.setBusy();
     this.api
@@ -188,12 +279,16 @@ export class RestaurantApiPanel {
     try {
       parsed = JSON.parse(raw) as unknown;
     } catch {
-      this.responseText.set('Invalid JSON. Fix syntax (e.g. remove trailing commas after the last property).');
+      this.responseText.set(
+        'Invalid JSON. Fix syntax (e.g. remove trailing commas after the last property).',
+      );
       return;
     }
     const items = this.normalizeBulkPayload(parsed);
     if (!items.length) {
-      this.responseText.set('No restaurant objects found. Use a non-empty array or { "items": [ ... ] }.');
+      this.responseText.set(
+        'No restaurant objects found. Use a non-empty array or { "items": [ ... ] }.',
+      );
       return;
     }
     const err = this.validateBulkItems(items);
