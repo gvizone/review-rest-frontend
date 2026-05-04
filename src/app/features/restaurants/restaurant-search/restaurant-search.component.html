@@ -13,14 +13,6 @@
         (input)="setSearch($any($event.target).value)"
       />
     </div>
-    <div class="hero-actions">
-      <button class="btn btn-primary btn-add" type="button" (click)="openAddRestaurantModal()">
-        {{ 'home.addRestaurant' | transloco }}
-      </button>
-      @if (!userProfile()) {
-        <span class="hero-hint">{{ 'home.signInToAdd' | transloco }}</span>
-      }
-    </div>
   </div>
 </section>
 
