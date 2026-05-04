@@ -15,6 +15,14 @@ export class ImageValidationError extends Error {
   }
 }
 
+/** Plain message for dev tools or non-i18n contexts (Transloco key path or generic text). */
+export function imagePickFailureMessage(err: unknown): string {
+  if (err instanceof ImageValidationError) {
+    return err.translocoKey;
+  }
+  return err instanceof Error ? err.message : 'Invalid image';
+}
+
 export function readFileAsDataUrl(
   file: File,
   maxBytes: number = MAX_IMAGE_FILE_BYTES,

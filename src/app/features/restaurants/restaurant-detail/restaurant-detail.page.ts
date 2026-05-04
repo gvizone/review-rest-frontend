@@ -11,6 +11,11 @@ import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { AppTopbarComponent } from '../../../core/layout/app-topbar.component';
 import type { Restaurant, Review } from '../../../domain/models';
 import { averageNote } from '../../../domain/review/review-rating';
+import {
+  averageRatingAcrossReviews,
+  dimensionAveragesFromReviews,
+  sortReviewsByAverageNoteDesc,
+} from '../../../domain/review/review-aggregate';
 import { reviewBelongsToRestaurant } from '../../../domain/review/review-match';
 import {
   restaurantAddressBlock,
@@ -42,29 +47,13 @@ export class RestaurantDetailPage {
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
 
-  readonly avgRating = computed(() => {
-    const list = this.reviews();
-    if (!list.length) return null;
-    const sum = list.reduce((acc, rv) => acc + averageNote(rv.note), 0);
-    return Math.round((sum / list.length) * 10) / 10;
-  });
+  readonly avgRating = computed(() =>
+    averageRatingAcrossReviews(this.reviews()),
+  );
 
-  readonly dimensionAverages = computed(() => {
-    const list = this.reviews();
-    if (!list.length) return null;
-    const n = list.length;
-    const food = list.reduce((a, r) => a + r.note.food, 0) / n;
-    const service = list.reduce((a, r) => a + r.note.service, 0) / n;
-    const value = list.reduce((a, r) => a + r.note.value, 0) / n;
-    const atmosphere = list.reduce((a, r) => a + r.note.atmosphere, 0) / n;
-    const round = (x: number) => Math.round(x * 10) / 10;
-    return {
-      food: round(food),
-      service: round(service),
-      value: round(value),
-      atmosphere: round(atmosphere),
-    };
-  });
+  readonly dimensionAverages = computed(() =>
+    dimensionAveragesFromReviews(this.reviews()),
+  );
 
   constructor() {
     this.route.paramMap
@@ -95,17 +84,13 @@ export class RestaurantDetailPage {
       .subscribe((data) => {
         if (!data) return;
         this.restaurant.set(data.restaurant);
-        this.reviews.set(
-          [...data.reviews].sort((a, b) => averageNote(b.note) - averageNote(a.note)),
-        );
+        this.reviews.set(sortReviewsByAverageNoteDesc(data.reviews));
       });
 
     this.createReviewModal.reviewCreated.pipe(takeUntilDestroyed()).subscribe((rev) => {
       const r = this.restaurant();
       if (r && reviewBelongsToRestaurant(rev, r)) {
-        this.reviews.update((list) =>
-          [...list, rev].sort((a, b) => averageNote(b.note) - averageNote(a.note)),
-        );
+        this.reviews.update((list) => sortReviewsByAverageNoteDesc([...list, rev]));
       }
     });
   }

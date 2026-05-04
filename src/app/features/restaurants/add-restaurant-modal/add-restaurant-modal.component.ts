@@ -16,7 +16,9 @@ import { LoginModalService } from '../../../services/ui/login-modal.service';
 import { httpErrorUserMessage } from '../../../utils/http-error-message';
 import { RestaurantApiService } from '../../../services/api/restaurant-api.service';
 import { AddressFormCascadeService } from '../../../services/location/address-form-cascade.service';
-import { ImageValidationError, readFilesAsDataUrls } from '../../../utils/image-file';
+import { readFilesAsDataUrls } from '../../../utils/image-file';
+import { isModalBackdropClick } from '../../../utils/modal-backdrop';
+import { translateImagePickFailure } from '../../../utils/transloco-image-error';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
@@ -58,7 +60,7 @@ export class AddRestaurantModalComponent {
   }
 
   onBackdropClick(event: MouseEvent): void {
-    if (event.target === event.currentTarget) {
+    if (isModalBackdropClick(event)) {
       this.dismiss();
     }
   }
@@ -78,11 +80,9 @@ export class AddRestaurantModalComponent {
       const urls = await readFilesAsDataUrls(files);
       this.restaurantImages.update((prev) => [...prev, ...urls]);
     } catch (e) {
-      if (e instanceof ImageValidationError) {
-        this.submitError.set(this.transloco.translate(e.translocoKey, e.translocoParams ?? {}));
-      } else {
-        this.submitError.set(this.transloco.translate('errors.couldNotReadImages'));
-      }
+      this.submitError.set(
+        translateImagePickFailure(this.transloco, e, 'multi'),
+      );
     }
   }
 

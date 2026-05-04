@@ -8,7 +8,8 @@ import { ProfileApiService } from '../../services/api/profile-api.service';
 import { RegisterModalService } from '../../services/ui/register-modal.service';
 import { AppTopbarComponent } from '../../core/layout/app-topbar.component';
 import { averageNote } from '../../domain/review/review-rating';
-import { ImageValidationError, readFileAsDataUrl } from '../../utils/image-file';
+import { readFileAsDataUrl } from '../../utils/image-file';
+import { translateImagePickFailure } from '../../utils/transloco-image-error';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
@@ -74,11 +75,9 @@ export class ProfilePage {
     try {
       dataUrl = await readFileAsDataUrl(file);
     } catch (e) {
-      if (e instanceof ImageValidationError) {
-        this.imageError.set(this.transloco.translate(e.translocoKey, e.translocoParams ?? {}));
-      } else {
-        this.imageError.set(this.transloco.translate('errors.couldNotReadImage'));
-      }
+      this.imageError.set(
+        translateImagePickFailure(this.transloco, e, 'single'),
+      );
       return;
     }
     this.imageError.set(null);

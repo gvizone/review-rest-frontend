@@ -6,6 +6,12 @@ export function restaurantLocationLine(r: Restaurant): string {
   return parts.join(', ');
 }
 
+/** City, state, country only — compact line for search cards. */
+export function restaurantListLocationLine(r: Restaurant): string {
+  const a = r.address;
+  return [a.city, a.state, a.country].filter(Boolean).join(', ');
+}
+
 export function restaurantAddressBlock(r: Restaurant): string {
   const a = r.address;
   const lines: string[] = [];

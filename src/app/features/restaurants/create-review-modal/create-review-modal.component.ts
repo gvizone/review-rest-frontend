@@ -16,7 +16,9 @@ import { UserApiService } from '../../../services/api/user-api.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { LoginModalService } from '../../../services/ui/login-modal.service';
 import { RegisterModalService } from '../../../services/ui/register-modal.service';
-import { ImageValidationError, readFilesAsDataUrls } from '../../../utils/image-file';
+import { readFilesAsDataUrls } from '../../../utils/image-file';
+import { isModalBackdropClick } from '../../../utils/modal-backdrop';
+import { translateImagePickFailure } from '../../../utils/transloco-image-error';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
@@ -51,7 +53,7 @@ export class CreateReviewModalComponent {
   ];
 
   onBackdropClick(event: MouseEvent): void {
-    if (event.target === event.currentTarget) {
+    if (isModalBackdropClick(event)) {
       this.dismiss();
     }
   }
@@ -71,11 +73,9 @@ export class CreateReviewModalComponent {
       const urls = await readFilesAsDataUrls(files);
       this.reviewImages.update((prev) => [...prev, ...urls]);
     } catch (e) {
-      if (e instanceof ImageValidationError) {
-        this.submitError.set(this.transloco.translate(e.translocoKey, e.translocoParams ?? {}));
-      } else {
-        this.submitError.set(this.transloco.translate('errors.couldNotReadImages'));
-      }
+      this.submitError.set(
+        translateImagePickFailure(this.transloco, e, 'multi'),
+      );
     }
   }
 

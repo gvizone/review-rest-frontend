@@ -9,6 +9,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { httpErrorUserMessage } from '../../../utils/http-error-message';
 import { RestaurantApiService } from '../../../services/api/restaurant-api.service';
 import type { Restaurant } from '../../../domain/models';
+import { restaurantListLocationLine } from '../../../domain/restaurant/restaurant-display';
 import { AddRestaurantModalService } from '../../../services/ui/add-restaurant-modal.service';
 
 @Component({
@@ -43,6 +44,9 @@ export class RestaurantSearchComponent {
   readonly listError = signal<string | null>(null);
 
   readonly userProfile = computed(() => this.auth.userProfile());
+
+  /** Template: compact location for cards (same rules as domain helper). */
+  protected readonly listLocationLine = restaurantListLocationLine;
 
   constructor() {
     this.auth.user$
@@ -126,11 +130,5 @@ export class RestaurantSearchComponent {
           this.restaurants.update((prev) => [...prev, ...res.items]);
         }
       });
-  }
-
-  locationLine(r: Restaurant): string {
-    const a = r.address;
-    const parts = [a.city, a.state, a.country].filter(Boolean);
-    return parts.join(', ');
   }
 }

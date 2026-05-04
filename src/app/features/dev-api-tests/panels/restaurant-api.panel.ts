@@ -4,8 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { RestaurantApiService } from '../../../services/api/restaurant-api.service';
 import type { CreateRestaurantRequest, UpdateRestaurantRequest } from '../../../domain/models';
-import { formatHttpError } from '../format-http-error';
-import { readFilesAsDataUrls } from '../../../utils/image-file';
+import {
+  imagePickFailureMessage,
+  readFilesAsDataUrls,
+} from '../../../utils/image-file';
+import { httpErrorDebugText } from '../../../utils/http-error-message';
 
 @Component({
   standalone: true,
@@ -58,7 +61,7 @@ export class RestaurantApiPanel {
   }
 
   private handleError(err: unknown): void {
-    this.responseText.set(formatHttpError(err));
+    this.responseText.set(httpErrorDebugText(err));
   }
 
   getAll(): void {
@@ -125,7 +128,7 @@ export class RestaurantApiPanel {
       this.createImageDataUrls = [...this.createImageDataUrls, ...urls];
       this.responseText.set('');
     } catch (e) {
-      this.responseText.set(e instanceof Error ? e.message : 'Invalid image');
+      this.responseText.set(imagePickFailureMessage(e));
     }
   }
 
@@ -170,7 +173,7 @@ export class RestaurantApiPanel {
       this.editImageUrls = [...this.editImageUrls, ...urls];
       this.responseText.set('');
     } catch (e) {
-      this.responseText.set(e instanceof Error ? e.message : 'Invalid image');
+      this.responseText.set(imagePickFailureMessage(e));
     }
   }
 

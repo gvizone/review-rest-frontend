@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { UserApiService } from '../../../services/api/user-api.service';
 import type { CreateUserRequest } from '../../../domain/models';
-import { formatHttpError } from '../format-http-error';
-import { readFileAsDataUrl } from '../../../utils/image-file';
+import { imagePickFailureMessage, readFileAsDataUrl } from '../../../utils/image-file';
+import { httpErrorDebugText } from '../../../utils/http-error-message';
 
 @Component({
   standalone: true,
@@ -42,7 +42,7 @@ export class UserApiPanel {
   }
 
   private handleError(err: unknown): void {
-    this.responseText.set(formatHttpError(err));
+    this.responseText.set(httpErrorDebugText(err));
   }
 
   getAll(): void {
@@ -81,7 +81,7 @@ export class UserApiPanel {
       this.profileImageDataUrl = await readFileAsDataUrl(file);
       this.responseText.set('');
     } catch (e) {
-      this.responseText.set(e instanceof Error ? e.message : 'Invalid image');
+      this.responseText.set(imagePickFailureMessage(e));
     }
   }
 

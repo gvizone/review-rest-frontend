@@ -8,6 +8,7 @@ import { DevMockLoginPanelComponent } from '../dev/dev-mock-login-panel.componen
 import { UserApiService } from '../../services/api/user-api.service';
 import { firstValueFrom, of } from 'rxjs';
 import { catchError, take } from 'rxjs/operators';
+import { isModalBackdropClick } from '../../utils/modal-backdrop';
 @Component({
   standalone: true,
   selector: 'app-login-modal',
@@ -22,7 +23,7 @@ export class LoginModalComponent {
   protected readonly loginModal = inject(LoginModalService);
 
   onBackdropClick(event: MouseEvent): void {
-    if (event.target === event.currentTarget) {
+    if (isModalBackdropClick(event)) {
       this.loginModal.close();
     }
   }

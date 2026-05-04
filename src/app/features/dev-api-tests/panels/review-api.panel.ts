@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { ReviewApiService } from '../../../services/api/review-api.service';
 import type { CreateReviewRequest } from '../../../domain/models';
-import { formatHttpError } from '../format-http-error';
-import { readFilesAsDataUrls } from '../../../utils/image-file';
+import { imagePickFailureMessage, readFilesAsDataUrls } from '../../../utils/image-file';
+import { httpErrorDebugText } from '../../../utils/http-error-message';
 
 function clampNote(n: number | string): number {
   const v = typeof n === 'string' ? Number(n) : n;
@@ -51,7 +51,7 @@ export class ReviewApiPanel {
   }
 
   private handleError(err: unknown): void {
-    this.responseText.set(formatHttpError(err));
+    this.responseText.set(httpErrorDebugText(err));
   }
 
   getAll(): void {
@@ -91,7 +91,7 @@ export class ReviewApiPanel {
       this.reviewImageDataUrls = [...this.reviewImageDataUrls, ...urls];
       this.responseText.set('');
     } catch (e) {
-      this.responseText.set(e instanceof Error ? e.message : 'Invalid image');
+      this.responseText.set(imagePickFailureMessage(e));
     }
   }
 

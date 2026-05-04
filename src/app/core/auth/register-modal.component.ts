@@ -8,7 +8,9 @@ import { AuthService } from '../../services/auth/auth.service';
 import { RegisterModalService } from '../../services/ui/register-modal.service';
 import { UserApiService } from '../../services/api/user-api.service';
 import { AddressFormCascadeService } from '../../services/location/address-form-cascade.service';
-import { ImageValidationError, readFileAsDataUrl } from '../../utils/image-file';
+import { readFileAsDataUrl } from '../../utils/image-file';
+import { isModalBackdropClick } from '../../utils/modal-backdrop';
+import { translateImagePickFailure } from '../../utils/transloco-image-error';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { httpErrorUserMessage } from '../../utils/http-error-message';
 
@@ -67,7 +69,7 @@ export class RegisterModalComponent {
   }
 
   onBackdropClick(event: MouseEvent): void {
-    if (event.target === event.currentTarget) {
+    if (isModalBackdropClick(event)) {
       this.registerModal.close(); // cancels registration → sign out
     }
   }
@@ -81,11 +83,7 @@ export class RegisterModalComponent {
       this.profileImageDataUrl = await readFileAsDataUrl(file);
       this.errorMessage = null;
     } catch (e) {
-      if (e instanceof ImageValidationError) {
-        this.errorMessage = this.transloco.translate(e.translocoKey, e.translocoParams ?? {});
-      } else {
-        this.errorMessage = this.transloco.translate('errors.couldNotReadImage');
-      }
+      this.errorMessage = translateImagePickFailure(this.transloco, e, 'single');
     }
   }
 

@@ -83,7 +83,7 @@
           </div>
           <div class="rest-card-body">
             <h3 class="rest-name">{{ r.name }}</h3>
-            <p class="rest-location">{{ locationLine(r) }}</p>
+            <p class="rest-location">{{ listLocationLine(r) }}</p>
             @if (r.categories.length) {
               <ul class="rest-tags">
                 @for (c of r.categories; track c.name) {
