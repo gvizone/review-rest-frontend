@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/auth/auth.guard';
+import { authGuard } from './core/guards/auth.guard';
 import { devOnlyGuard } from './core/guards/dev-only.guard';
 import { HomePage } from './features/home/home.page';
 import { ProfilePage } from './features/profile/profile.page';

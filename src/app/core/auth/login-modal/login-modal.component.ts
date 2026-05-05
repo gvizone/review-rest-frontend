@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../services/auth/auth.service';
-import { LoginModalService } from '../../services/ui/login-modal.service';
-import { RegisterModalService } from '../../services/ui/register-modal.service';
+import { AuthService } from '../../../services/auth/auth.service';
+import { LoginModalService } from '../../../services/ui/login-modal.service';
+import { RegisterModalService } from '../../../services/ui/register-modal.service';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { DevMockLoginPanelComponent } from '../dev/dev-mock-login-panel.component';
-import { UserApiService } from '../../services/api/user-api.service';
+import { DevMockLoginPanelComponent } from '../../dev/dev-mock-login-panel.component';
+import { UserApiService } from '../../../services/api/user-api.service';
 import { firstValueFrom, of } from 'rxjs';
 import { catchError, take } from 'rxjs/operators';
-import { isModalBackdropClick } from '../../utils/modal-backdrop';
+import { isModalBackdropClick } from '../../../utils/modal-backdrop';
 @Component({
   standalone: true,
   selector: 'app-login-modal',

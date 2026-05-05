@@ -4,15 +4,15 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import type { ICity, ICountry, IState } from '@countrystatecity/countries';
 import { finalize, take } from 'rxjs/operators';
-import { AuthService } from '../../services/auth/auth.service';
-import { RegisterModalService } from '../../services/ui/register-modal.service';
-import { UserApiService } from '../../services/api/user-api.service';
-import { AddressFormCascadeService } from '../../services/location/address-form-cascade.service';
-import { readFileAsDataUrl } from '../../utils/image-file';
-import { isModalBackdropClick } from '../../utils/modal-backdrop';
-import { translateImagePickFailure } from '../../utils/transloco-image-error';
+import { AuthService } from '../../../services/auth/auth.service';
+import { RegisterModalService } from '../../../services/ui/register-modal.service';
+import { UserApiService } from '../../../services/api/user-api.service';
+import { AddressFormCascadeService } from '../../../services/location/address-form-cascade.service';
+import { readFileAsDataUrl } from '../../../utils/image-file';
+import { isModalBackdropClick } from '../../../utils/modal-backdrop';
+import { translateImagePickFailure } from '../../../utils/transloco-image-error';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { httpErrorUserMessage } from '../../utils/http-error-message';
+import { httpErrorUserMessage } from '../../../utils/http-error-message';
 
 @Component({
   standalone: true,
@@ -61,11 +61,15 @@ export class RegisterModalComponent {
       );
     });
 
-    this.addressCascade.connect(this.form.controls.address, {
-      countries: this.countries,
-      states: this.states,
-      cities: this.cities,
-    }, this.destroyRef);
+    this.addressCascade.connect(
+      this.form.controls.address,
+      {
+        countries: this.countries,
+        states: this.states,
+        cities: this.cities,
+      },
+      this.destroyRef,
+    );
   }
 
   onBackdropClick(event: MouseEvent): void {

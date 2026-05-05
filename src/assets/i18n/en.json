@@ -67,10 +67,9 @@
   },
   "home": {
     "title": "Discover restaurants",
-    "subtitle": "Search by name, city, or cuisine — or list a place others can review.",
+    "subtitle": "Search by name, city, or cuisine",
     "searchPlaceholder": "Try “Italian”, “São Paulo”, or a restaurant name",
     "searchButton": "Search",
-    "searchPrompt": "Enter a name, city, or cuisine and press Search to load results (10 at a time). Leave the field empty and search to browse all listings.",
     "loadMore": "Load more",
     "loadingMore": "Loading…",
     "addRestaurant": "+ Add a restaurant",
@@ -79,7 +78,7 @@
     "resultsMatch": "{{count}} match(es) for “{{query}}”",
     "resultsCount": "{{count}} restaurant(s)",
     "emptyTitle": "No restaurants found",
-    "emptyBody": "Try a different search, or add the first listing for this area.",
+    "emptyBody": "Try a different search.",
     "emptyCta": "Add a restaurant"
   },
   "detail": {

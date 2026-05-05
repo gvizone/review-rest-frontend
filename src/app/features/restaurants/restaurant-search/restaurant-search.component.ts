@@ -59,6 +59,7 @@ export class RestaurantSearchComponent {
     this.addRestaurantModal.restaurantCreated.pipe(takeUntilDestroyed()).subscribe(() => {
       this.refreshLastSearch();
     });
+    this.runSearch();
   }
 
   setDraft(value: string): void {

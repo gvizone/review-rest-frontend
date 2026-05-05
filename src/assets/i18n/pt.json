@@ -67,10 +67,9 @@
   },
   "home": {
     "title": "Descubra restaurantes",
-    "subtitle": "Busque por nome, cidade ou tipo de culinária — ou cadastre um lugar para outros avaliarem.",
+    "subtitle": "Busque por nome, cidade ou tipo de culinária",
     "searchPlaceholder": "Ex.: “Italiana”, “São Paulo” ou o nome do restaurante",
     "searchButton": "Buscar",
-    "searchPrompt": "Digite um nome, cidade ou tipo de culinária e pressione Buscar para carregar resultados (10 por vez). Deixe o campo vazio e busque para ver todos os cadastros.",
     "loadMore": "Carregar mais",
     "loadingMore": "Carregando…",
     "addRestaurant": "+ Adicionar restaurante",
@@ -79,7 +78,7 @@
     "resultsMatch": "{{count}} resultado(s) para “{{query}}”",
     "resultsCount": "{{count}} restaurante(s)",
     "emptyTitle": "Nenhum restaurante encontrado",
-    "emptyBody": "Tente outra busca ou cadastre o primeiro lugar nesta região.",
+    "emptyBody": "Tente outra busca.",
     "emptyCta": "Adicionar restaurante"
   },
   "detail": {
