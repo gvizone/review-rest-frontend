@@ -52,11 +52,15 @@ export class AddRestaurantModalComponent {
 
   constructor() {
     const address = this.form.get('address') as FormGroup;
-    this.addressCascade.connect(address, {
-      countries: this.countries,
-      states: this.states,
-      cities: this.cities,
-    }, this.destroyRef);
+    this.addressCascade.connect(
+      address,
+      {
+        countries: this.countries,
+        states: this.states,
+        cities: this.cities,
+      },
+      this.destroyRef,
+    );
   }
 
   onBackdropClick(event: MouseEvent): void {
@@ -74,15 +78,12 @@ export class AddRestaurantModalComponent {
   async onRestaurantPhotosSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const files = input.files;
-    input.value = '';
     if (!files?.length) return;
     try {
       const urls = await readFilesAsDataUrls(files);
       this.restaurantImages.update((prev) => [...prev, ...urls]);
     } catch (e) {
-      this.submitError.set(
-        translateImagePickFailure(this.transloco, e, 'multi'),
-      );
+      this.submitError.set(translateImagePickFailure(this.transloco, e, 'multi'));
     }
   }
 

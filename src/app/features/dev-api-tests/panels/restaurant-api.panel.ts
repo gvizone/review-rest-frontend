@@ -4,10 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { RestaurantApiService } from '../../../services/api/restaurant-api.service';
 import type { CreateRestaurantRequest, UpdateRestaurantRequest } from '../../../domain/models';
-import {
-  imagePickFailureMessage,
-  readFilesAsDataUrls,
-} from '../../../utils/image-file';
+import { imagePickFailureMessage, readFilesAsDataUrls } from '../../../utils/image-file';
 import { httpErrorDebugText } from '../../../utils/http-error-message';
 
 @Component({
@@ -166,7 +163,6 @@ export class RestaurantApiPanel {
   async onEditPhotosChange(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const files = input.files;
-    input.value = '';
     if (!files?.length) return;
     try {
       const urls = await readFilesAsDataUrls(files);
